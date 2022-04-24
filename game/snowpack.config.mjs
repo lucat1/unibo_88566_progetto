@@ -1,3 +1,5 @@
+import { GAME_ENDPOINT } from "../endpoints.mjs";
+
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   mount: {
@@ -13,13 +15,10 @@ export default {
     /* If we were to deploy the site publicly this would be a performance improvement */
     // "bundle": true,
   },
-  packageOptions: {
-    /* ... */
-  },
   devOptions: {
-    port: 3000
+    port: 3000,
   },
   buildOptions: {
-    /* ... */
+    baseUrl: GAME_ENDPOINT,
   },
 };

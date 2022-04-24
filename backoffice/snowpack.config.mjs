@@ -1,3 +1,5 @@
+import { BACKOFFICE_ENDPOINT } from "../endpoints.mjs";
+
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   mount: {
@@ -19,6 +21,6 @@ export default {
     port: 5000,
   },
   buildOptions: {
-    /* ... */
+    baseUrl: BACKOFFICE_ENDPOINT,
   },
 };

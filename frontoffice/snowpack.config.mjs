@@ -1,3 +1,5 @@
+import { FRONTOFFICE_ENDPOINT } from "../endpoints.mjs";
+
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
   mount: {
@@ -20,6 +22,6 @@ export default {
     port: 4000,
   },
   buildOptions: {
-    /* ... */
+    baseUrl: FRONTOFFICE_ENDPOINT,
   },
 };

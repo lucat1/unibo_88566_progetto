@@ -11,7 +11,7 @@
 <body>
   <div id="root"></div>
   <script type="module">
-    import {render, h, useReducer, useState} from "/dist/h.js";
+    import {render, h, useReducer, useState} from "%PUBLIC_URL%/dist/h.js";
     const c = ({initial}) => {
       const [items, setItems] = useState(initial);
       return h(
