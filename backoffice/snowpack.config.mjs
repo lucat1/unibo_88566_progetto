@@ -1,4 +1,4 @@
-import { BACKOFFICE_ENDPOINT } from "../endpoints.mjs";
+import endpoints from "../endpoints.json" assert { type: "json" };
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
@@ -21,6 +21,6 @@ export default {
     port: 5000,
   },
   buildOptions: {
-    baseUrl: BACKOFFICE_ENDPOINT,
+    baseUrl: endpoints.BACKOFFICE_ENDPOINT,
   },
 };

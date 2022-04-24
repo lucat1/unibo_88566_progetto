@@ -1,4 +1,4 @@
-import { FRONTOFFICE_ENDPOINT } from "../endpoints.mjs";
+import endpoints from "../endpoints.json" assert { type: "json" };
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
@@ -22,6 +22,6 @@ export default {
     port: 4000,
   },
   buildOptions: {
-    baseUrl: FRONTOFFICE_ENDPOINT,
+    baseUrl: endpoints.FRONTOFFICE_ENDPOINT,
   },
 };

@@ -1,4 +1,4 @@
-import { GAME_ENDPOINT } from "../endpoints.mjs";
+import endpoints from "../endpoints.json" assert { type: "json" };
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
@@ -19,6 +19,6 @@ export default {
     port: 3000,
   },
   buildOptions: {
-    baseUrl: GAME_ENDPOINT,
+    baseUrl: endpoints.GAME_ENDPOINT,
   },
 };

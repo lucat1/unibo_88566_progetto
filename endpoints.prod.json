@@ -1,0 +1,7 @@
+{
+  "GAME_ENDPOINT": "http://todo.tw.cs.unibo.it/game/",
+  "FRONTOFFICE_ENDPOINT": "http://todo.tw.cs.unibo.it/front/",
+  "BACKOFFICE_ENDPOINT": "http://todo.tw.cs.unibo.it/back/",
+  "API_ENDPOINT": "http://todo.tw.cs.unibo.it/api/",
+  "API_PORT": 8080
+}
