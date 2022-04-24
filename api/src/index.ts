@@ -19,7 +19,7 @@ const main = async () => {
       );
       app
         .use(`/${site}`, sirv(join(__dirname, "..", "..", site, "build")))
-        .get("*", (_, res) =>
+        .get(`/${site}/*`, (_, res) =>
           send(res, 200, index, {
             "Content-Type": "text/html",
           })
