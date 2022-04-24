@@ -6,6 +6,10 @@
   "author": "Luca Tagliavini <luca.tagliavini5@studio.unibo.it>, Stefano Volpe <stefano.volpe@studio.unibo.it>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build"
+  },
   "devDependencies": {
     "prettier": "^2.6.2",
     "turbo": "^1.2.5",
