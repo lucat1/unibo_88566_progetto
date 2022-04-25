@@ -4,51 +4,74 @@ import type { IncomingMessage } from "http";
 // @ts-ignore
 import send from "@polka/send-type";
 import { z } from "zod";
+import type { IUser, UserLevel } from "./models/user";
 
 const COOKIE_NAME = "animal-auth";
-
-/* TODO: move inside the user model definition */
-export enum UserLevel {
-  UNREGISTERED,
-  BASIC,
-  VIP,
-  MANAGER,
-}
 
 export const RegisterData = z.object({
   username: z.string(),
   password: z.string(),
   firstName: z.string(),
-  lastName: z.string(),
+  lastName: z.string().optional(),
+  city: z.string().optional(),
 });
-type RegisterData = z.infer<typeof RegisterData>;
+export type IRegisterData = z.infer<typeof RegisterData>;
 
 export const LoginData = z.object({
   username: z.string(),
   password: z.string(),
 });
-type LoginData = z.infer<typeof LoginData>;
+type ILoginData = z.infer<typeof LoginData>;
 
 export interface AuthUser {
   id: string;
   level: UserLevel;
 }
 
+export interface AuthError {
+  message: string;
+}
+
 export interface AuthenticatedRequest extends IncomingMessage {
   user?: AuthUser;
 }
 
-export const login =
+export const register =
   (
-    findUser: (username: string, password: string) => AuthUser
+    registerUser: (user: IRegisterData) => Promise<AuthUser | AuthError>
   ): RequestHandler =>
-  (req, res) => {
-    const data = req.body as LoginData;
-    console.log(data);
-    res.end("logging in i guess");
+  async (req, res) => {
+    const data = req.body as IRegisterData;
+    const result = await registerUser(data);
+    if ((result as AuthError).message)
+      send(res, 500, JSON.stringify(result), {
+        "Content-Type": "application/json",
+      });
+    /* TODO: jwt */ else
+      send(res, 500, JSON.stringify(result), {
+        "Content-Type": "application/json",
+      });
   };
 
-export const register: RequestHandler = (req, res) => {};
+export const login =
+  (
+    findUser: (
+      username: string,
+      password: string
+    ) => Promise<AuthUser | AuthError>
+  ): RequestHandler =>
+  async (req, res) => {
+    const data = req.body as ILoginData;
+    const result = await findUser(data.username, data.password);
+    if ((result as AuthError).message)
+      send(res, 500, JSON.stringify(result), {
+        "Content-Type": "application/json",
+      });
+    /* TODO: jwt */ else
+      send(res, 500, JSON.stringify(result), {
+        "Content-Type": "application/json",
+      });
+  };
 
 export const authMiddleware: Middleware = (req, res, next) => {
   if (req.cookies[COOKIE_NAME] && /* todo parse */ true)

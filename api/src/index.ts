@@ -6,10 +6,11 @@ import sirv from "sirv";
 import { json } from "body-parser";
 import cookies from "cookie-parser";
 import cors from "cors";
+import { connect } from "mongoose";
 
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { API_PORT, API_ENDPOINT } from "../../endpoints.json";
+import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
 import {
   authMiddleware,
   login,
@@ -21,12 +22,14 @@ import {
   RegisterData,
 } from "./auth";
 import validate from "./validate";
+import { authenticateUser, registerUser } from "./accounts";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
 
 const main = async () => {
   /* Serve all front sites in production */
+  console.info("Fetching index files");
   if (API_ENDPOINT.includes("unibo.it")) {
     for (const site of sites) {
       const index = await readFile(
@@ -41,6 +44,8 @@ const main = async () => {
         );
     }
   }
+  console.info(`Connecting to mongo as ${MONGO_URL}`);
+  await connect(MONGO_URL);
 
   app.use("/api", cors());
   app.use("/api", cookies());
@@ -51,13 +56,13 @@ const main = async () => {
     "/api/auth/register",
     authNotRequired,
     validate(RegisterData),
-    register
+    register(registerUser)
   );
   app.post(
     "/api/auth/login",
     authNotRequired,
     validate(LoginData),
-    login((username, password) => ({ id: "testid", level: 1 }))
+    login(authenticateUser)
   );
 
   app.get("/api/auth/id", authNotRequired, (_, res) => {
@@ -67,9 +72,7 @@ const main = async () => {
     res.end(JSON.stringify((req as AuthenticatedRequest).user));
   });
 
-  app.listen(API_PORT, () => {
-    console.log(`Running on localhost:${API_PORT}`);
-  });
+  app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };
 
 main();

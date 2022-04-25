@@ -4,5 +4,7 @@
   "BACKOFFICE_ENDPOINT": "http://luca.tagliavini5.tw.cs.unibo.it/back/",
   "API_ENDPOINT": "http://luca.tagliavini5.tw.cs.unibo.it/api/",
   "API_PORT": 8000,
-  "AUTH_SECRET": "maCR1h1yrRs02F7AyPwLybm1wgXj1tBj8S719gjpIXXHaAJjGcJVMtQklmV9uRie"
+  "MONGO_URL": "mongodb://root:root@localhost:27017/",
+  "PASSWORD_SALT_ROUNDS": 5,
+  "JWT_SECRET": "pYYHI2Piycwb4eJrZShdScor5AFD87HxoPiDvcONVbGWE0ehWH4SFzXjubQ2hwk6"
 }
