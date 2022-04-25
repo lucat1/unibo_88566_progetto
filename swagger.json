@@ -1,152 +1,313 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "The game authentication-less api",
-    "version": "0.0.0",
-    "title": "Game API"
-  },
-  "basePath": "/api",
-  "tags": [
-    {
-      "name": "game",
-      "description": "APIs for the game frontend"
+  "game": {
+    "swagger": "2.0",
+    "info": {
+      "description": "The game authentication-less api",
+      "version": "0.0.0",
+      "title": "Game API"
     },
-    {
-      "name": "auth",
-      "description": "Endpoints for authentication across all sites"
-    }
-  ],
-  "schemes": [
-    "https",
-    "http"
-  ],
-  "paths": {
-    "/auth/id": {
-      "get": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Returns a new UUID for a device",
-        "description": "Returns an UUID for the current unauthorized session",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fullfilled",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          }
-        }
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "game",
+        "description": "APIs for the game frontend"
+      },
+      {
+        "name": "auth",
+        "description": "Endpoints for authentication across all sites"
       }
-    },
-    "/score/{game}": {
-      "post": {
-        "tags": [
-          "game"
-        ],
-        "summary": "Update your score for a given game",
-        "accepts": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "game",
-            "in": "path",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Value increment",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "increment": {
-                  "type": "number"
+    ],
+    "schemes": ["https", "http"],
+    "paths": {
+      "/auth/id": {
+        "get": {
+          "tags": ["auth"],
+          "summary": "Returns a new UUID for a device",
+          "description": "Returns an UUID for the current unauthorized session",
+          "produces": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Request fullfilled",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fullfilled",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
           }
         }
       },
-      "get": {
-        "tags": [
-          "game"
-        ],
-        "summary": "Get your score for a given game",
-        "accepts": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "game",
-            "in": "path",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Value increment",
-            "required": false,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "format": "uuid"
+      "/score/{game}": {
+        "post": {
+          "tags": ["game"],
+          "summary": "Update your score for a given game",
+          "accepts": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "game",
+              "in": "path",
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Value increment",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "increment": {
+                    "type": "number"
+                  }
                 }
               }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Request fullfilled",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input"
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fullfilled",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "number"
+        },
+        "get": {
+          "tags": ["game"],
+          "summary": "Get your score for a given game",
+          "accepts": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "game",
+              "in": "path",
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Value increment",
+              "required": false,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid input"
+          ],
+          "responses": {
+            "200": {
+              "description": "Request fullfilled",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input"
+            }
           }
         }
       }
+    }
+  },
+  "store": {
+    "swagger": "2.0",
+    "info": {
+      "description": "The Back-Office allows the Animal House administrators to manage the customers's data beside. It also",
+      "version": "1.0.0",
+      "title": "Animal House Back-Office",
+      "license": {
+        "name": "MIT License",
+        "url": "https://mit-license.org/"
+      }
+    },
+    "host": "luca.tagliavini5.tw.cs.unibo.it",
+    "basePath": "/backoffice",
+    "tags": [
+      {
+        "name": "store",
+        "description": "Manage orders and products"
+      }
+    ],
+    "schemes": ["http"],
+    "paths": {
+      "/": {
+        "get": {
+          "tags": ["store"],
+          "responses": {
+            "default": {
+              "description": "successful operation"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shipDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Order Status",
+            "enum": ["placed", "approved", "delivered"]
+          },
+          "complete": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "xml": {
+          "name": "Order"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "userStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User Status"
+          }
+        },
+        "xml": {
+          "name": "User"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Tag"
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "required": ["name", "photoUrls"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "category": {
+            "$ref": "#/definitions/Category"
+          },
+          "name": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "photoUrls": {
+            "type": "array",
+            "xml": {
+              "name": "photoUrl",
+              "wrapped": true
+            },
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "xml": {
+              "name": "tag",
+              "wrapped": true
+            },
+            "items": {
+              "$ref": "#/definitions/Tag"
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "pet status in the store",
+            "enum": ["available", "pending", "sold"]
+          }
+        },
+        "xml": {
+          "name": "Pet"
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about our API",
+      "url": "http://luca.tagliavini5.tw.cs.unibo.it/api/hello"
     }
   }
 }
