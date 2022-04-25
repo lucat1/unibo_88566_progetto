@@ -3,5 +3,6 @@
   "FRONTOFFICE_ENDPOINT": "http://luca.tagliavini5.tw.cs.unibo.it/front/",
   "BACKOFFICE_ENDPOINT": "http://luca.tagliavini5.tw.cs.unibo.it/back/",
   "API_ENDPOINT": "http://luca.tagliavini5.tw.cs.unibo.it/api/",
-  "API_PORT": 8000
+  "API_PORT": 8000,
+  "AUTH_SECRET": "maCR1h1yrRs02F7AyPwLybm1wgXj1tBj8S719gjpIXXHaAJjGcJVMtQklmV9uRie"
 }

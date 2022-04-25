@@ -3,5 +3,6 @@
   "FRONTOFFICE_ENDPOINT": "http://localhost:4000/",
   "BACKOFFICE_ENDPOINT": "http://localhost:5000/",
   "API_ENDPOINT": "http://localhost:7000/api",
-  "API_PORT": 7000
+  "API_PORT": 7000,
+  "AUTH_SECRET": "maCR1h1yrRs02F7AyPwLybm1wgXj1tBj8S719gjpIXXHaAJjGcJVMtQklmV9uRie"
 }
