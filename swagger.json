@@ -1,0 +1,152 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The game authentication-less api",
+    "version": "0.0.0",
+    "title": "Game API"
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "game",
+      "description": "APIs for the game frontend",
+    },
+    {
+      "name": "auth",
+      "description": "Endpoints for authentication across all sites",
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/auth/id": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Returns a new UUID for a device",
+        "description": "Returns an UUID for the current unauthorized session",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/score/{game}": {
+      "post": {
+        "tags": [
+          "game"
+        ],
+        "summary": "Update your score for a given game",
+        "accepts": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "game",
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Value increment",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "increment": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "game"
+        ],
+        "summary": "Get your score for a given game",
+        "accepts": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "game",
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Value increment",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
