@@ -4,7 +4,9 @@ import type { IncomingMessage } from "http";
 // @ts-ignore
 import send from "@polka/send-type";
 import { z } from "zod";
-import type { IUser, UserLevel } from "./models/user";
+import type { UserLevel } from "./models/user";
+import { sign } from "jsonwebtoken";
+import { JWT_SECRET } from "../../endpoints.json";
 
 const COOKIE_NAME = "animal-auth";
 
@@ -36,6 +38,10 @@ export interface AuthenticatedRequest extends IncomingMessage {
   user?: AuthUser;
 }
 
+const jwtResponse = (data: AuthUser) => ({
+  token: sign(data, JWT_SECRET),
+});
+
 export const register =
   (
     registerUser: (user: IRegisterData) => Promise<AuthUser | AuthError>
@@ -47,8 +53,8 @@ export const register =
       send(res, 500, JSON.stringify(result), {
         "Content-Type": "application/json",
       });
-    /* TODO: jwt */ else
-      send(res, 500, JSON.stringify(result), {
+    else
+      send(res, 500, JSON.stringify(jwtResponse(result as AuthUser)), {
         "Content-Type": "application/json",
       });
   };
@@ -67,8 +73,8 @@ export const login =
       send(res, 500, JSON.stringify(result), {
         "Content-Type": "application/json",
       });
-    /* TODO: jwt */ else
-      send(res, 500, JSON.stringify(result), {
+    else
+      send(res, 500, JSON.stringify(jwtResponse(result as AuthUser)), {
         "Content-Type": "application/json",
       });
   };

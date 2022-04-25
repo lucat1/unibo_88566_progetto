@@ -1,8 +1,7 @@
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import type { AuthUser, AuthError } from "./auth";
 import { User, UserLevel } from "./models/user";
 import type { IRegisterData } from "./auth";
-import { PASSWORD_SALT_ROUNDS } from "../../endpoints.json";
 
 export const registerUser = async (
   data: IRegisterData
@@ -10,8 +9,6 @@ export const registerUser = async (
   try {
     if ((await User.findOne({ username: data.username }).exec()) != null)
       return { message: "This username is already taken" };
-
-    data.password = await hash(data.password, PASSWORD_SALT_ROUNDS);
     const user = new User({ ...data, level: UserLevel.BASIC });
     await user.save();
     return { id: user._id, level: user.level };
