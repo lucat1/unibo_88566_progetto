@@ -9,11 +9,11 @@
   "tags": [
     {
       "name": "game",
-      "description": "APIs for the game frontend",
+      "description": "APIs for the game frontend"
     },
     {
       "name": "auth",
-      "description": "Endpoints for authentication across all sites",
+      "description": "Endpoints for authentication across all sites"
     }
   ],
   "schemes": [
