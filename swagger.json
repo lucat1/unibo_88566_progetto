@@ -56,6 +56,32 @@
         }
       }
     },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Returns the currently logged in user",
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/score/{game}": {
       "get": {
         "tags": [
@@ -164,9 +190,9 @@
       "Order": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "quantity": {
             "type": "integer",
@@ -189,32 +215,26 @@
             "type": "boolean",
             "default": false
           }
-        },
-        "xml": {
-          "name": "Order"
         }
       },
       "Category": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
           }
-        },
-        "xml": {
-          "name": "Category"
         }
       },
       "User": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "username": {
             "type": "string"
@@ -239,24 +259,18 @@
             "description": "User Status",
             "format": "int32"
           }
-        },
-        "xml": {
-          "name": "User"
         }
       },
       "Tag": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
           }
-        },
-        "xml": {
-          "name": "Tag"
         }
       },
       "Pet": {
@@ -266,9 +280,9 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "category": {
             "$ref": "#/components/schemas/Category"
@@ -306,9 +320,6 @@
               "sold"
             ]
           }
-        },
-        "xml": {
-          "name": "Pet"
         }
       }
     }
