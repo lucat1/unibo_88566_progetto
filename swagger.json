@@ -56,6 +56,111 @@
         }
       }
     },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register a new account with username and password and fistName",
+        "description": "Lets a user register a new account with the minimum data required, but allows to provide extra fields such as lastName and city. Returns a bearer JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  {
+                    "required": [
+                      "username",
+                      "password",
+                      "firstName"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "format": "jwt"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication is not required, an already logged in user canno register a new account"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login with username and password",
+        "description": "Lets a user login with its credentials and returns a JWT bearer token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "format": "jwt"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication is not required, an already logged in user canno re-login"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/auth/me": {
       "get": {
         "tags": [
@@ -245,19 +350,17 @@
           "lastName": {
             "type": "string"
           },
-          "email": {
-            "type": "string"
-          },
           "password": {
             "type": "string"
           },
-          "phone": {
-            "type": "string"
-          },
-          "userStatus": {
+          "level": {
             "type": "integer",
-            "description": "User Status",
-            "format": "int32"
+            "description": "User subscription or role",
+            "enum": [
+              0,
+              1,
+              2
+            ]
           }
         }
       },
