@@ -4,7 +4,6 @@ import type { RequestHandler } from "express";
 import send from "@polka/send-type";
 import sirv from "sirv";
 import { json } from "body-parser";
-import cookies from "cookie-parser";
 import cors from "cors";
 import { connect } from "mongoose";
 
@@ -21,8 +20,9 @@ import {
   LoginData,
   RegisterData,
 } from "./auth";
-import validate from "./validate";
+import validate, { catcher } from "./validate";
 import { authenticateUser, registerUser } from "./accounts";
+import { User } from "./models/user";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -48,7 +48,6 @@ const main = async () => {
   await connect(MONGO_URL);
 
   app.use("/api", cors());
-  app.use("/api", cookies());
   app.use("/api", json());
   app.use("/api", authMiddleware);
 
@@ -68,9 +67,19 @@ const main = async () => {
   app.get("/api/auth/id", authNotRequired, (_, res) => {
     res.end("worked");
   });
-  app.get("/api/auth/me", authRequired, (req, res) => {
-    res.end(JSON.stringify((req as AuthenticatedRequest).user));
-  });
+  app.get(
+    "/api/auth/me",
+    authRequired,
+    catcher(async (req, res) => {
+      const user = await User.findOne(
+        (req as AuthenticatedRequest).user
+      ).exec();
+      if (user == null) throw new Error("User not found");
+      send(res, 200, JSON.stringify(user), {
+        "Content-Type": "application/json",
+      });
+    })
+  );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };
