@@ -26,7 +26,7 @@ export const LoginData = z.object({
 type ILoginData = z.infer<typeof LoginData>;
 
 export interface AuthUser {
-  id: string;
+  _id: string;
   level: UserLevel;
 }
 
