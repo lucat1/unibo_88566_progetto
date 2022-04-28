@@ -217,12 +217,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "value": {
-                      "type": "number"
-                    }
-                  }
+                  "$ref": "#/components/schemas/GameScore"
                 }
               }
             }
@@ -254,12 +249,7 @@
           "content": {
             "*/*": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "increment": {
-                    "type": "number"
-                  }
-                }
+                "$ref": "#/components/schemas/GameScore"
               }
             }
           },
@@ -310,10 +300,6 @@
           },
           "photoUrls": {
             "type": "array",
-            "xml": {
-              "name": "photoUrl",
-              "wrapped": true
-            },
             "items": {
               "type": "string"
             }
@@ -342,16 +328,12 @@
           },
           "photoUrls": {
             "type": "array",
-            "xml": {
-              "name": "photoUrl",
-              "wrapped": true
-            },
             "items": {
               "type": "string"
-            },
-            "openingHours": {
-              "$ref": "#/components/schemas/Timetable"
             }
+          },
+          "openingHours": {
+            "$ref": "#/components/schemas/Timetable"
           }
         }
       },
@@ -497,20 +479,12 @@
           },
           "photoUrls": {
             "type": "array",
-            "xml": {
-              "name": "photoUrl",
-              "wrapped": true
-            },
             "items": {
               "type": "string"
             }
           },
           "tags": {
             "type": "array",
-            "xml": {
-              "name": "tag",
-              "wrapped": true
-            },
             "items": {
               "$ref": "#/components/schemas/Tag"
             }
@@ -523,6 +497,31 @@
               "pending",
               "sold"
             ]
+          }
+        }
+      },
+      "GameType": {
+        "type": "string",
+        "enum": [
+          "quiz"
+        ]
+      },
+      "GameScore": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "game": {
+            "$ref": "#/components/schemas/GameType"
+          },
+          "score": {
+            "type": "number"
           }
         }
       }

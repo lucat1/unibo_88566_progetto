@@ -18,9 +18,20 @@ import {
   LoginData,
   RegisterData,
 } from "./auth";
-import validate, { catcher } from "./validate";
+import {
+  catcher,
+  validateBody,
+  validateParams,
+  validateQuery,
+} from "./validate";
 import { register, login, me, id } from "./handlers/auth";
-import { score } from "./handlers/game";
+import {
+  GameBody,
+  GameParams,
+  GameQuery,
+  setScore,
+  getScore,
+} from "./handlers/game";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -52,20 +63,32 @@ const main = async () => {
   app.post(
     "/api/auth/register",
     authNotRequired,
-    validate(RegisterData),
+    validateBody(RegisterData),
     registerWrapper(register)
   );
   app.post(
     "/api/auth/login",
     authNotRequired,
-    validate(LoginData),
+    validateBody(LoginData),
     loginWrapper(login)
   );
 
   app.get("/api/auth/id", authNotRequired, id);
   app.get("/api/auth/me", authRequired, catcher(me));
 
-  app.get("/api/game/:game", catcher(score as any));
+  app.post(
+    "/api/game/:game",
+    validateParams(GameParams),
+    validateQuery(GameQuery),
+    validateBody(GameBody),
+    catcher(setScore as any)
+  );
+  app.get(
+    "/api/game/:game",
+    validateParams(GameParams),
+    validateQuery(GameQuery),
+    catcher(getScore as any)
+  );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };
