@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Game API",
-    "description": "The game authentication-less api",
+    "title": "Animal House",
+    "description": "A single API for the whole Animal House ecosystem",
     "version": "0.0.0"
   },
   "externalDocs": {
@@ -292,16 +292,117 @@
   },
   "components": {
     "schemas": {
-      "Order": {
+      "Product": {
         "type": "object",
         "properties": {
           "_id": {
             "type": "string",
             "format": "uuid"
           },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "photoUrls": {
+            "type": "array",
+            "xml": {
+              "name": "photoUrl",
+              "wrapped": true
+            },
+            "items": {
+              "type": "string"
+            }
+          },
           "quantity": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "photoUrls": {
+            "type": "array",
+            "xml": {
+              "name": "photoUrl",
+              "wrapped": true
+            },
+            "items": {
+              "type": "string"
+            }
+          },
+          "openingHours": {
+            "$ref": "#/components/schemas/Timetable"
+          }
+        }
+      },
+      "Timetable": {
+        "type": "object",
+        "properties": {
+          "intervals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "dateTime"
+            }
+          }
+        }
+      },
+      "OfflineService": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Service"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "OnlineService": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Service"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "shipDate": {
             "type": "string",
@@ -319,6 +420,49 @@
           "complete": {
             "type": "boolean",
             "default": false
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "quantities": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "Prenotation": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "description": "Prenotation Status",
+            "enum": [
+              "requested",
+              "approved",
+              "past"
+            ]
+          },
+          "complete": {
+            "type": "boolean",
+            "default": false
+          },
+          "hours": {
+            "$ref": "#/components/schemas/Timetable"
+          },
+          "service": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -377,10 +521,6 @@
         }
       },
       "Pet": {
-        "required": [
-          "name",
-          "photoUrls"
-        ],
         "type": "object",
         "properties": {
           "_id": {
