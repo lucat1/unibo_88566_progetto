@@ -16,6 +16,9 @@ export const GameQuery = z.object({
 });
 export type IGameQuery = z.infer<typeof GameQuery>;
 
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const getPair = (req: Request): [string, string] => {
   const game = (req.params as IGameParams).game;
   let user: string;
@@ -24,11 +27,11 @@ const getPair = (req: Request): [string, string] => {
   else if ((req.query as IGameQuery).id) user = (req.query as IGameQuery).id!;
   else throw new Error("Missing both authentication and id query parameter");
 
+  if (!UUID_REGEX.test(user))
+    throw new Error("Invalid id, it must be a valid UUID");
+
   return [user, game];
 };
-
-const UUID_REGEX =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export const GameBody = z.object({
   increment: z.number(),
@@ -38,8 +41,6 @@ export type IGameBody = z.infer<typeof GameBody>;
 export const setScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
   const { increment } = req.body as IGameBody;
-  if (!UUID_REGEX.test(user))
-    throw new Error("Invalid id, it must be a valid UUID");
 
   let score =
     (await GameScore.findOne({ user, game }).exec()) ||
@@ -54,10 +55,12 @@ export const setScore: RequestHandler = async (req, res) => {
 
 export const getScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
-  const result = await GameScore.findOne({ user, game }).exec();
-  if (result == null) throw new Error("Invalid (id,game) pair");
-  else
-    send(res, 200, JSON.stringify(result), {
-      "Content-Type": "application/json",
-    });
+
+  let result = await GameScore.findOne({ user, game }).exec();
+  if (result == null)
+    await (result = new GameScore({ user, game, score: 0 })).save();
+
+  send(res, 200, JSON.stringify(result), {
+    "Content-Type": "application/json",
+  });
 };
