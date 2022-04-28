@@ -1,5 +1,4 @@
-import polka, { Middleware } from "polka";
-import type { RequestHandler } from "express";
+import polka from "polka";
 // @ts-ignore
 import send from "@polka/send-type";
 import sirv from "sirv";
@@ -11,18 +10,17 @@ import { join } from "path";
 import { readFile } from "fs/promises";
 import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
 import {
+  register as registerWrapper,
+  login as loginWrapper,
   authMiddleware,
-  login,
-  register,
   authRequired,
   authNotRequired,
-  AuthenticatedRequest,
   LoginData,
   RegisterData,
 } from "./auth";
 import validate, { catcher } from "./validate";
-import { authenticateUser, registerUser } from "./accounts";
-import { User } from "./models/user";
+import { register, login, me, id } from "./handlers/auth";
+import { score } from "./handlers/game";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -55,31 +53,19 @@ const main = async () => {
     "/api/auth/register",
     authNotRequired,
     validate(RegisterData),
-    register(registerUser)
+    registerWrapper(register)
   );
   app.post(
     "/api/auth/login",
     authNotRequired,
     validate(LoginData),
-    login(authenticateUser)
+    loginWrapper(login)
   );
 
-  app.get("/api/auth/id", authNotRequired, (_, res) => {
-    res.end("worked");
-  });
-  app.get(
-    "/api/auth/me",
-    authRequired,
-    catcher(async (req, res) => {
-      const user = await User.findOne(
-        (req as AuthenticatedRequest).user
-      ).exec();
-      if (user == null) throw new Error("User not found");
-      send(res, 200, JSON.stringify(user), {
-        "Content-Type": "application/json",
-      });
-    })
-  );
+  app.get("/api/auth/id", authNotRequired, id);
+  app.get("/api/auth/me", authRequired, catcher(me));
+
+  app.get("/api/game/:game", catcher(score as any));
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };
