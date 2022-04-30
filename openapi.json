@@ -187,7 +187,63 @@
         }
       }
     },
-    "/score/{game}": {
+    "/game/score/{game}": {
+      "post": {
+        "tags": [
+          "game"
+        ],
+        "summary": "Update your score for a given game",
+        "parameters": [
+          {
+            "name": "game",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GameType"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Value increment",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "increment": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameScore"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {}
+          }
+        }
+      },
       "get": {
         "tags": [
           "game"
@@ -199,15 +255,15 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/GameType"
             }
           },
           {
             "name": "id",
             "in": "query",
-            "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -228,45 +284,65 @@
           }
         },
         "x-codegen-request-body-name": "body"
-      },
-      "post": {
+      }
+    },
+    "/game/leaderboard/{game}": {
+      "get": {
         "tags": [
           "game"
         ],
-        "summary": "Update your score for a given game",
+        "summary": "Get the leaderboard of all players for a given game with pagination",
         "parameters": [
           {
             "name": "game",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/GameType"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "default": 5
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
             }
           }
         ],
-        "requestBody": {
-          "description": "Value increment",
-          "content": {
-            "*/*": {
-              "schema": {
-                "$ref": "#/components/schemas/GameScore"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Request fullfilled",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "value": {
-                      "type": "number"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GameScore"
+                          }
+                        }
+                      }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -543,6 +619,27 @@
           },
           "score": {
             "type": "number"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "number",
+            "minimum": 1
+          },
+          "page": {
+            "type": "number",
+            "minimum": 1
+          },
+          "pages": {
+            "type": "number",
+            "minimum": 1
           }
         }
       }
