@@ -307,6 +307,15 @@
           "quantity": {
             "type": "integer",
             "format": "int32"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "subcategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subcategory"
+            }
           }
         }
       },
@@ -410,6 +419,18 @@
         }
       },
       "Category": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Subcategory": {
         "type": "object",
         "properties": {
           "_id": {
