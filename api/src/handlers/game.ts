@@ -11,20 +11,21 @@ export const GameParams = z.object({
 });
 export type IGameParams = z.infer<typeof GameParams>;
 
-export const GameQuery = z.object({
+export const GameScoreQuery = z.object({
   id: z.string().optional(),
 });
-export type IGameQuery = z.infer<typeof GameQuery>;
+export type IGameScoreQuery = z.infer<typeof GameScoreQuery>;
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const getPair = (req: Request): [string, string] => {
-  const game = (req.params as IGameParams).game;
+  const { game } = req.params as IGameParams;
   let user: string;
   if ((req as AuthenticatedRequest).user)
     user = (req as AuthenticatedRequest).user!._id as string;
-  else if ((req.query as IGameQuery).id) user = (req.query as IGameQuery).id!;
+  else if ((req.query as IGameScoreQuery).id)
+    user = (req.query as IGameScoreQuery).id!;
   else throw new Error("Missing both authentication and id query parameter");
 
   if (!UUID_REGEX.test(user))
@@ -53,12 +54,33 @@ export const setScore: RequestHandler = async (req, res) => {
   });
 };
 
+export const GameLeaderboardQuery = z.object({
+  limit: z.number().optional().default(5),
+  page: z.number().optional().default(1),
+});
+export type IGameLeaderboardQuery = z.infer<typeof GameLeaderboardQuery>;
+
 export const getScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
 
   let result = await GameScore.findOne({ user, game }).exec();
   if (result == null)
     await (result = new GameScore({ user, game, score: 0 })).save();
+
+  send(res, 200, JSON.stringify(result), {
+    "Content-Type": "application/json",
+  });
+};
+
+export const getLeaderboard: RequestHandler = async (req, res) => {
+  const { game } = req.params as IGameParams;
+  const { limit, page } = req.query as unknown as IGameLeaderboardQuery;
+
+  const result = await GameScore.paginate(
+    { game },
+    /* Sort by score descending */
+    { limit, page, sort: { score: -1 } }
+  );
 
   send(res, 200, JSON.stringify(result), {
     "Content-Type": "application/json",

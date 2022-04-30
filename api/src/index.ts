@@ -28,9 +28,11 @@ import { register, login, me, id } from "./handlers/auth";
 import {
   GameBody,
   GameParams,
-  GameQuery,
+  GameScoreQuery,
+  GameLeaderboardQuery,
   setScore,
   getScore,
+  getLeaderboard,
 } from "./handlers/game";
 
 const sites = ["game", "frontoffice", "backoffice"],
@@ -77,17 +79,23 @@ const main = async () => {
   app.get("/api/auth/me", authRequired, catcher(me));
 
   app.post(
-    "/api/game/:game",
+    "/api/game/score/:game",
     validateParams(GameParams),
-    validateQuery(GameQuery),
+    validateQuery(GameScoreQuery),
     validateBody(GameBody),
     catcher(setScore as any)
   );
   app.get(
-    "/api/game/:game",
+    "/api/game/score/:game",
     validateParams(GameParams),
-    validateQuery(GameQuery),
+    validateQuery(GameScoreQuery),
     catcher(getScore as any)
+  );
+  app.get(
+    "/api/game/leaderboard/:game",
+    validateParams(GameParams),
+    validateQuery(GameLeaderboardQuery),
+    catcher(getLeaderboard as any)
   );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));

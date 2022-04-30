@@ -1,11 +1,12 @@
-import { Schema, model } from "mongoose";
+import paginate from "mongoose-paginate";
+import { Schema, Document, model, PaginateModel, ObjectId } from "mongoose";
 
 export enum GameType {
   QUIZ = "quiz",
 }
 
-export interface IGameScore {
-  user: string;
+export interface IGameScore extends Document {
+  user: ObjectId;
   game: GameType;
   score: number;
 }
@@ -21,5 +22,10 @@ const GameScoreSchema = new Schema<IGameScore>({
 });
 /* The triple (user,game,score) has to be unique */
 GameScoreSchema.index({ user: 1, game: 1, score: 1 }, { unique: true });
+/* Enable pagination for this schema */
+GameScoreSchema.plugin(paginate);
 
-export const GameScore = model<IGameScore>("GameScore", GameScoreSchema);
+export const GameScore: PaginateModel<IGameScore> = model<IGameScore>(
+  "GameScore",
+  GameScoreSchema
+) as PaginateModel<IGameScore>;

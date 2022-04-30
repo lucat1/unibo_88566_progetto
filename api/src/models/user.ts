@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "../../../endpoints.json";
@@ -9,8 +9,7 @@ export enum UserLevel {
   MANAGER,
 }
 
-export interface IUser {
-  _id: string;
+export interface IUser extends Document {
   username: string;
   password: string;
   level: UserLevel;
