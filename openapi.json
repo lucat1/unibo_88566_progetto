@@ -374,7 +374,7 @@
           "price": {
             "type": "number"
           },
-          "photoUrls": {
+          "photos": {
             "type": "array",
             "items": {
               "type": "string"
@@ -411,7 +411,7 @@
           "price": {
             "type": "number"
           },
-          "photoUrls": {
+          "photos": {
             "type": "array",
             "items": {
               "type": "string"
@@ -498,8 +498,8 @@
         "type": "object",
         "properties": {
           "_id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "number",
+            "format": "uint64"
           },
           "name": {
             "type": "string"
@@ -510,8 +510,8 @@
         "type": "object",
         "properties": {
           "_id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "number",
+            "format": "uint64"
           },
           "name": {
             "type": "string"
@@ -574,7 +574,7 @@
             "type": "string",
             "example": "doggie"
           },
-          "photoUrls": {
+          "photos": {
             "type": "array",
             "items": {
               "type": "string"
@@ -585,17 +585,29 @@
             "items": {
               "$ref": "#/components/schemas/Tag"
             }
-          },
-          "status": {
-            "type": "string",
-            "description": "pet status in the store",
-            "enum": [
-              "available",
-              "pending",
-              "sold"
-            ]
           }
         }
+      },
+      "StorePet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "pet status in the store",
+                "enum": [
+                  "available",
+                  "pending",
+                  "sold"
+                ]
+              }
+            }
+          }
+        ]
       },
       "GameType": {
         "type": "string",
