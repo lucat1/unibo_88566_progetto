@@ -41,6 +41,7 @@ import {
   CategoryParams,
   getCategories,
   getCategory,
+  setCategory,
 } from "./handlers/category";
 import { UserLevel } from "./models/user";
 
@@ -119,6 +120,14 @@ const main = async () => {
     "/api/store/categories/:id",
     validateParams(CategoryParams),
     catcher(getCategory)
+  );
+  app.patch(
+    "/api/store/categories/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(CategoryParams),
+    validateBody(CategoryBody),
+    catcher(setCategory)
   );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));

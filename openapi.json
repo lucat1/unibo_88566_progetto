@@ -590,8 +590,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid input"
+          "404": {
+            "description": "Category not found"
           },
           "500": {
             "description": "Internal server error"
@@ -643,6 +643,9 @@
           "400": {
             "description": "Invalid input"
           },
+          "404": {
+            "description": "Category not found"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -682,6 +685,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Parent category not found"
           },
           "500": {
             "description": "Internal server error"
@@ -733,6 +739,9 @@
           "400": {
             "description": "Invalid input"
           },
+          "404": {
+            "description": "Parent category not found"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -769,6 +778,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Subcategory not found"
           },
           "500": {
             "description": "Internal server error"
@@ -819,6 +831,9 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "404": {
+            "description": "Subcategory not found"
           },
           "500": {
             "description": "Internal server error"
@@ -1015,9 +1030,6 @@
           "lastName": {
             "type": "string"
           },
-          "password": {
-            "type": "string"
-          },
           "level": {
             "type": "integer",
             "description": "User subscription or role",
@@ -1048,9 +1060,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
           "name": {
             "type": "string",
             "example": "doggie"
@@ -1060,6 +1069,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "subcategory": {
+            "$ref": "#/components/schemas/Subcategory"
           },
           "tags": {
             "type": "array",

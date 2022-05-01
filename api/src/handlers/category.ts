@@ -34,8 +34,21 @@ export const getCategory: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as ICategoryParams;
   const category = await Category.findOne({ _id: id }).exec();
   if (category == null)
-    json(res, 400, {
+    json(res, 404, {
       message: "Invalid category id",
     });
-  else json(res, 400, shadowCategory(category));
+  else json(res, 200, shadowCategory(category));
+};
+
+export const setCategory: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as ICategoryParams;
+  const patch = req.body as ICategoryBody;
+  const updated = await Category.findOneAndUpdate({ _id: id }, patch, {
+    new: true,
+  }).exec();
+  if (updated == null)
+    json(res, 404, {
+      message: "Invalid category id",
+    });
+  else json(res, 200, shadowCategory(updated));
 };
