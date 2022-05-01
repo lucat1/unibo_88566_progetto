@@ -4,8 +4,8 @@ import send from "@polka/send-type";
 import { z } from "zod";
 
 import type { AuthenticatedRequest } from "../auth";
-import { numeric, type IPaginationQuery } from "./pagination";
 import { GameScore, GameType } from "../models/game-score";
+import type { IPaginationQuery } from "./pagination";
 
 export const GameParams = z.object({
   game: z.nativeEnum(GameType),
@@ -36,7 +36,7 @@ const getPair = (req: Request): [string, string] => {
 };
 
 export const GameBody = z.object({
-  increment: z.preprocess(numeric, z.number().min(1)),
+  increment: z.number().min(1),
 });
 export type IGameBody = z.infer<typeof GameBody>;
 
