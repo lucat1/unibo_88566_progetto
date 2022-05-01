@@ -36,19 +36,19 @@ const getPair = (req: Request): [string, string] => {
 };
 
 export const GameBody = z.object({
-  increment: z.number().min(1),
+  value: z.number().min(1),
 });
 export type IGameBody = z.infer<typeof GameBody>;
 
 export const setScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
-  const { increment } = req.body as IGameBody;
+  const { value } = req.body as IGameBody;
 
   let score =
     (await GameScore.findOne({ user, game }).exec()) ||
     new GameScore({ user, game, score: 0 });
 
-  score.score += increment;
+  score.score = value;
   await score.save();
   send(res, 200, JSON.stringify(score), {
     "Content-Type": "application/json",

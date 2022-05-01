@@ -78,7 +78,7 @@ const main = async () => {
   app.get("/api/auth/id", authNotRequired, id);
   app.get("/api/auth/me", authRequired, catcher(me));
 
-  app.post(
+  app.patch(
     "/api/game/score/:game",
     validateParams(GameParams),
     validateQuery(GameScoreQuery),

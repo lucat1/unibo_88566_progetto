@@ -188,7 +188,7 @@
       }
     },
     "/game/score/{game}": {
-      "post": {
+      "patch": {
         "tags": [
           "game"
         ],
@@ -218,7 +218,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "increment": {
+                  "score": {
                     "type": "number"
                   }
                 }
@@ -521,6 +521,45 @@
             "description": "Internal server error"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Add a category to the catalogue.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       }
     },
     "/store/categories/{category}": {
@@ -540,6 +579,56 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Edit a category in the catalogue.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "uint64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Request fullfilled",
@@ -598,6 +687,45 @@
             "description": "Internal server error"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Add a dubcategory to a category.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subcategory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       }
     },
     "/store/subcategories/{subcategory}": {
@@ -617,6 +745,56 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subcategory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Edit a dubcategory in the catalogue.",
+        "parameters": [
+          {
+            "name": "subcategory",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "uint64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Request fullfilled",
@@ -664,16 +842,18 @@
             }
           },
           "quantity": {
-            "type": "integer",
-            "format": "int32"
+            "type": "number",
+            "format": "uint64"
           },
           "category": {
-            "$ref": "#/components/schemas/Category"
+            "type": "number",
+            "format": "uint64"
           },
           "subcategories": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Subcategory"
+              "type": "number",
+              "format": "uint64"
             }
           }
         }
