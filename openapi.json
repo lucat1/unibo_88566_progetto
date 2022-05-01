@@ -693,6 +693,17 @@
           "store"
         ],
         "summary": "Add a dubcategory to a category.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "uint64"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {

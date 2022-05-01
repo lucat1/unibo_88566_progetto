@@ -1,4 +1,5 @@
 import { Schema, Document, model } from "mongoose";
+import { autoIncrement } from "mongoose-plugin-autoinc-fix";
 
 export interface ISubcategory extends Document<number> {
   name: string;
@@ -11,16 +12,16 @@ export interface ICategory extends Document<number> {
 }
 
 const SubcategorySchema = new Schema<ISubcategory>({
-  _id: { type: Number },
-  name: { String, required: true },
+  name: { type: String, required: true },
   parent: { type: Number, ref: "Category" },
 });
+SubcategorySchema.plugin(autoIncrement, "Subcategory");
 
 const CategorySchema = new Schema<ICategory>({
-  _id: { type: Number },
-  name: { String, required: true },
+  name: { type: String, required: true },
   subcategories: [{ type: Number, ref: "Subcategory" }],
 });
+CategorySchema.plugin(autoIncrement, "Category");
 
 export const Subcategory = model<ISubcategory>(
   "Subcategory",

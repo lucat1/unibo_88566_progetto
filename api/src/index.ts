@@ -34,6 +34,7 @@ import {
   getLeaderboard,
 } from "./handlers/game";
 import { PaginationQuery } from "./handlers/pagination";
+import { addCategory, CategoryBody, getCategories } from "./handlers/category";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -83,20 +84,27 @@ const main = async () => {
     validateParams(GameParams),
     validateQuery(GameScoreQuery),
     validateBody(GameBody),
-    catcher(setScore as any)
+    catcher(setScore)
   );
   app.get(
     "/api/game/score/:game",
     validateParams(GameParams),
     validateQuery(GameScoreQuery),
-    catcher(getScore as any)
+    catcher(getScore)
   );
   app.get(
     "/api/game/leaderboard/:game",
     validateParams(GameParams),
     validateQuery(PaginationQuery),
-    catcher(getLeaderboard as any)
+    catcher(getLeaderboard)
   );
+
+  app.put(
+    "/api/store/categories",
+    validateBody(CategoryBody),
+    catcher(addCategory)
+  );
+  app.get("/api/store/categories", catcher(getCategories));
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };

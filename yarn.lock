@@ -3022,6 +3022,11 @@ mongoose-paginate@^5.0.3:
   dependencies:
     bluebird "3.0.5"
 
+mongoose-plugin-autoinc-fix@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/mongoose-plugin-autoinc-fix/-/mongoose-plugin-autoinc-fix-1.2.1.tgz#d332d09c4bddd24dc49e54206edf61157013174c"
+  integrity sha512-fQG5rr2aGMp2oBEP3JuBTrCAn1sFRtpbxG3g5HP09j1Sf7RdBO85cC1rWu4oYRz15tUqMdM9MXR1ssP4QGtfoQ==
+
 mongoose@^6.3.0, mongoose@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.3.1.tgz#3dbf85209a39355542bb47fba95f07bda1684987"
