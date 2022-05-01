@@ -1,10 +1,9 @@
 import type { RequestHandler, Request } from "express";
-// @ts-ignore
-import send from "@polka/send-type";
 import { z } from "zod";
 
+import json from "../res";
+import { GameScore, GameType, shadow } from "../models/game-score";
 import type { AuthenticatedRequest } from "../auth";
-import { GameScore, GameType } from "../models/game-score";
 import type { IPaginationQuery } from "./pagination";
 
 export const GameParams = z.object({
@@ -50,9 +49,7 @@ export const setScore: RequestHandler = async (req, res) => {
 
   score.score = value;
   await score.save();
-  send(res, 200, JSON.stringify(score), {
-    "Content-Type": "application/json",
-  });
+  json(res, 200, shadow(score));
 };
 
 export const getScore: RequestHandler = async (req, res) => {
@@ -62,9 +59,7 @@ export const getScore: RequestHandler = async (req, res) => {
   if (result == null)
     await (result = new GameScore({ user, game, score: 0 })).save();
 
-  send(res, 200, JSON.stringify(result), {
-    "Content-Type": "application/json",
-  });
+  json(res, 200, shadow(result));
 };
 
 export const getLeaderboard: RequestHandler = async (req, res) => {
@@ -77,7 +72,5 @@ export const getLeaderboard: RequestHandler = async (req, res) => {
     { limit, page, sort: { score: -1 } }
   );
 
-  send(res, 200, JSON.stringify(result), {
-    "Content-Type": "application/json",
-  });
+  json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };

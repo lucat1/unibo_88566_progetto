@@ -3,6 +3,7 @@ import { v4 } from "node-uuid";
 import type { ICategory, ISubcategory } from "./category";
 import type { IUser } from "./user";
 
+/* TODO: tags */
 export interface IPet extends Document {
   name: string;
   photos: string[];
@@ -23,3 +24,11 @@ const PetSchema = new Schema<IPet>({
 });
 
 export const Pet = model<IPet>("User", PetSchema);
+
+export const shadow = ({ _id, name, photos, category, subcategory }: IPet) => ({
+  _id,
+  name,
+  photos,
+  category: category._id,
+  subcategory: category._id
+});

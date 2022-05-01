@@ -35,7 +35,13 @@ import {
   getLeaderboard,
 } from "./handlers/game";
 import { PaginationQuery } from "./handlers/pagination";
-import { addCategory, CategoryBody, getCategories } from "./handlers/category";
+import {
+  addCategory,
+  CategoryBody,
+  CategoryParams,
+  getCategories,
+  getCategory,
+} from "./handlers/category";
 import { UserLevel } from "./models/user";
 
 const sites = ["game", "frontoffice", "backoffice"],
@@ -109,6 +115,11 @@ const main = async () => {
     catcher(addCategory)
   );
   app.get("/api/store/categories", catcher(getCategories));
+  app.get(
+    "/api/store/categories/:id",
+    validateParams(CategoryParams),
+    catcher(getCategory)
+  );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
 };

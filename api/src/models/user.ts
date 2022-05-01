@@ -1,4 +1,4 @@
-import { Schema, model, Document, ObjectId } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "../../../endpoints.json";
@@ -43,3 +43,12 @@ UserSchema.pre("save", async function () {
 });
 
 export const User = model<IUser>("User", UserSchema);
+
+export const shadow = ({
+  _id,
+  username,
+  level,
+  firstName,
+  lastName,
+  city,
+}: IUser) => ({ _id, username, level, firstName, lastName, city });

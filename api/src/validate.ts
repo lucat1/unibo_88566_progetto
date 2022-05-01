@@ -1,8 +1,8 @@
 import type { Middleware } from "polka";
 import type { Response, RequestHandler } from "express";
 import type { Schema } from "zod";
-// @ts-ignore
-import send from "@polka/send-type";
+
+import json from "./res";
 
 export const generateValidator =
   (key: "body" | "params" | "query", errorMessage: string) =>
@@ -13,17 +13,10 @@ export const generateValidator =
       (req[key] as Object) = result.data;
       next(null);
     } else
-      send(
-        res,
-        400,
-        JSON.stringify({
-          message: errorMessage,
-          error: result.error,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
+      json(res, 400, {
+        message: errorMessage,
+        error: result.error,
+      });
   };
 
 export const validateBody = generateValidator("body", "Invalid request body");
@@ -40,17 +33,10 @@ export const validateQuery = generateValidator(
 
 const handler = (res: Response) => (err: Error) => {
   console.error("A catcher caught an error:", err);
-  send(
-    res,
-    500,
-    JSON.stringify({
-      message: "Internal server error",
-      error: err,
-    }),
-    {
-      "Content-Type": "application/json",
-    }
-  );
+  json(res, 500, {
+    message: "Internal server error",
+    error: err,
+  });
 };
 
 export const catcher =

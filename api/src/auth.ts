@@ -1,12 +1,11 @@
 import type { Middleware } from "polka";
 import type { RequestHandler } from "express";
 import type { IncomingMessage } from "http";
-// @ts-ignore
-import send from "@polka/send-type";
 import { z } from "zod";
 import { promisify } from "util";
 import { Secret, sign, verify } from "jsonwebtoken";
 
+import json from "./res";
 import type { UserLevel } from "./models/user";
 import { JWT_SECRET } from "../../endpoints.json";
 
@@ -46,18 +45,12 @@ export const register =
   (
     registerUser: (user: IRegisterData) => Promise<AuthUser | AuthError>
   ): RequestHandler =>
-  async (req, res) => {
-    const data = req.body as IRegisterData;
-    const result = await registerUser(data);
-    if ((result as AuthError).message)
-      send(res, 500, JSON.stringify(result), {
-        "Content-Type": "application/json",
-      });
-    else
-      send(res, 500, JSON.stringify(jwtResponse(result as AuthUser)), {
-        "Content-Type": "application/json",
-      });
-  };
+    async (req, res) => {
+      const data = req.body as IRegisterData;
+      const result = await registerUser(data);
+      if ((result as AuthError).message) json(res, 500, result);
+      else json(res, 500, jwtResponse(result as AuthUser));
+    };
 
 export const login =
   (
@@ -66,18 +59,12 @@ export const login =
       password: string
     ) => Promise<AuthUser | AuthError>
   ): RequestHandler =>
-  async (req, res) => {
-    const data = req.body as ILoginData;
-    const result = await findUser(data.username, data.password);
-    if ((result as AuthError).message)
-      send(res, 500, JSON.stringify(result), {
-        "Content-Type": "application/json",
-      });
-    else
-      send(res, 500, JSON.stringify(jwtResponse(result as AuthUser)), {
-        "Content-Type": "application/json",
-      });
-  };
+    async (req, res) => {
+      const data = req.body as ILoginData;
+      const result = await findUser(data.username, data.password);
+      if ((result as AuthError).message) json(res, 500, result);
+      else json(res, 500, jwtResponse(result as AuthUser));
+    };
 
 export const authMiddleware: Middleware = async (req, _, next) => {
   try {
@@ -92,48 +79,34 @@ export const authMiddleware: Middleware = async (req, _, next) => {
       );
       (req as AuthenticatedRequest).user = payload;
     }
-  } catch (_) {}
+  } catch (_) { }
   next(null);
 };
 
 const generateAuthMiddleware =
   (required: boolean): Middleware =>
-  (req, res, next) => {
-    const isAuthenticated = (req as AuthenticatedRequest).user != undefined;
-    if (isAuthenticated == required) next();
-    else
-      send(
-        res,
-        401,
-        JSON.stringify({
+    (req, res, next) => {
+      const isAuthenticated = (req as AuthenticatedRequest).user != undefined;
+      if (isAuthenticated == required) next();
+      else
+        json(res, 401, {
           message: "Authentication error",
           error: required
             ? "Authentication is required"
             : "Authentication is NOT required",
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-  };
+        });
+    };
 export const authRequired = generateAuthMiddleware(true);
 export const authNotRequired = generateAuthMiddleware(false);
 export const priviledged =
   (level: UserLevel): Middleware =>
-  (req, res, next) => {
-    const { user } = req as AuthenticatedRequest;
-    const ul = user?.level || 0;
-    if (ul >= level) next(null);
-    else
-      send(
-        res,
-        403,
-        JSON.stringify({
+    (req, res, next) => {
+      const { user } = req as AuthenticatedRequest;
+      const ul = user?.level || 0;
+      if (ul >= level) next(null);
+      else
+        json(res, 403, {
           message: "Higher priviledges are required",
           error: `Your level is ${ul}<${level}`,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-  };
+        });
+    };

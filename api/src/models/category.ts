@@ -29,3 +29,10 @@ export const Subcategory = model<ISubcategory>(
 );
 
 export const Category = model<ICategory>("Category", CategorySchema);
+
+export const shadowSubcategory = ({ _id, name, parent }: ISubcategory) => ({
+  _id,
+  name,
+  parent: parent._id,
+});
+export const shadowCategory = ({ _id, name }: ICategory) => ({ _id, name });

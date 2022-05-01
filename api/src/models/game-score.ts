@@ -29,3 +29,10 @@ export const GameScore: PaginateModel<IGameScore> = model<IGameScore>(
   "GameScore",
   GameScoreSchema
 ) as PaginateModel<IGameScore>;
+
+export const shadow = ({ _id, user, game, score }: IGameScore) => ({
+  _id,
+  user,
+  game,
+  score,
+});
