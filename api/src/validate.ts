@@ -6,25 +6,25 @@ import send from "@polka/send-type";
 
 export const generateValidator =
   (key: "body" | "params" | "query", errorMessage: string) =>
-    (schema: Schema): Middleware =>
-      (req, res, next) => {
-        const result = schema.safeParse(req[key] as Object);
-        if (result.success) {
-          (req[key] as Object) = result.data;
-          next(null);
-        } else
-          send(
-            res,
-            400,
-            JSON.stringify({
-              message: errorMessage,
-              error: result.error,
-            }),
-            {
-              "Content-Type": "application/json",
-            }
-          );
-      };
+  (schema: Schema): Middleware =>
+  (req, res, next) => {
+    const result = schema.safeParse(req[key] as Object);
+    if (result.success) {
+      (req[key] as Object) = result.data;
+      next(null);
+    } else
+      send(
+        res,
+        400,
+        JSON.stringify({
+          message: errorMessage,
+          error: result.error,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  };
 
 export const validateBody = generateValidator("body", "Invalid request body");
 
@@ -55,12 +55,12 @@ const handler = (res: Response) => (err: Error) => {
 
 export const catcher =
   (fn: RequestHandler): RequestHandler =>
-    (req, res, next) => {
-      const h = handler(res);
-      try {
-        const r = fn(req, res, next);
-        if (typeof (r as any).catch == "function") (r as any).catch(h);
-      } catch (err) {
-        h(err as Error);
-      }
-    };
+  (req, res, next) => {
+    const h = handler(res);
+    try {
+      const r = fn(req, res, next);
+      if (typeof (r as any).catch == "function") (r as any).catch(h);
+    } catch (err) {
+      h(err as Error);
+    }
+  };

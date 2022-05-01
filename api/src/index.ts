@@ -29,11 +29,11 @@ import {
   GameBody,
   GameParams,
   GameScoreQuery,
-  GameLeaderboardQuery,
   setScore,
   getScore,
   getLeaderboard,
 } from "./handlers/game";
+import { PaginationQuery } from "./handlers/pagination";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -94,7 +94,7 @@ const main = async () => {
   app.get(
     "/api/game/leaderboard/:game",
     validateParams(GameParams),
-    validateQuery(GameLeaderboardQuery),
+    validateQuery(PaginationQuery),
     catcher(getLeaderboard as any)
   );
 

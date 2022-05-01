@@ -4,6 +4,7 @@ import send from "@polka/send-type";
 import { z } from "zod";
 
 import type { AuthenticatedRequest } from "../auth";
+import { numeric, type IPaginationQuery } from "./pagination";
 import { GameScore, GameType } from "../models/game-score";
 
 export const GameParams = z.object({
@@ -12,7 +13,7 @@ export const GameParams = z.object({
 export type IGameParams = z.infer<typeof GameParams>;
 
 export const GameScoreQuery = z.object({
-  id: z.string().optional(),
+  id: z.string().uuid().optional(),
 });
 export type IGameScoreQuery = z.infer<typeof GameScoreQuery>;
 
@@ -35,7 +36,7 @@ const getPair = (req: Request): [string, string] => {
 };
 
 export const GameBody = z.object({
-  increment: z.number(),
+  increment: z.preprocess(numeric, z.number().min(1)),
 });
 export type IGameBody = z.infer<typeof GameBody>;
 
@@ -54,12 +55,6 @@ export const setScore: RequestHandler = async (req, res) => {
   });
 };
 
-export const GameLeaderboardQuery = z.object({
-  limit: z.number().optional().default(5),
-  page: z.number().optional().default(1),
-});
-export type IGameLeaderboardQuery = z.infer<typeof GameLeaderboardQuery>;
-
 export const getScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
 
@@ -74,7 +69,7 @@ export const getScore: RequestHandler = async (req, res) => {
 
 export const getLeaderboard: RequestHandler = async (req, res) => {
   const { game } = req.params as IGameParams;
-  const { limit, page } = req.query as unknown as IGameLeaderboardQuery;
+  const { limit, page } = req.query as unknown as IPaginationQuery;
 
   const result = await GameScore.paginate(
     { game },
