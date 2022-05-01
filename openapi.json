@@ -16,12 +16,12 @@
   ],
   "tags": [
     {
-      "name": "game",
-      "description": "APIs for the game frontend"
-    },
-    {
       "name": "auth",
       "description": "Endpoints for authentication across all sites"
+    },
+    {
+      "name": "game",
+      "description": "APIs for the game frontend"
     },
     {
       "name": "store",
@@ -239,8 +239,10 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -279,11 +281,12 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/game/leaderboard/{game}": {
@@ -348,11 +351,12 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/products/": {
@@ -368,8 +372,8 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 5,
-              "default": 5
+              "maximum": 60,
+              "default": 20
             }
           },
           {
@@ -409,11 +413,12 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/services/": {
@@ -429,8 +434,8 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 5,
-              "default": 5
+              "maximum": 20,
+              "default": 8
             }
           },
           {
@@ -459,14 +464,21 @@
                         "docs": {
                           "type": "array",
                           "items": {
-                            "anyOf": [
+                            "oneOf": [
                               {
                                 "$ref": "#/components/schemas/OfflineService"
                               },
                               {
                                 "$ref": "#/components/schemas/OnlineService"
                               }
-                            ]
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "offline": "#/components/schemas/OfflineService",
+                                "online": "#/components/schemas/OfflineService"
+                              }
+                            }
                           }
                         }
                       }
@@ -477,11 +489,12 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "I  nvalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/categories/": {
@@ -496,17 +509,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Category"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid input",
-            "content": {}
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/categories/{category}": {
@@ -521,8 +535,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "number",
+              "format": "uint64"
             }
           }
         ],
@@ -532,29 +546,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "docs": {
-                          "$ref": "#/components/schemas/Category"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/categories/{category}/subcategories/": {
@@ -569,8 +572,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "number",
+              "format": "uint64"
             }
           }
         ],
@@ -580,17 +583,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Subcategory"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Subcategory"
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     },
     "/store/subcategories/{subcategory}": {
@@ -605,8 +612,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "number",
+              "format": "uint64"
             }
           }
         ],
@@ -622,11 +629,12 @@
             }
           },
           "400": {
-            "description": "Invalid input",
-            "content": {}
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        },
-        "x-codegen-request-body-name": "body"
+        }
       }
     }
   },
@@ -676,6 +684,9 @@
           "_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "type": {
+            "type": "string"
           },
           "name": {
             "type": "string"
