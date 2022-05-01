@@ -5,7 +5,7 @@ import type { IncomingMessage } from "http";
 import send from "@polka/send-type";
 import { z } from "zod";
 import { promisify } from "util";
-import { JwtPayload, Secret, sign, verify } from "jsonwebtoken";
+import { Secret, sign, verify } from "jsonwebtoken";
 
 import type { UserLevel } from "./models/user";
 import { JWT_SECRET } from "../../endpoints.json";
@@ -118,3 +118,22 @@ const generateAuthMiddleware =
   };
 export const authRequired = generateAuthMiddleware(true);
 export const authNotRequired = generateAuthMiddleware(false);
+export const priviledged =
+  (level: UserLevel): Middleware =>
+  (req, res, next) => {
+    const { user } = req as AuthenticatedRequest;
+    const ul = user?.level || 0;
+    if (ul >= level) next(null);
+    else
+      send(
+        res,
+        403,
+        JSON.stringify({
+          message: "Higher priviledges are required",
+          error: `Your level is ${ul}<${level}`,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+  };

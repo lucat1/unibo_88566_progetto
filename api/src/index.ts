@@ -17,6 +17,7 @@ import {
   authNotRequired,
   LoginData,
   RegisterData,
+  priviledged,
 } from "./auth";
 import {
   catcher,
@@ -35,6 +36,7 @@ import {
 } from "./handlers/game";
 import { PaginationQuery } from "./handlers/pagination";
 import { addCategory, CategoryBody, getCategories } from "./handlers/category";
+import { UserLevel } from "./models/user";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -101,6 +103,8 @@ const main = async () => {
 
   app.put(
     "/api/store/categories",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
     validateBody(CategoryBody),
     catcher(addCategory)
   );
