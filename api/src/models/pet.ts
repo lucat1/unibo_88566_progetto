@@ -29,6 +29,6 @@ export const shadow = ({ _id, name, photos, category, subcategory }: IPet) => ({
   _id,
   name,
   photos,
-  category: category._id,
-  subcategory: category._id
+  category: typeof category == "number" ? category : category._id,
+  subcategory: typeof subcategory == "number" ? subcategory : subcategory?._id,
 });

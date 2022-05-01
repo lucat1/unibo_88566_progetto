@@ -2,7 +2,12 @@ import type { RequestHandler } from "express";
 import { z } from "zod";
 
 import json from "../res";
-import { Category, shadowCategory } from "../models/category";
+import {
+  Category,
+  Subcategory,
+  shadowCategory,
+  shadowSubcategory,
+} from "../models/category";
 
 export const CategoryBody = z.object({
   name: z.string(),
@@ -13,7 +18,7 @@ export const addCategory: RequestHandler = async (req, res) => {
   const { name } = req.body as ICategoryBody;
   const category = new Category({ name });
   await category.save();
-  json(res, 200, JSON.stringify(shadowCategory(category)));
+  json(res, 200, shadowCategory(category));
 };
 
 export const getCategories: RequestHandler = async (_, res) => {
@@ -51,4 +56,42 @@ export const setCategory: RequestHandler = async (req, res) => {
       message: "Invalid category id",
     });
   else json(res, 200, shadowCategory(updated));
+};
+
+export const addSubcategory: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as ICategoryParams;
+  const { name } = req.body as ICategoryBody;
+  const subcategory = new Subcategory({ name, parent: { _id: id } });
+  await subcategory.save();
+  json(res, 200, shadowSubcategory(subcategory));
+};
+
+export const getSubcategories: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as ICategoryParams;
+  const subcategories = await Subcategory.find({ parent: { _id: id } }).exec();
+  json(res, 200, subcategories.map(shadowSubcategory));
+};
+
+export const getSubcategory: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as ICategoryParams;
+  const subcategory = await Subcategory.findOne({ _id: id }).exec();
+  if (subcategory == null)
+    json(res, 404, {
+      message: "Invalid subcategory id",
+    });
+  else json(res, 200, shadowSubcategory(subcategory));
+};
+
+export const setSubcategory: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as ICategoryParams;
+  const patch = req.body as ICategoryBody;
+  const updated = await Subcategory.findOneAndUpdate({ _id: id }, patch, {
+    new: true,
+  }).exec();
+  console.log("updated", updated);
+  if (updated == null)
+    json(res, 404, {
+      message: "Invalid subcategory id",
+    });
+  else json(res, 200, shadowSubcategory(updated));
 };
