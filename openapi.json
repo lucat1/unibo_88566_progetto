@@ -384,8 +384,88 @@
               "minimum": 1,
               "default": 1
             }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortOrder"
+            }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Request fullfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Product"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Insert a new product into the store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "descrption": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "photoes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Request fullfilled",
@@ -844,6 +924,48 @@
   },
   "components": {
     "schemas": {
+      "Stock": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "product": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "store": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "uint64"
+          }
+        }
+      },
+      "Store": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      },
       "Product": {
         "type": "object",
         "properties": {
@@ -866,10 +988,6 @@
               "type": "string",
               "format": "url"
             }
-          },
-          "quantity": {
-            "type": "number",
-            "format": "uint64"
           },
           "category": {
             "type": "number",
@@ -1150,6 +1268,13 @@
             "minimum": 1
           }
         }
+      },
+      "SortOrder": {
+        "type": "number",
+        "enum": [
+          -1,
+          1
+        ]
       }
     }
   }
