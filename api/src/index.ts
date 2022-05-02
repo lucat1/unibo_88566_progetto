@@ -9,6 +9,7 @@ import { connect } from "mongoose";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
+import { UserLevel } from "./models/user";
 import {
   register as registerWrapper,
   login as loginWrapper,
@@ -34,7 +35,7 @@ import {
   getScore,
   getLeaderboard,
 } from "./handlers/game";
-import { PaginationQuery } from "./handlers/pagination";
+import { PaginationQuery, SortingQuery } from "./handlers/pagination";
 import {
   addCategory,
   CategoryBody,
@@ -43,7 +44,7 @@ import {
   getCategory,
   setCategory,
 } from "./handlers/category";
-import { UserLevel } from "./models/user";
+import { addProduct, getProducts, ProductBody } from "./handlers/product";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -128,6 +129,19 @@ const main = async () => {
     validateParams(CategoryParams),
     validateBody(CategoryBody),
     catcher(setCategory)
+  );
+
+  app.put(
+    "/api/store/products",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(ProductBody),
+    catcher(addProduct)
+  );
+  app.get(
+    "/api/store/products",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getProducts)
   );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));

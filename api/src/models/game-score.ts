@@ -1,5 +1,5 @@
-import paginate from "mongoose-paginate";
 import { Schema, Document, model, PaginateModel, ObjectId } from "mongoose";
+import paginate from "mongoose-paginate";
 
 export enum GameType {
   QUIZ = "quiz",
