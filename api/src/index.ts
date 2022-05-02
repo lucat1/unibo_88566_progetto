@@ -37,12 +37,16 @@ import {
 } from "./handlers/game";
 import { PaginationQuery, SortingQuery } from "./handlers/pagination";
 import {
-  addCategory,
   CategoryBody,
   CategoryParams,
+  addCategory,
   getCategories,
   getCategory,
   setCategory,
+  addSubcategory,
+  getSubcategories,
+  getSubcategory,
+  setSubcategory,
 } from "./handlers/category";
 import { addProduct, getProducts, ProductBody } from "./handlers/product";
 
@@ -129,6 +133,32 @@ const main = async () => {
     validateParams(CategoryParams),
     validateBody(CategoryBody),
     catcher(setCategory)
+  );
+  app.put(
+    "/api/store/categories/:id/subcategories",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(CategoryParams),
+    validateBody(CategoryBody),
+    catcher(addSubcategory)
+  );
+  app.get(
+    "/api/store/categories/:id/subcategories",
+    validateParams(CategoryParams),
+    catcher(getSubcategories)
+  );
+  app.get(
+    "/api/store/subcategories/:id",
+    validateParams(CategoryParams),
+    catcher(getSubcategory)
+  );
+  app.patch(
+    "/api/store/subcategories/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(CategoryParams),
+    validateBody(CategoryBody),
+    catcher(setSubcategory)
   );
 
   app.put(
