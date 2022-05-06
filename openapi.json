@@ -525,6 +525,34 @@
           }
         }
       },
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Deletes a product from the store",
+        "parameters": [
+          {
+            "name": "product",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "patch": {
         "tags": [
           "store"
@@ -756,6 +784,34 @@
           }
         }
       },
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Deletes a service from the store",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "patch": {
         "tags": [
           "store"
@@ -923,6 +979,34 @@
           },
           "404": {
             "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Deletes a category from the store",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "500": {
             "description": "Internal server error"
@@ -1112,6 +1196,34 @@
           },
           "404": {
             "description": "Subcategory not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Deletes a subcategory from the store",
+        "parameters": [
+          {
+            "name": "subcategory",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "500": {
             "description": "Internal server error"
