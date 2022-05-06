@@ -38,7 +38,7 @@
         "description": "Returns an UUID for the current unauthorized session",
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -61,7 +61,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Register a new account with username and password and fistName",
+        "summary": "Register a new account with username and password and firstName",
         "description": "Lets a user register a new account with the minimum data required, but allows to provide extra fields such as lastName and city. Returns a bearer JWT token",
         "requestBody": {
           "required": true,
@@ -86,7 +86,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -102,7 +102,7 @@
             }
           },
           "401": {
-            "description": "Authentication is not required, an already logged in user canno register a new account"
+            "description": "Authentication is not required, an already logged in user cannot register a new account"
           },
           "500": {
             "description": "Internal server error"
@@ -137,7 +137,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -153,7 +153,7 @@
             }
           },
           "401": {
-            "description": "Authentication is not required, an already logged in user canno re-login"
+            "description": "Authentication is not required, an already logged in user cannon re-login"
           },
           "500": {
             "description": "Internal server error"
@@ -169,7 +169,7 @@
         "summary": "Returns the currently logged in user",
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -229,7 +229,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -271,7 +271,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -326,7 +326,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -402,7 +402,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -449,13 +449,13 @@
                   "name": {
                     "type": "string"
                   },
-                  "descrption": {
+                  "description": {
                     "type": "string"
                   },
                   "price": {
                     "type": "number"
                   },
-                  "photoes": {
+                  "photos": {
                     "type": "array",
                     "items": {
                       "type": "string"
@@ -468,7 +468,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -505,7 +505,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -551,13 +551,13 @@
                   "name": {
                     "type": "string"
                   },
-                  "descrption": {
+                  "description": {
                     "type": "string"
                   },
                   "price": {
                     "type": "number"
                   },
-                  "photoes": {
+                  "photos": {
                     "type": "array",
                     "items": {
                       "type": "string"
@@ -570,7 +570,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -599,7 +599,7 @@
         "summary": "Get the services catalogue, i.e. a listing of every service.",
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -638,7 +638,189 @@
             }
           },
           "400": {
-            "description": "I  nvalid input"
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Insert a new service into the store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "openingHours": {
+                    "$ref": "#/components/schemas/Timetable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OfflineService"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OnlineService"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/services/{service}": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a single service.",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OfflineService"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OnlineService"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Service not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Insert a new service into the store",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "openingHours": {
+                    "$ref": "#/components/schemas/Timetable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
           },
           "500": {
             "description": "Internal server error"
@@ -654,7 +836,7 @@
         "summary": "Get the categories catalogue, i.e. a listing of every category.",
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -693,7 +875,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -730,7 +912,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -780,7 +962,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -820,7 +1002,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -847,7 +1029,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Add a dubcategory to a category.",
+        "summary": "Add a subcategory to a category.",
         "parameters": [
           {
             "name": "category",
@@ -876,7 +1058,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -916,7 +1098,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
@@ -940,7 +1122,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Edit a dubcategory in the catalogue.",
+        "summary": "Edit a subcategory in the catalogue.",
         "parameters": [
           {
             "name": "subcategory",
@@ -969,7 +1151,7 @@
         },
         "responses": {
           "200": {
-            "description": "Request fullfilled",
+            "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
