@@ -45,6 +45,10 @@ export const getCategory: RequestHandler = async (req, res) => {
   else json(res, 200, shadowCategory(category));
 };
 
+export const deleteCategory: RequestHandler = async (req, res) => {
+  // TODO missing implementation
+};
+
 export const setCategory: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as ICategoryParams;
   const patch = req.body as ICategoryBody;
@@ -80,6 +84,10 @@ export const getSubcategory: RequestHandler = async (req, res) => {
       message: "Invalid subcategory id",
     });
   else json(res, 200, shadowSubcategory(subcategory));
+};
+
+export const deleteSubcategory: RequestHandler = async (req, res) => {
+  // TODO missing implementation
 };
 
 export const setSubcategory: RequestHandler = async (req, res) => {

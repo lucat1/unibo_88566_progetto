@@ -21,7 +21,8 @@ export const addProduct: RequestHandler = async (req, res) => {
 };
 
 export const getProducts: RequestHandler = async (req, res) => {
-  const { limit, page, sort, order } = req.query as unknown as (IPaginationQuery & ISortingQuery);
+  const { limit, page, sort, order } =
+    req.query as unknown as IPaginationQuery & ISortingQuery;
 
   const result = await Product.paginate(
     {},
@@ -29,4 +30,40 @@ export const getProducts: RequestHandler = async (req, res) => {
   );
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
+};
+
+export const ProductParams = z.object({
+  id: z
+    .number()
+    .positive()
+    .or(z.string().regex(/^\d+$/).transform(Number))
+    .refine((n) => n >= 0, { message: "Product id must be unsigned" }),
+});
+export type IProductParams = z.infer<typeof ProductParams>;
+
+export const getProduct: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as IProductParams;
+  const product = await Product.findOne({ _id: id }).exec();
+  if (product == null)
+    json(res, 404, {
+      message: "Invalid product id",
+    });
+  else json(res, 200, shadow(product));
+};
+
+export const deleteProduct: RequestHandler = async (req, res) => {
+  // TODO missing implementation
+};
+
+export const setProduct: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as IProductParams;
+  const patch = req.body as IProductBody;
+  const updated = await Product.findOneAndUpdate({ _id: id }, patch, {
+    new: true,
+  }).exec();
+  if (updated == null)
+    json(res, 404, {
+      message: "Invalid product id",
+    });
+  else json(res, 200, shadow(updated));
 };

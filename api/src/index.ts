@@ -42,13 +42,23 @@ import {
   addCategory,
   getCategories,
   getCategory,
+  deleteCategory,
   setCategory,
   addSubcategory,
   getSubcategories,
   getSubcategory,
+  deleteSubcategory,
   setSubcategory,
 } from "./handlers/category";
-import { addProduct, getProducts, ProductBody } from "./handlers/product";
+import {
+  ProductBody,
+  ProductParams,
+  addProduct,
+  getProducts,
+  getProduct,
+  deleteProduct,
+  setProduct,
+} from "./handlers/product";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -113,6 +123,65 @@ const main = async () => {
     catcher(getLeaderboard)
   );
 
+  app.get(
+    "/api/store/products",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getProducts)
+  );
+  app.put(
+    "/api/store/products",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(ProductBody),
+    catcher(addProduct)
+  );
+  app.get(
+    "/api/store/products/:id",
+    validateParams(ProductParams),
+    catcher(getProduct)
+  );
+  app.delete(
+    "/api/store/products/:id",
+    validateParams(ProductParams),
+    catcher(deleteProduct)
+  );
+  app.patch(
+    "/api/store/products/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(ProductParams),
+    validateBody(ProductBody),
+    catcher(setProduct)
+  );
+
+  // app.get("/api/store/services", catcher(getServices));
+  // app.put(
+  //   "/api/store/services",
+  //   authRequired,
+  //   priviledged(UserLevel.MANAGER),
+  //   validateBody(ServiceBody),
+  //   catcher(addService)
+  // );
+  // app.get(
+  //   "/api/store/services/:id",
+  //   validateParams(ServiceParams),
+  //   catcher(getService)
+  // );
+  // app.delete(
+  //   "/api/store/services/:id",
+  //   validateParams(ServiceParams),
+  //   catcher(deleteService)
+  // );
+  // app.patch(
+  //   "/api/store/services/:id",
+  //   authRequired,
+  //   priviledged(UserLevel.MANAGER),
+  //   validateParams(ServiceParams),
+  //   validateBody(ServiceBody),
+  //   catcher(setService)
+  // );
+
+  app.get("/api/store/categories", catcher(getCategories));
   app.put(
     "/api/store/categories",
     authRequired,
@@ -120,11 +189,15 @@ const main = async () => {
     validateBody(CategoryBody),
     catcher(addCategory)
   );
-  app.get("/api/store/categories", catcher(getCategories));
   app.get(
     "/api/store/categories/:id",
     validateParams(CategoryParams),
     catcher(getCategory)
+  );
+  app.delete(
+    "/api/store/categories/:id",
+    validateParams(CategoryParams),
+    catcher(deleteCategory)
   );
   app.patch(
     "/api/store/categories/:id",
@@ -133,6 +206,12 @@ const main = async () => {
     validateParams(CategoryParams),
     validateBody(CategoryBody),
     catcher(setCategory)
+  );
+
+  app.get(
+    "/api/store/categories/:id/subcategories",
+    validateParams(CategoryParams),
+    catcher(getSubcategories)
   );
   app.put(
     "/api/store/categories/:id/subcategories",
@@ -143,14 +222,14 @@ const main = async () => {
     catcher(addSubcategory)
   );
   app.get(
-    "/api/store/categories/:id/subcategories",
-    validateParams(CategoryParams),
-    catcher(getSubcategories)
-  );
-  app.get(
     "/api/store/subcategories/:id",
     validateParams(CategoryParams),
     catcher(getSubcategory)
+  );
+  app.delete(
+    "/api/store/subcategories/:id",
+    validateParams(CategoryParams),
+    catcher(deleteSubcategory)
   );
   app.patch(
     "/api/store/subcategories/:id",
@@ -159,19 +238,6 @@ const main = async () => {
     validateParams(CategoryParams),
     validateBody(CategoryBody),
     catcher(setSubcategory)
-  );
-
-  app.put(
-    "/api/store/products",
-    authRequired,
-    priviledged(UserLevel.MANAGER),
-    validateBody(ProductBody),
-    catcher(addProduct)
-  );
-  app.get(
-    "/api/store/products",
-    validateQuery(PaginationQuery.and(SortingQuery)),
-    catcher(getProducts)
   );
 
   app.listen(API_PORT, () => console.info(`Listening on :${API_PORT}`));
