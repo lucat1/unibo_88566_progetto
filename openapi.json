@@ -557,7 +557,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Insert a new product into the store",
+        "summary": "Update an existing product in the store",
         "parameters": [
           {
             "name": "product",
@@ -816,7 +816,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Insert a new service into the store",
+        "summary": "Update an existing service in the store",
         "parameters": [
           {
             "name": "service",
