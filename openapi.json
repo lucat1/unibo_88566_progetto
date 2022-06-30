@@ -364,7 +364,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the products catalogue, i.e. a listing of every product.",
+        "summary": "Get the products catalogue, i.e. a listing of every product",
         "parameters": [
           {
             "name": "limit",
@@ -491,7 +491,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get a single product.",
+        "summary": "Get a single product",
         "parameters": [
           {
             "name": "product",
@@ -624,7 +624,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the services catalogue, i.e. a listing of every service.",
+        "summary": "Get the services catalogue, i.e. a listing of every service",
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -889,7 +889,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the categories catalogue, i.e. a listing of every category.",
+        "summary": "Get the categories catalogue, i.e. a listing of every category",
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -954,7 +954,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the specified category.",
+        "summary": "Get the specified category",
         "parameters": [
           {
             "name": "category",
@@ -1017,7 +1017,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Edit a category in the catalogue.",
+        "summary": "Edit a category in the catalogue",
         "parameters": [
           {
             "name": "category",
@@ -1072,7 +1072,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get a listing of the subcategories associated to a certain category.",
+        "summary": "Get a listing of the subcategories associated to a certain category",
         "parameters": [
           {
             "name": "category",
@@ -1113,7 +1113,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Add a subcategory to a category.",
+        "summary": "Add a subcategory to a category",
         "parameters": [
           {
             "name": "category",
@@ -1168,7 +1168,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the specified subcategory.",
+        "summary": "Get the specified subcategory",
         "parameters": [
           {
             "name": "subcategory",
@@ -1234,7 +1234,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Edit a subcategory in the catalogue.",
+        "summary": "Edit a subcategory in the catalogue",
         "parameters": [
           {
             "name": "subcategory",
