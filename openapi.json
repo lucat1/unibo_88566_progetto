@@ -1674,18 +1674,31 @@
           "quiz"
         ]
       },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      },
       "OfflineService": {
         "allOf": [
           {
             "$ref": "#/components/schemas/Service"
           },
           {
-            "type": "object",
-            "properties": {
-              "location": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/Location"
           }
         ]
       },
@@ -1703,40 +1716,6 @@
             }
           }
         ]
-      },
-      "Order": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "product": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "quantity": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "shipDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "type": "string",
-            "description": "Order Status",
-            "enum": [
-              "placed",
-              "approved",
-              "delivered"
-            ]
-          },
-          "complete": {
-            "type": "boolean",
-            "default": false
-          }
-        }
       },
       "Pagination": {
         "type": "object",
@@ -1789,26 +1768,13 @@
             "format": "uuid"
           },
           "name": {
-            "type": "string",
-            "example": "doggie"
-          },
-          "photos": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "category": {
             "$ref": "#/components/schemas/Category"
           },
           "subcategory": {
             "$ref": "#/components/schemas/Subcategory"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Tag"
-            }
           }
         }
       },
@@ -1853,6 +1819,10 @@
           "price": {
             "type": "number"
           },
+          "disponibility": {
+            "type": "number",
+            "format": "uint64"
+          },
           "photos": {
             "type": "array",
             "items": {
@@ -1861,15 +1831,10 @@
             }
           },
           "category": {
-            "type": "number",
-            "format": "uint64"
+            "$ref": "#/components/schemas/Category"
           },
-          "subcategories": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "uint64"
-            }
+          "subcategory": {
+            "$ref": "#/components/schemas/Subcategory"
           }
         }
       },
@@ -1898,6 +1863,12 @@
               "type": "string"
             }
           },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "subcategory": {
+            "$ref": "#/components/schemas/Subcategory"
+          },
           "openingHours": {
             "$ref": "#/components/schemas/Timetable"
           }
@@ -1908,69 +1879,6 @@
         "enum": [
           -1,
           1
-        ]
-      },
-      "Stock": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "product": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "store": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "online": {
-            "type": "boolean"
-          },
-          "quantity": {
-            "type": "number",
-            "format": "uint64"
-          }
-        }
-      },
-      "Store": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "online": {
-            "type": "boolean"
-          },
-          "location": {
-            "type": "string"
-          }
-        }
-      },
-      "StorePet": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Pet"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "status": {
-                "type": "string",
-                "description": "pet status in the store",
-                "enum": [
-                  "available",
-                  "pending",
-                  "sold"
-                ]
-              }
-            }
-          }
         ]
       },
       "Subcategory": {
