@@ -1893,18 +1893,6 @@
           }
         }
       },
-      "Tag": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
       "Timetable": {
         "type": "object",
         "properties": {
@@ -1941,6 +1929,18 @@
               1,
               2
             ]
+          },
+          "preferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          "pets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
           }
         }
       }
