@@ -1039,7 +1039,7 @@
                     }
                   },
                   "openingHours": {
-                    "$ref": "#/components/schemas/Timetable"
+                    "$ref": "#/components/schemas/Calendar"
                   }
                 }
               }
@@ -1189,7 +1189,7 @@
                     }
                   },
                   "openingHours": {
-                    "$ref": "#/components/schemas/Timetable"
+                    "$ref": "#/components/schemas/Calendar"
                   }
                 }
               }
@@ -1637,15 +1637,49 @@
           }
         }
       },
+      "Calendar": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "openingHours": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "dateTime"
+            }
+          }
+        }
+      },
       "Category": {
         "type": "object",
         "properties": {
           "_id": {
-            "type": "number",
-            "format": "uint64"
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
+          }
+        }
+      },
+      "Disponibility": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/Calendar"
           }
         }
       },
@@ -1684,11 +1718,31 @@
           "name": {
             "type": "string"
           },
-          "online": {
-            "type": "boolean"
-          },
           "location": {
             "type": "string"
+          }
+        }
+      },
+      "OfflinePrenotation": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "$ref": "#/components/schemas/OfflineService"
+          },
+          "disponibility": {
+            "$ref": "#/components/schemas/Disponibility"
+          },
+          "from": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "to": {
+            "type": "string",
+            "format": "datetime"
           }
         }
       },
@@ -1698,9 +1752,37 @@
             "$ref": "#/components/schemas/Service"
           },
           {
-            "$ref": "#/components/schemas/Location"
+            "type": "object",
+            "properties": {
+              "disponibilities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Disponibility"
+                }
+              }
+            }
           }
         ]
+      },
+      "OnlinePrenotation": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "$ref": "#/components/schemas/OnlineService"
+          },
+          "from": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "to": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
       },
       "OnlineService": {
         "allOf": [
@@ -1712,10 +1794,53 @@
             "properties": {
               "url": {
                 "type": "string"
+              },
+              "calendar": {
+                "$ref": "#/components/schemas/Calendar"
               }
             }
           }
         ]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderEntry"
+            }
+          },
+          "shipDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Order Status",
+            "enum": [
+              "placed",
+              "approved",
+              "delivered"
+            ]
+          }
+        }
+      },
+      "OrderEntry": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "uint64"
+          }
+        }
       },
       "Pagination": {
         "type": "object",
@@ -1868,9 +1993,6 @@
           },
           "subcategory": {
             "$ref": "#/components/schemas/Subcategory"
-          },
-          "openingHours": {
-            "$ref": "#/components/schemas/Timetable"
           }
         }
       },
@@ -1890,18 +2012,6 @@
           },
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "Timetable": {
-        "type": "object",
-        "properties": {
-          "intervals": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "dateTime"
-            }
           }
         }
       },
