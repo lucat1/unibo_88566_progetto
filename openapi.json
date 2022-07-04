@@ -954,6 +954,160 @@
         }
       }
     },
+    "/store/orders/": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a listing of the orders visible to you",
+        "parameters": [
+          {
+            "name": "paginationQuery",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Order"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Place a new order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    {
+                      "type": "number",
+                      "format": "uint64"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/orders/{order}": {
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Update an order's status",
+        "parameters": [
+          {
+            "name": "order",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "placed",
+                      "approved",
+                      "rejected",
+                      "delivered"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/store/services/": {
       "get": {
         "tags": [
@@ -1296,8 +1450,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1359,8 +1513,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1414,8 +1568,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1455,8 +1609,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1510,8 +1664,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1576,8 +1730,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "number",
-              "format": "uint64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1821,10 +1975,10 @@
           },
           "status": {
             "type": "string",
-            "description": "Order Status",
             "enum": [
               "placed",
               "approved",
+              "rejected",
               "delivered"
             ]
           }
