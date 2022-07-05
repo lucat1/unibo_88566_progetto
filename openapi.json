@@ -1424,9 +1424,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "type": {
-                    "type": "string"
-                  },
                   "name": {
                     "type": "string"
                   },
@@ -1442,8 +1439,26 @@
                       "type": "string"
                     }
                   },
-                  "openingHours": {
-                    "$ref": "#/components/schemas/Calendar"
+                  "more": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Disponibility"
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "calendar": {
+                            "$ref": "#/components/schemas/Calendar"
+                          }
+                        }
+                      }
+                    ]
                   }
                 }
               }
@@ -2656,9 +2671,6 @@
           "_id": {
             "type": "string",
             "format": "uuid"
-          },
-          "type": {
-            "type": "string"
           },
           "name": {
             "type": "string"
