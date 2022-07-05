@@ -424,7 +424,7 @@
         "tags": [
           "community"
         ],
-        "summary": "Gets a specific board, including a paging of its posts",
+        "summary": "Get a specific board, including a paging of its posts",
         "parameters": [
           {
             "name": "board",
@@ -484,7 +484,7 @@
         "tags": [
           "community"
         ],
-        "summary": "Posts a new message in the specified board",
+        "summary": "Post a new message in the specified board",
         "parameters": [
           {
             "name": "board",
@@ -546,7 +546,7 @@
         "tags": [
           "community"
         ],
-        "summary": "Deletes a whole community board, including all of its posts",
+        "summary": "Delete a whole community board, including all of its posts",
         "parameters": [
           {
             "name": "board",
@@ -632,7 +632,7 @@
         "tags": [
           "community"
         ],
-        "summary": "Deletes a single post",
+        "summary": "Delete a single post",
         "parameters": [
           {
             "name": "post",
@@ -660,7 +660,7 @@
         "tags": [
           "community"
         ],
-        "summary": "Edits a previously published post",
+        "summary": "Edit a previously published post",
         "parameters": [
           {
             "name": "post",
@@ -795,6 +795,14 @@
                     "items": {
                       "type": "string"
                     }
+                  },
+                  "category": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "subcategory": {
+                    "type": "string",
+                    "format": "uuid"
                   }
                 }
               }
@@ -938,6 +946,248 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/pets/": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get the pets catalogue, i.e. a listing of every pet",
+        "parameters": [
+          {
+            "name": "paginationQuery",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/StorePet"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Insert a new pet into the store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "category": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "subcategory": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/pets/{pet}": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a single pet from the store",
+        "parameters": [
+          {
+            "name": "pet",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Remove a pet from the store",
+        "parameters": [
+          {
+            "name": "pet",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Update an existing pet in the store",
+        "parameters": [
+          {
+            "name": "pet",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePet"
                 }
               }
             }
@@ -1232,7 +1482,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Get a single service.",
+        "summary": "Get a single service",
         "parameters": [
           {
             "name": "service",
@@ -1277,7 +1527,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Deletes a service from the store",
+        "summary": "Delete a service from the store",
         "parameters": [
           {
             "name": "service",
@@ -1373,6 +1623,111 @@
         }
       }
     },
+    "/store/appointments/": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a listing of the appointments visible to you",
+        "parameters": [
+          {
+            "name": "paginationQuery",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "$ref": "#/components/schemas/OfflineAppointment"
+                              },
+                              {
+                                "$ref": "#/components/schemas/OnlineAppointment"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Make a new appointment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "calendar": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/store/categories/": {
       "get": {
         "tags": [
@@ -1402,7 +1757,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Add a category to the catalogue.",
+        "summary": "Add a category to the catalogue",
         "requestBody": {
           "required": true,
           "content": {
@@ -1478,7 +1833,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Deletes a category from the store",
+        "summary": "Delete a category from the store",
         "parameters": [
           {
             "name": "category",
@@ -1695,7 +2050,7 @@
         "tags": [
           "store"
         ],
-        "summary": "Deletes a subcategory from the store",
+        "summary": "Delete a subcategory from the store",
         "parameters": [
           {
             "name": "subcategory",
@@ -1766,6 +2121,184 @@
           },
           "404": {
             "description": "Subcategory not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/locations/": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a listing of every location",
+        "parameters": [
+          {
+            "name": "paginationQuery",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Location"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Register a new location",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "locatio": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/locations/{location}": {
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Delete a location",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Update an existing location",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
           },
           "500": {
             "description": "Internal server error"
@@ -1877,7 +2410,7 @@
           }
         }
       },
-      "OfflinePrenotation": {
+      "OfflineAppointment": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1918,7 +2451,7 @@
           }
         ]
       },
-      "OnlinePrenotation": {
+      "OnlineAppointment": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1996,6 +2529,24 @@
           }
         }
       },
+      "OwnedPet": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "subcategory": {
+            "$ref": "#/components/schemas/Subcategory"
+          }
+        }
+      },
       "Pagination": {
         "type": "object",
         "properties": {
@@ -2036,24 +2587,6 @@
           },
           "order": {
             "$ref": "#/components/schemas/SortOrder"
-          }
-        }
-      },
-      "Pet": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "subcategory": {
-            "$ref": "#/components/schemas/Subcategory"
           }
         }
       },
@@ -2141,6 +2674,35 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "StorePet": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "disponibility": {
+            "type": "number",
+            "format": "uint64"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "url"
+            }
           },
           "category": {
             "$ref": "#/components/schemas/Category"
@@ -2200,10 +2762,10 @@
               "$ref": "#/components/schemas/Category"
             }
           },
-          "pets": {
+          "OwnedPets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Pet"
+              "$ref": "#/components/schemas/OwnedPet"
             }
           }
         }
