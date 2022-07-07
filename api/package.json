@@ -20,7 +20,7 @@
     "compress": "^0.99.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@polka/send-type": "^0.5.2",
