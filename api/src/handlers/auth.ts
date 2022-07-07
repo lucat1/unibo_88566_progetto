@@ -37,13 +37,24 @@ export const login = async (
     return { message: "Internal server error" };
   }
 };
+export const password: RequestHandler = async (req, res) => {
+  // TODO
+};
 
 export const id: RequestHandler = (_, res) => {
   json(res, 200, { id: v4() });
 };
 
-export const me: RequestHandler = async (req, res) => {
+export const getMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   json(res, 200, shadow(user));
+};
+
+export const deleteMe: RequestHandler = async (req, res) => {
+  // TODO
+};
+
+export const patchMe: RequestHandler = async (req, res) => {
+  // TODO
 };
