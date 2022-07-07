@@ -751,7 +751,7 @@
         }
       }
     },
-    "/store/posts/{post}": {
+    "/community/posts/{post}": {
       "delete": {
         "tags": [
           "community"
