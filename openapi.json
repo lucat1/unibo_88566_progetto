@@ -38,7 +38,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Returns a new UUID for a device",
+        "summary": "Get a new UUID for a device",
         "description": "Returns an UUID for the current unauthorized session",
         "responses": {
           "200": {
@@ -65,7 +65,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Register a new account with username and password and firstName",
+        "summary": "Register a new account with username, password, and first name",
         "description": "Lets a user register a new account with the minimum data required, but allows to provide extra fields such as lastName and city. Returns a bearer JWT token",
         "requestBody": {
           "required": true,
@@ -157,7 +157,44 @@
             }
           },
           "401": {
-            "description": "Authentication is not required, an already logged in user cannon re-login"
+            "description": "Authentication is not required, an already logged in user cannot re-login"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/password": {
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Change the currently logged in user's password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "format": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
           },
           "500": {
             "description": "Internal server error"
@@ -170,7 +207,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Returns the currently logged in user",
+        "summary": "Get the currently logged in user",
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -181,6 +218,93 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Delete the currently logged in user",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Update your profile information",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "preferences": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  },
+                  "ownedPets": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/OwnedPet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "401": {
             "description": "Authentication required"
@@ -518,7 +642,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "format": "url"
+                "format": "binary"
               }
             }
           }
@@ -692,7 +816,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "format": "url"
+                "format": "binary"
               }
             }
           }
@@ -793,7 +917,8 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   },
                   "category": {
@@ -931,7 +1056,8 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   }
                 }
@@ -1035,7 +1161,8 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   },
                   "category": {
@@ -1173,7 +1300,8 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   }
                 }
@@ -1363,7 +1491,36 @@
         "tags": [
           "store"
         ],
-        "summary": "Get the services catalogue, i.e. a listing of every service",
+        "summary": "Get the services catalogue, i.e. a listing of every service (filtered search is available)",
+        "parameters": [
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -1436,7 +1593,8 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   },
                   "more": {
@@ -1589,9 +1747,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "type": {
-                    "type": "string"
-                  },
                   "name": {
                     "type": "string"
                   },
@@ -1604,11 +1759,30 @@
                   "photos": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "binary"
                     }
                   },
-                  "openingHours": {
-                    "$ref": "#/components/schemas/Calendar"
+                  "more": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Disponibility"
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "calendar": {
+                            "$ref": "#/components/schemas/Calendar"
+                          }
+                        }
+                      }
+                    ]
                   }
                 }
               }
@@ -1712,11 +1886,11 @@
                   },
                   "from": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "date-time"
                   },
                   "to": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "date-time"
                   }
                 }
               }
@@ -1733,6 +1907,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/store/appointments/{appointment}": {
+      "delete": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Cancel an appointment",
+        "parameters": [
+          {
+            "name": "appointment",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
           },
           "400": {
             "description": "Invalid input"
@@ -2353,7 +2557,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "dateTime"
+              "format": "date-time"
             }
           }
         }
@@ -2440,11 +2644,11 @@
           },
           "from": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
           },
           "to": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
           }
         }
       },
@@ -2478,11 +2682,11 @@
           },
           "from": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
           },
           "to": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
           }
         }
       },
@@ -2622,7 +2826,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "url"
+              "format": "binary"
             }
           },
           "author": {
@@ -2654,7 +2858,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "url"
+              "format": "binary"
             }
           },
           "category": {
@@ -2684,7 +2888,8 @@
           "photos": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "format": "binary"
             }
           }
         }
@@ -2713,7 +2918,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "url"
+              "format": "binary"
             }
           },
           "category": {
@@ -2774,7 +2979,7 @@
               "$ref": "#/components/schemas/Category"
             }
           },
-          "OwnedPets": {
+          "ownedPets": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OwnedPet"
