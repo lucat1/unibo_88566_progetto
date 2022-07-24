@@ -234,14 +234,7 @@
         "summary": "Delete the currently logged in user",
         "responses": {
           "200": {
-            "description": "Request fulfilled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "Request fulfilled"
           },
           "401": {
             "description": "Authentication required"
@@ -618,35 +611,18 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "photos",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "binary"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -751,13 +727,22 @@
         }
       }
     },
-    "/store/posts/{post}": {
+    "/community/boards/{board}/{post}": {
       "delete": {
         "tags": [
           "community"
         ],
         "summary": "Delete a single post",
         "parameters": [
+          {
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           {
             "name": "post",
             "in": "path",
@@ -787,7 +772,7 @@
         "summary": "Edit a previously published post",
         "parameters": [
           {
-            "name": "post",
+            "name": "board",
             "in": "path",
             "required": true,
             "schema": {
@@ -796,31 +781,25 @@
             }
           },
           {
-            "name": "title",
-            "in": "query",
+            "name": "post",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "photos",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "binary"
-              }
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -2826,7 +2805,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "binary"
+              "format": "base64"
             }
           },
           "author": {
