@@ -3,6 +3,7 @@ import { defineComponent, reactive } from "vue";
 import { me, setAuthToken } from "shared/auth";
 import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
+import type { IUser } from "shared/models/user";
 import router from "./router";
 
 export default defineComponent({
@@ -20,12 +21,7 @@ export default defineComponent({
       firstName,
       lastName,
       password,
-    }: {
-      username: string;
-      firstName: string;
-      lastName: string;
-      password: string;
-    }) {
+    }: IUser & { password: string }) {
       this.loading = true;
       this.error = "";
       try {
@@ -84,8 +80,6 @@ export default defineComponent({
         type="text"
         name="lastName"
         label="Last name"
-        validation="required"
-        validation-visibility="live"
         outer-class="field"
         label-class="label"
         inner-class="control"
