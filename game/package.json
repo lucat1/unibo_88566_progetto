@@ -15,7 +15,9 @@
     "snowpack": "^3.8.8"
   },
   "dependencies": {
+    "@formkit/vue": "^1.0.0-beta.10",
     "bulma": "^0.9.3",
+    "shared": "*",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14"
   }

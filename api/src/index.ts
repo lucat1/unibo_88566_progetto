@@ -9,7 +9,7 @@ import { connect } from "mongoose";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
-import { UserLevel } from "./models/user";
+import { UserLevel } from "shared/models/user";
 import {
   register as registerWrapper,
   login as loginWrapper,

@@ -1,14 +1,6 @@
 import { Schema, Document, model } from "mongoose";
 import { v4 } from "node-uuid";
-import type { IProduct } from "./product";
-import type { IStore } from "./store";
-
-export interface IStock extends Document {
-  product: IProduct;
-  store: IStore;
-  online: boolean;
-  quantity: number;
-}
+import type { IStock } from "shared/models/stock";
 
 const StockSchema = new Schema<IStock>({
   _id: { type: String, default: v4 },

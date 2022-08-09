@@ -35,5 +35,10 @@ export default defineComponent({
 
 <template>
   <Nav />
-  <router-view />
+  <main style="flex: 1">
+    <Suspense>
+      <router-view />
+      <template #fallback> Loading... </template>
+    </Suspense>
+  </main>
 </template>

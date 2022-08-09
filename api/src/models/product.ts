@@ -1,20 +1,7 @@
-import { Schema, Document, PaginateModel, model } from "mongoose";
+import { Schema, PaginateModel, model } from "mongoose";
 import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
-import type { ICategory, ISubcategory } from "./category";
-import type { IStock } from "./stock";
-
-/* TODO: tags */
-export interface IProduct extends Document {
-  name: string;
-  description?: string;
-  price: number;
-  photos: string[];
-  stocks: IStock[];
-
-  category?: ICategory;
-  subcategory?: ISubcategory;
-}
+import type { IProduct } from "shared/models/product";
 
 const ProductSchema = new Schema<IProduct>({
   _id: { type: String, default: v4 },

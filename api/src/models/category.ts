@@ -1,15 +1,6 @@
-import { Schema, Document, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { autoIncrement } from "mongoose-plugin-autoinc-fix";
-
-export interface ISubcategory extends Document<number> {
-  name: string;
-  parent: ICategory;
-}
-
-export interface ICategory extends Document<number> {
-  name: string;
-  subcategories: ISubcategory[];
-}
+import type { ICategory, ISubcategory } from "shared/models/category";
 
 const SubcategorySchema = new Schema<ISubcategory>({
   name: { type: String, required: true },

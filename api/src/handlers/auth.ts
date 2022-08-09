@@ -3,7 +3,8 @@ import { v4 } from "node-uuid";
 import { compare } from "bcrypt";
 
 import json from "../res";
-import { User, UserLevel, shadow } from "../models/user";
+import { UserLevel } from "shared/models/user";
+import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
 

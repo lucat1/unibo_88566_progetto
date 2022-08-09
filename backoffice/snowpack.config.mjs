@@ -6,6 +6,7 @@ export default {
     public: { url: "/" },
     src: { url: "/dist" },
   },
+  exclude: ["shared/modules/*"],
   routes: [
     /* Enable an SPA Fallback in development: */
     { match: "routes", src: ".*", dest: "/index.html" },
@@ -20,6 +21,7 @@ export default {
   devOptions: {
     port: 5000,
   },
+  workspaceRoot: "..",
   buildOptions: {
     baseUrl: endpoints.BACKOFFICE_ENDPOINT,
   },

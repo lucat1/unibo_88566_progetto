@@ -6,7 +6,12 @@ export default {
     public: { url: "/" },
     src: { url: "/dist" },
   },
-  plugins: ["@snowpack/plugin-vue", "@snowpack/plugin-typescript", "@snowpack/plugin-sass"],
+  exclude: ["shared/modules/*", "mongoose", "bcrypt"],
+  plugins: [
+    "@snowpack/plugin-vue",
+    "@snowpack/plugin-typescript",
+    "@snowpack/plugin-sass",
+  ],
   routes: [
     /* Enable an SPA Fallback in development: */
     { match: "routes", src: ".*", dest: "/index.html" },
@@ -18,6 +23,7 @@ export default {
   devOptions: {
     port: 3000,
   },
+  workspaceRoot: "..",
   buildOptions: {
     baseUrl: endpoints.GAME_ENDPOINT,
   },

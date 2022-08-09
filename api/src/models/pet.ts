@@ -1,17 +1,6 @@
-import { Schema, Document, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { v4 } from "node-uuid";
-import type { ICategory, ISubcategory } from "./category";
-import type { IUser } from "./user";
-
-/* TODO: tags */
-export interface IPet extends Document {
-  name: string;
-  photos: string[];
-
-  category: ICategory;
-  subcategory?: ISubcategory;
-  owner?: IUser;
-}
+import { IPet } from "shared/models/pet";
 
 const PetSchema = new Schema<IPet>({
   _id: { type: String, default: v4 },
