@@ -28,6 +28,11 @@
  */
 
 /**
+ * The children props
+ * @typedef {Array.VNode} Children
+ */
+
+/**
  * Creates a virtual dom node for the given element/props combination.
  * @param {VTag} tag
  * @param {object} props An object of HTML props.
@@ -110,9 +115,12 @@ export const render = (vnode, root) => {
     )
   );
 
+  // if (!root.__hooks[element])
   for (const element in currentHooks)
-    if (!root.__hooks[element])
-      currentHooks[element].map((h) => h.cleanup && h.cleanup());
+    if (root.__hooks[element])
+      currentHooks[element].map((h) => {
+        h.cleanup && h.cleanup();
+      });
 
   /* Remove hooks from any unmounted component */
   let child;
@@ -184,7 +192,7 @@ const changed = (a, b) => !a || b.some((arg, i) => arg !== a[i]);
 export const useEffect = (callback, watch = []) => {
   const hook = getHook();
   if (changed(hook.value, watch)) {
-    hook.value = args;
+    hook.value = watch;
     hook.callback = callback;
   }
 };

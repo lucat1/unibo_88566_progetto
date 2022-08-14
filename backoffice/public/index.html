@@ -12,26 +12,7 @@
   <div id="root"></div>
   <script type="module">
     import {render, h, useReducer, useState} from "%PUBLIC_URL%/dist/h.js";
-    const c = ({initial}) => {
-      const [items, setItems] = useState(initial);
-      return h(
-        "div",
-        {},
-        h(
-          "ul",
-          {},
-          items.map((item) => h("li", {}, item)),
-          h(
-            "button",
-            {
-              onClick: () =>
-                setItems(items.concat(`item #${items.length + 1}`)),
-            },
-            "add an item"
-          )
-        )
-      );
-    };
+    import {Router, Route, Link} from "%PUBLIC_URL%/dist/router.js";
     const b = (props, children) => {
       return h(
         "div",
@@ -69,12 +50,45 @@
         h("h1", {}, "counter: ", counter)
       );
     };
+
+    const c = ({initial}) => {
+      const [items, setItems] = useState(initial);
+      return h(
+        "div",
+        {},
+        h(
+          "ul",
+          {},
+          items.map((item) => h("li", {}, item)),
+          h(
+            "button",
+            {
+              onClick: () =>
+                setItems(items.concat(`item #${items.length + 1}`)),
+            },
+            "add an item"
+          )
+        )
+      );
+    };
+
     render(
       h(
-        b,
-        {className: "b-class"},
-        h(a, {}),
-        h(c, {initial: ["item #1"]})
+        Router,
+        {},
+        h(Route, {
+          path: /^\/$/, element: h('div', {},
+            h('h1', {}, 'index'),
+            h(Link, {to: '/test'}, 'go to test'),
+            h(
+              b,
+              {className: "b-class"},
+              h(a, {}),
+              h(c, {initial: ["item #1"]})
+            ))
+        }),
+        h(Route, {path: "/test", element: h('h1', {}, 'test', h(Link, {to: '/', as: 'button'}, 'back'))}),
+        h(Route, {path: /.*/, element: h('h1', {}, '404 - Not Found', h(Link, {to: '/'}, 'back to index'))}),
       ),
       document.getElementById("root")
     );
