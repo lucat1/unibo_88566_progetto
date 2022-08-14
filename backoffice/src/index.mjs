@@ -1,6 +1,9 @@
 import { h, render } from "./h";
 import { Router, Route, Link } from "./router.js";
 
+import { me } from "shared/auth";
+import { user as userContext } from "./ctxs";
+
 import Nav from "./components/nav";
 import Index from "./pages/index";
 import Login from "./pages/login";
@@ -19,3 +22,6 @@ render(
   ],
   document.getElementById("root")
 );
+
+let user = await me();
+if (user) userContext.set(user);

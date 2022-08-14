@@ -1,15 +1,13 @@
 import { h, useState } from "../h";
 import { Link } from "../router";
-import { me } from "shared/auth";
+import { useContext } from "../ctx";
+import { user as userContext } from "../ctxs";
+import { deleteAuthToken } from "shared/auth";
 
-const links = ["Products", "Categories"];
+const links = ["Categories", "Products"];
 
 const Nav = () => {
-  const [user, setUser] = useState(null);
-  (async () => {
-    setUser(await me());
-  })();
-
+  const [user, setUser] = useContext(userContext);
   return h(
     "nav",
     {
@@ -53,7 +51,23 @@ const Nav = () => {
                 { className: "buttons" },
                 h(Link, { to: "/login", className: "button is-light" }, "Login")
               )
-            : h("span", {}, "Signed in as ", user.username)
+            : h(
+                "span",
+                {},
+                "Signed in as ",
+                user.username,
+                ", ",
+                h(
+                  "a",
+                  {
+                    onClick: () => {
+                      deleteAuthToken();
+                      setUser(null);
+                    },
+                  },
+                  "Sign out"
+                )
+              )
         )
       )
     )

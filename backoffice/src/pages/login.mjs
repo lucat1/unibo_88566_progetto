@@ -1,12 +1,14 @@
 import { h, useState } from "../h";
 import { navigate } from "../router";
+import { useContext } from "../ctx";
+import { user as userContext } from "../ctxs";
 import { me, setAuthToken } from "shared/auth";
 import fetch, { withOptions } from "shared/fetch";
 
 const Login = () => {
-  (async () => {
-    if ((await me()) != null) navigate("/");
-  })();
+  const [user, setUser] = useContext(userContext);
+  if (user) navigate("/");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -23,6 +25,7 @@ const Login = () => {
         withOptions("POST", { username, password })
       );
       setAuthToken(token);
+      setUser(await me());
       navigate("/");
     } catch (err) {
       setError(err.message || "Invalid username/password combination");
