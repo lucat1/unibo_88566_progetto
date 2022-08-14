@@ -7,8 +7,7 @@ import router from "./router";
 
 export default defineComponent({
   async setup() {
-    const user = await me();
-    if (user != null) router.push("/");
+    if ((await me()) != null) router.push("/");
     return reactive({
       loading: false,
       error: "",

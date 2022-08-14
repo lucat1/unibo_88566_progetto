@@ -80,6 +80,10 @@ export const render = (vnode, root) => {
       hooksIndex = 0;
       child = child.tag(child.props, child.children);
       root.__hooks[key] = hooks;
+      if (!child)
+        throw new TypeError(
+          "You lickely forgot to return from one of you components"
+        );
     }
     let node = root.childNodes[i];
     if (
@@ -103,6 +107,8 @@ export const render = (vnode, root) => {
           for (const k in child.props[key]) node.style[k] = child.props[key][k];
         else if (key.startsWith("on") && typeof child.props[key] == "function")
           listen(node, key.replace(/^on/, "").toLowerCase(), child.props[key]);
+        else if (typeof child.props[key] == "boolean")
+          node.toggleAttribute(key, child.props[key]);
         else node.setAttribute(key, child.props[key]);
 
       if (child.children) render(child.children, node);

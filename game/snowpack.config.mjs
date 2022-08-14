@@ -6,7 +6,6 @@ export default {
     public: { url: "/" },
     src: { url: "/dist" },
   },
-  exclude: ["shared/modules/*", "mongoose", "bcrypt"],
   plugins: [
     "@snowpack/plugin-vue",
     "@snowpack/plugin-typescript",

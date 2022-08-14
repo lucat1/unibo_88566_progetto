@@ -7,7 +7,6 @@ export default {
     src: { url: "/dist" },
   },
   plugins: ["@snowpack/plugin-react-refresh", "@snowpack/plugin-typescript"],
-  exclude: ["shared/modules/*"],
   routes: [
     /* Enable an SPA Fallback in development: */
     { match: "routes", src: ".*", dest: "/index.html" },

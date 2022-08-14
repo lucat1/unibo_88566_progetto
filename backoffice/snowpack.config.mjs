@@ -6,7 +6,7 @@ export default {
     public: { url: "/" },
     src: { url: "/dist" },
   },
-  exclude: ["shared/modules/*"],
+  plugins: ["@snowpack/plugin-sass"],
   routes: [
     /* Enable an SPA Fallback in development: */
     { match: "routes", src: ".*", dest: "/index.html" },
