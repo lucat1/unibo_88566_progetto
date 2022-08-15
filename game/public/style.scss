@@ -10,3 +10,8 @@
 @import "../node_modules/bulma/sass/components/navbar.sass";
 @import "../node_modules/bulma/sass/components/card.sass";
 // @import "../node_modules/bulma/sass/layout/section.sass";
+
+.image img {
+  height: 100%;
+  object-fit: cover;
+}

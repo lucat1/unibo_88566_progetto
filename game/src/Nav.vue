@@ -17,8 +17,8 @@ export default defineComponent({
 <template>
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img alt="" src="logo" width="112" height="28" />
+      <a class="navbar-item" href="/">
+        <img alt="Logo" src="logo.png" width="32" height="32" />
       </a>
 
       <a role="button" class="navbar-burger" v-bind:class="{ 'is-active': opened }" v-on:click="opened = !opened"

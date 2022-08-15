@@ -5,28 +5,54 @@ export default defineComponent({
     return reactive({
       amount: 5,
       current: 0,
-      difficultyColors: {
-        easy: "is-green",
-        medium: "is-orange",
-        hard: "is-red",
-        _: "is-black",
-      },
-
       isLoading: true,
       error: null,
-      data: null,
+      data: Array<Object>(),
+      result: 0,
     });
   },
   async created() {
     this.isLoading = true;
     try {
       const res = await fetch(
-        `https://opentdb.com/api.php?amount=${this.amount}&category=27`
+        `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * this.amount}`
       );
-      this.data = (await res.json()).results.map((quiz) => ({
-        ...quiz,
-        answers: [...quiz.incorrect_answers, quiz.correct_answer],
-      }));
+      function animalsToQuestions(animals: any) {
+        let n = animals.length / 2,
+          questions = new Array<Object>(n);
+        for (let i = 0; i < n; ++i) {
+          const attributesToQuestions = [
+            ["latin_name", "latin name is"],
+            ["animal_type", "class is"],
+            ["active_time", "activity behavior is"],
+            ["length_min", "minimum length in feet is"],
+            ["length_max", "maximum length in feet is"],
+            ["weight_min", "minimum weight in pounds is"],
+            ["weight_max", "maximum weight in pounds is"],
+            ["lifespan", "average lifespan in years is"],
+            ["habitat", "habitat is/are the"],
+            ["diet", "diet is"],
+            ["geo_range", "can be found in"],
+          ];
+          let randomBoolean = Math.random() >= 0.5,
+            randomAttribute =
+              attributesToQuestions[
+              Math.floor(Math.random() * attributesToQuestions.length)
+              ],
+            subject = animals[2 * i],
+            distractor = animals[2 * i + 1];
+          questions[i] = {
+            question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
+              }.`,
+            answer:
+              randomBoolean ||
+              subject[randomAttribute[0]] == subject[randomAttribute[0]],
+            image: subject.image_link,
+          };
+        }
+        return questions;
+      }
+      this.data = animalsToQuestions(await res.json());
       this.isLoading = false;
     } catch (e) {
       this.error = e as any;
@@ -37,35 +63,33 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="isLoading">TODO: handle loading</div>
+  <div v-if="isLoading">
+    <progress class="progress is-primary is-widescreen" max="100">15%</progress>
+  </div>
   <div v-else-if="!isLoading && error != null">
-    TODO: handle error in a pretty visual way
+    <div class="notification is-danger is-light">
+      {{ error }}
+    </div>
   </div>
   <div v-else class="card">
+    <div class="card-image">
+      <figure class="image is-16by9">
+        <img v-bind:src="data[current].image" alt="Subject of the question" class="is-rounded" />
+      </figure>
+    </div>
     <div class="card-content">
       <div class="content">
-        <h4 class="title is-4">Quiz #{{ current + 1 }}</h4>
-        <span
-          v-bind:class="
-            difficultyColors[data[current].difficulty] || difficultyColors._
-          "
-          class="tag is-medium"
-          >{{ data[current].difficulty }}</span
-        >
+        <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>
-          {{ data[current].querstion }}
+          {{ data[current].question }}
         </p>
-        <div v-if="data[current].type == 'boolean'">
-          <button v-for="answer in data[current].answers" class="button">
-            {{ answer }}
-          </button>
-        </div>
-        <div v-else-if="data[current].type == 'multiple'"></div>
-        <div v-else>TODO: implement quiz type: {{ data[current].type }}</div>
       </div>
+      <progress class="progress is-primary" v-bind:value="current" v-bind:max="amount"></progress>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">Skip</a>
+      <a href="#" @click="++current" class="card-footer-item">True</a>
+      <a href="#" @click="++current" class="card-footer-item">False</a>
+      <a href="#" @click="++current" class="card-footer-item">Skip</a>
     </footer>
   </div>
 </template>
