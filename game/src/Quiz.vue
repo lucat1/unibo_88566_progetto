@@ -1,5 +1,12 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
+
+interface TrueOrFalse {
+  question: string;
+  answer: boolean;
+  image: string;
+}
+
 export default defineComponent({
   data() {
     return reactive({
@@ -7,7 +14,7 @@ export default defineComponent({
       current: 0,
       isLoading: true,
       error: null,
-      data: Array<Object>(),
+      data: Array<TrueOrFalse>(),
       result: 0,
     });
   },
@@ -17,9 +24,9 @@ export default defineComponent({
       const res = await fetch(
         `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * this.amount}`
       );
-      function animalsToQuestions(animals: any) {
+      function animalsToQuestions(animals: any): Array<TrueOrFalse> {
         let n = animals.length / 2,
-          questions = new Array<Object>(n);
+          questions = new Array<TrueOrFalse>(n);
         for (let i = 0; i < n; ++i) {
           const attributesToQuestions = [
             ["latin_name", "latin name is"],
@@ -45,8 +52,8 @@ export default defineComponent({
             question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
               }.`,
             answer:
-              randomBoolean ||
-              subject[randomAttribute[0]] == subject[randomAttribute[0]],
+              false, //randomBoolean ||
+            // subject[randomAttribute[0]] == subject[randomAttribute[0]],
             image: subject.image_link,
           };
         }
@@ -59,6 +66,12 @@ export default defineComponent({
       this.isLoading = false;
     }
   },
+  methods: {
+    answer(myAnswer: boolean) {
+      if (myAnswer == this.data[this.current].answer) ++this.result;
+      ++this.current;
+    },
+  },
 });
 </script>
 
@@ -70,6 +83,9 @@ export default defineComponent({
     <div class="notification is-danger is-light">
       {{ error }}
     </div>
+  </div>
+  <div v-else-if="current >= amount">
+    <div class="notification is-primary">Result: {{ result }}</div>
   </div>
   <div v-else class="card">
     <div class="card-image">
@@ -87,9 +103,8 @@ export default defineComponent({
       <progress class="progress is-primary" v-bind:value="current" v-bind:max="amount"></progress>
     </div>
     <footer class="card-footer">
-      <a href="#" @click="++current" class="card-footer-item">True</a>
-      <a href="#" @click="++current" class="card-footer-item">False</a>
-      <a href="#" @click="++current" class="card-footer-item">Skip</a>
+      <a href="#" @click="answer(true)" class="card-footer-item">True</a>
+      <a href="#" @click="answer(false)" class="card-footer-item">False</a>
     </footer>
   </div>
 </template>

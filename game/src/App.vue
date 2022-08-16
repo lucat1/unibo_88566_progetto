@@ -35,7 +35,9 @@ export default defineComponent({
 
 <template>
   <Nav />
-  <div class="container">
-    <router-view />
+  <div class="card">
+    <div class="card-content">
+      <router-view />
+    </div>
   </div>
 </template>
