@@ -35,7 +35,7 @@ export default defineComponent({
 
 <template>
   <Nav />
-  <main style="flex: 1">
+  <main style="flex: 1" class="m-5">
     <Suspense>
       <router-view />
       <template #fallback> Loading... </template>

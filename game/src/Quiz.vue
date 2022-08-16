@@ -52,8 +52,8 @@ export default defineComponent({
             question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
               }.`,
             answer:
-              false, //randomBoolean ||
-            // subject[randomAttribute[0]] == subject[randomAttribute[0]],
+              randomBoolean ||
+              subject[randomAttribute[0]] === distractor[randomAttribute[0]],
             image: subject.image_link,
           };
         }
@@ -90,7 +90,8 @@ export default defineComponent({
   <div v-else class="card">
     <div class="card-image">
       <figure class="image is-16by9">
-        <img v-bind:src="data[current].image" alt="Subject of the question" class="is-rounded" />
+        <img v-bind:src="data[current].image" alt="Subject of the question"
+          style="aspect-ratio: 16 / 9; object-fit: cover" />
       </figure>
     </div>
     <div class="card-content">

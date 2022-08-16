@@ -19,6 +19,7 @@ export default defineComponent({
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <img alt="Animal House Logo" src="logo.png" width="112" height="28" />
+        Animal House Game
       </router-link>
 
       <a role="button" class="navbar-burger" v-bind:class="{ 'is-active': opened }" v-on:click="opened = !opened"
