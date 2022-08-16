@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
+import fetch from "shared/fetch";
 
 interface TrueOrFalse {
   question: string;
@@ -11,6 +12,7 @@ export default defineComponent({
   data() {
     return reactive({
       amount: 5,
+      highscore: 0,
       current: 0,
       isLoading: true,
       error: null,
@@ -44,13 +46,14 @@ export default defineComponent({
           let randomBoolean = Math.random() >= 0.5,
             randomAttribute =
               attributesToQuestions[
-              Math.floor(Math.random() * attributesToQuestions.length)
+                Math.floor(Math.random() * attributesToQuestions.length)
               ],
             subject = animals[2 * i],
             distractor = animals[2 * i + 1];
           questions[i] = {
-            question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
-              }.`,
+            question: `The ${subject.name}'s ${randomAttribute[1]} ${
+              (randomBoolean ? subject : distractor)[randomAttribute[0]]
+            }.`,
             answer:
               randomBoolean ||
               subject[randomAttribute[0]] === distractor[randomAttribute[0]],
@@ -60,9 +63,10 @@ export default defineComponent({
         return questions;
       }
       this.data = animalsToQuestions(await res.json());
+      this.highscore = (await fetch("game/score/quiz")).score;
       this.isLoading = false;
-    } catch (e) {
-      this.error = e as any;
+    } catch (e: any) {
+      this.error = e;
       this.isLoading = false;
     }
   },
@@ -90,18 +94,28 @@ export default defineComponent({
   <div v-else class="card">
     <div class="card-image">
       <figure class="image is-1by1">
-        <img v-bind:src="data[current].image" alt="Subject of the question"
-          style="aspect-ratio: 1 / 1; object-fit: cover" />
+        <img
+          v-bind:src="data[current].image"
+          alt="Subject of the question"
+          style="aspect-ratio: 1 / 1; object-fit: cover"
+        />
       </figure>
     </div>
     <div class="card-content">
       <div class="content">
+        <p>
+          {{ highscore }}
+        </p>
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>
           {{ data[current].question }}
         </p>
       </div>
-      <progress class="progress is-primary" v-bind:value="current" v-bind:max="amount"></progress>
+      <progress
+        class="progress is-primary"
+        v-bind:value="current"
+        v-bind:max="amount"
+      ></progress>
     </div>
     <footer class="card-footer">
       <a href="#" @click="answer(true)" class="card-footer-item">True</a>
