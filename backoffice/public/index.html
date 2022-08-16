@@ -6,78 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Starter Snowpack App" />
   <title>Starter Snowpack App</title>
+  <link rel="stylesheet" href="%PUBLIC_URL%/style.css" />
 </head>
 
 <body>
   <div id="root"></div>
-  <script type="module">
-    import {render, h, useReducer, useState} from "%PUBLIC_URL%/dist/h.js";
-    const c = ({initial}) => {
-      const [items, setItems] = useState(initial);
-      return h(
-        "div",
-        {},
-        h(
-          "ul",
-          {},
-          items.map((item) => h("li", {}, item)),
-          h(
-            "button",
-            {
-              onClick: () =>
-                setItems(items.concat(`item #${items.length + 1}`)),
-            },
-            "add an item"
-          )
-        )
-      );
-    };
-    const b = (props, children) => {
-      return h(
-        "div",
-        {},
-        h(
-          "div",
-          props,
-          h(
-            "p",
-            {},
-            "this content should stay static while the rest of the page updates"
-          ),
-          children
-        )
-      );
-    };
-    const reducer = (state, action) => {
-      switch (action) {
-        case "+":
-          return state + 1;
-        case "-":
-          return state - 1;
-        default:
-          return state;
-      }
-    };
-    const a = () => {
-      const [counter, dispatch] = useReducer(reducer, 0);
-
-      return h(
-        "div",
-        {className: "testclass"},
-        h("button", {onClick: () => dispatch("+")}, "+"),
-        h("button", {onClick: () => dispatch("-")}, "-"),
-        h("h1", {}, "counter: ", counter)
-      );
-    };
-    render(
-      h(
-        b,
-        {className: "b-class"},
-        h(a, {}),
-        h(c, {initial: ["item #1"]})
-      ),
-      document.getElementById("root")
-    );
-  </script>
+  <script type="module" src="%PUBLIC_URL%/dist/index.js"></script>
 </body>
 </hmtl>

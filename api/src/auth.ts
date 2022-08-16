@@ -6,7 +6,7 @@ import { promisify } from "util";
 import { Secret, sign, verify } from "jsonwebtoken";
 
 import json from "./res";
-import type { UserLevel } from "./models/user";
+import type { UserLevel } from "shared/models/user";
 import { JWT_SECRET } from "../../endpoints.json";
 
 export const RegisterData = z.object({
@@ -49,7 +49,7 @@ export const register =
       const data = req.body as IRegisterData;
       const result = await registerUser(data);
       if ((result as AuthError).message) json(res, 500, result);
-      else json(res, 500, jwtResponse(result as AuthUser));
+      else json(res, 200, jwtResponse(result as AuthUser));
     };
 
 export const login =
@@ -63,7 +63,7 @@ export const login =
       const data = req.body as ILoginData;
       const result = await findUser(data.username, data.password);
       if ((result as AuthError).message) json(res, 500, result);
-      else json(res, 500, jwtResponse(result as AuthUser));
+      else json(res, 200, jwtResponse(result as AuthUser));
     };
 
 export const authMiddleware: Middleware = async (req, _, next) => {

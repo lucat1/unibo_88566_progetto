@@ -28,6 +28,11 @@
  */
 
 /**
+ * The children props
+ * @typedef {Array.VNode} Children
+ */
+
+/**
  * Creates a virtual dom node for the given element/props combination.
  * @param {VTag} tag
  * @param {object} props An object of HTML props.
@@ -75,6 +80,10 @@ export const render = (vnode, root) => {
       hooksIndex = 0;
       child = child.tag(child.props, child.children);
       root.__hooks[key] = hooks;
+      if (!child)
+        throw new TypeError(
+          "You lickely forgot to return from one of you components"
+        );
     }
     let node = root.childNodes[i];
     if (
@@ -98,6 +107,8 @@ export const render = (vnode, root) => {
           for (const k in child.props[key]) node.style[k] = child.props[key][k];
         else if (key.startsWith("on") && typeof child.props[key] == "function")
           listen(node, key.replace(/^on/, "").toLowerCase(), child.props[key]);
+        else if (typeof child.props[key] == "boolean")
+          node.toggleAttribute(key, child.props[key]);
         else node.setAttribute(key, child.props[key]);
 
       if (child.children) render(child.children, node);
@@ -110,9 +121,12 @@ export const render = (vnode, root) => {
     )
   );
 
+  // if (!root.__hooks[element])
   for (const element in currentHooks)
-    if (!root.__hooks[element])
-      currentHooks[element].map((h) => h.cleanup && h.cleanup());
+    if (root.__hooks[element])
+      currentHooks[element].map((h) => {
+        h.cleanup && h.cleanup();
+      });
 
   /* Remove hooks from any unmounted component */
   let child;
@@ -184,7 +198,7 @@ const changed = (a, b) => !a || b.some((arg, i) => arg !== a[i]);
 export const useEffect = (callback, watch = []) => {
   const hook = getHook();
   if (changed(hook.value, watch)) {
-    hook.value = args;
+    hook.value = watch;
     hook.callback = callback;
   }
 };

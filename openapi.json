@@ -35,9 +35,7 @@
   "paths": {
     "/auth/id": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Get a new UUID for a device",
         "description": "Returns an UUID for the current unauthorized session",
         "responses": {
@@ -62,9 +60,7 @@
     },
     "/auth/register": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Register a new account with username, password, and first name",
         "description": "Lets a user register a new account with the minimum data required, but allows to provide extra fields such as lastName and city. Returns a bearer JWT token",
         "requestBody": {
@@ -77,11 +73,15 @@
                     "$ref": "#/components/schemas/User"
                   },
                   {
-                    "required": [
-                      "username",
-                      "password",
-                      "firstName"
-                    ]
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": ["username", "password", "firstName"]
                   }
                 ]
               }
@@ -116,9 +116,7 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Login with username and password",
         "description": "Lets a user login with its credentials and returns a JWT bearer token",
         "requestBody": {
@@ -167,9 +165,7 @@
     },
     "/auth/password": {
       "patch": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Change the currently logged in user's password",
         "requestBody": {
           "required": true,
@@ -204,9 +200,7 @@
     },
     "/auth/me": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Get the currently logged in user",
         "responses": {
           "200": {
@@ -228,20 +222,11 @@
         }
       },
       "delete": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Delete the currently logged in user",
         "responses": {
           "200": {
-            "description": "Request fulfilled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "Request fulfilled"
           },
           "401": {
             "description": "Authentication required"
@@ -252,9 +237,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Update your profile information",
         "requestBody": {
           "required": true,
@@ -317,9 +300,7 @@
     },
     "/game/score/{game}": {
       "patch": {
-        "tags": [
-          "game"
-        ],
+        "tags": ["game"],
         "summary": "Update your score for a given game",
         "parameters": [
           {
@@ -375,9 +356,7 @@
         }
       },
       "get": {
-        "tags": [
-          "game"
-        ],
+        "tags": ["game"],
         "summary": "Get your score for a given game",
         "parameters": [
           {
@@ -419,9 +398,7 @@
     },
     "/game/leaderboard/{game}": {
       "get": {
-        "tags": [
-          "game"
-        ],
+        "tags": ["game"],
         "summary": "Get the leaderboard of all players for a given game with pagination",
         "parameters": [
           {
@@ -477,9 +454,7 @@
     },
     "/community/boards/": {
       "get": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Get the forum structure, i.e. a listing of boards (subforums)",
         "responses": {
           "200": {
@@ -501,9 +476,7 @@
         }
       },
       "put": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Create a new board for the community to post in",
         "requestBody": {
           "required": true,
@@ -545,9 +518,7 @@
     },
     "/community/boards/{board}/": {
       "get": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Get a specific board, including a paging of its posts",
         "parameters": [
           {
@@ -605,9 +576,7 @@
         }
       },
       "put": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Post a new message in the specified board",
         "parameters": [
           {
@@ -618,35 +587,18 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "photos",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "binary"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -667,9 +619,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Delete a whole community board, including all of its posts",
         "parameters": [
           {
@@ -695,9 +645,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Update an existing board name and description",
         "parameters": [
           {
@@ -751,13 +699,20 @@
         }
       }
     },
-    "/community/posts/{post}": {
+    "/community/boards/{board}/{post}": {
       "delete": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Delete a single post",
         "parameters": [
+          {
+            "name": "board",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           {
             "name": "post",
             "in": "path",
@@ -781,13 +736,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "community"
-        ],
+        "tags": ["community"],
         "summary": "Edit a previously published post",
         "parameters": [
           {
-            "name": "post",
+            "name": "board",
             "in": "path",
             "required": true,
             "schema": {
@@ -796,31 +749,25 @@
             }
           },
           {
-            "name": "title",
-            "in": "query",
+            "name": "post",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "photos",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "binary"
-              }
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Request fulfilled",
@@ -846,9 +793,7 @@
     },
     "/store/products/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the products catalogue, i.e. a listing of every product",
         "parameters": [
           {
@@ -894,9 +839,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Insert a new product into the store",
         "requestBody": {
           "required": true,
@@ -956,9 +899,7 @@
     },
     "/store/products/{product}": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a single product",
         "parameters": [
           {
@@ -994,9 +935,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Deletes a product from the store",
         "parameters": [
           {
@@ -1022,9 +961,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Update an existing product in the store",
         "parameters": [
           {
@@ -1090,9 +1027,7 @@
     },
     "/store/pets/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the pets catalogue, i.e. a listing of every pet",
         "parameters": [
           {
@@ -1138,9 +1073,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Insert a new pet into the store",
         "requestBody": {
           "required": true,
@@ -1200,9 +1133,7 @@
     },
     "/store/pets/{pet}": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a single pet from the store",
         "parameters": [
           {
@@ -1238,9 +1169,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Remove a pet from the store",
         "parameters": [
           {
@@ -1266,9 +1195,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Update an existing pet in the store",
         "parameters": [
           {
@@ -1334,9 +1261,7 @@
     },
     "/store/orders/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a listing of the orders visible to you",
         "parameters": [
           {
@@ -1382,9 +1307,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Place a new order",
         "requestBody": {
           "required": true,
@@ -1430,9 +1353,7 @@
     },
     "/store/orders/{order}": {
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Update an order's status",
         "parameters": [
           {
@@ -1454,12 +1375,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "placed",
-                      "approved",
-                      "rejected",
-                      "delivered"
-                    ]
+                    "enum": ["placed", "approved", "rejected", "delivered"]
                   }
                 }
               }
@@ -1488,9 +1404,7 @@
     },
     "/store/services/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the services catalogue, i.e. a listing of every service (filtered search is available)",
         "parameters": [
           {
@@ -1570,9 +1484,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Insert a new service into the store",
         "requestBody": {
           "required": true,
@@ -1652,9 +1564,7 @@
     },
     "/store/services/{service}": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a single service",
         "parameters": [
           {
@@ -1697,9 +1607,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Delete a service from the store",
         "parameters": [
           {
@@ -1725,9 +1633,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Update an existing service in the store",
         "parameters": [
           {
@@ -1814,9 +1720,7 @@
     },
     "/store/appointments/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a listing of the appointments visible to you",
         "parameters": [
           {
@@ -1869,9 +1773,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Make a new appointment",
         "requestBody": {
           "required": true,
@@ -1919,9 +1821,7 @@
     },
     "/store/appointments/{appointment}": {
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Cancel an appointment",
         "parameters": [
           {
@@ -1949,9 +1849,7 @@
     },
     "/store/categories/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the categories catalogue, i.e. a listing of every category",
         "responses": {
           "200": {
@@ -1973,9 +1871,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Add a category to the catalogue",
         "requestBody": {
           "required": true,
@@ -2014,9 +1910,7 @@
     },
     "/store/categories/{category}": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the specified category",
         "parameters": [
           {
@@ -2049,9 +1943,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Delete a category from the store",
         "parameters": [
           {
@@ -2077,9 +1969,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Edit a category in the catalogue",
         "parameters": [
           {
@@ -2132,9 +2022,7 @@
     },
     "/store/categories/{category}/subcategories/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a listing of the subcategories associated to a certain category",
         "parameters": [
           {
@@ -2173,9 +2061,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Add a subcategory to a category",
         "parameters": [
           {
@@ -2228,9 +2114,7 @@
     },
     "/store/subcategories/{subcategory}": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get the specified subcategory",
         "parameters": [
           {
@@ -2266,9 +2150,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Delete a subcategory from the store",
         "parameters": [
           {
@@ -2294,9 +2176,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Edit a subcategory in the catalogue",
         "parameters": [
           {
@@ -2349,9 +2229,7 @@
     },
     "/store/locations/": {
       "get": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Get a listing of every location",
         "parameters": [
           {
@@ -2397,9 +2275,7 @@
         }
       },
       "put": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Register a new location",
         "requestBody": {
           "required": true,
@@ -2441,9 +2317,7 @@
     },
     "/store/locations/{location}": {
       "delete": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Delete a location",
         "parameters": [
           {
@@ -2469,9 +2343,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "store"
-        ],
+        "tags": ["store"],
         "summary": "Update an existing location",
         "parameters": [
           {
@@ -2610,9 +2482,7 @@
       },
       "GameType": {
         "type": "string",
-        "enum": [
-          "quiz"
-        ]
+        "enum": ["quiz"]
       },
       "Location": {
         "type": "object",
@@ -2727,12 +2597,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "placed",
-              "approved",
-              "rejected",
-              "delivered"
-            ]
+            "enum": ["placed", "approved", "rejected", "delivered"]
           }
         }
       },
@@ -2826,7 +2691,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "binary"
+              "format": "base64"
             }
           },
           "author": {
@@ -2931,10 +2796,7 @@
       },
       "SortOrder": {
         "type": "number",
-        "enum": [
-          -1,
-          1
-        ]
+        "enum": [-1, 1]
       },
       "Subcategory": {
         "type": "object",
@@ -2967,11 +2829,7 @@
           "level": {
             "type": "integer",
             "description": "User subscription or role",
-            "enum": [
-              0,
-              1,
-              2
-            ]
+            "enum": [0, 1, 2]
           },
           "preferences": {
             "type": "array",

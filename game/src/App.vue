@@ -35,9 +35,10 @@ export default defineComponent({
 
 <template>
   <Nav />
-  <div class="card">
-    <div class="card-content">
+  <main style="flex: 1">
+    <Suspense>
       <router-view />
-    </div>
-  </div>
+      <template #fallback> Loading... </template>
+    </Suspense>
+  </main>
 </template>

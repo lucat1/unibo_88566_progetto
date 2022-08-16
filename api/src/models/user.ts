@@ -1,26 +1,8 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "../../../endpoints.json";
-import type { IPet } from "./pet";
-
-export enum UserLevel {
-  BASIC,
-  VIP,
-  MANAGER,
-}
-
-export interface IUser extends Document {
-  username: string;
-  password: string;
-  level: UserLevel;
-  firstName: string;
-  lastName?: string;
-  city?: string;
-  avatar?: string;
-
-  pets: IPet[];
-}
+import { IUser, UserLevel } from "shared/models/user";
 
 const UserSchema = new Schema<IUser>({
   _id: { type: String, default: v4 },

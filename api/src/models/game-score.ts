@@ -1,15 +1,6 @@
-import { Schema, Document, model, PaginateModel, ObjectId } from "mongoose";
+import { Schema, model, PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate";
-
-export enum GameType {
-  QUIZ = "quiz",
-}
-
-export interface IGameScore extends Document {
-  user: ObjectId;
-  game: GameType;
-  score: number;
-}
+import { IGameScore, GameType } from "shared/models/game-score";
 
 const GameScoreSchema = new Schema<IGameScore>({
   user: { type: String, required: true },

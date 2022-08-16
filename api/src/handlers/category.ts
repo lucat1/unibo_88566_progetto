@@ -96,7 +96,6 @@ export const setSubcategory: RequestHandler = async (req, res) => {
   const updated = await Subcategory.findOneAndUpdate({ _id: id }, patch, {
     new: true,
   }).exec();
-  console.log("updated", updated);
   if (updated == null)
     json(res, 404, {
       message: "Invalid subcategory id",

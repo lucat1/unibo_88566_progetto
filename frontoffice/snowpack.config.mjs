@@ -21,6 +21,7 @@ export default {
   devOptions: {
     port: 4000,
   },
+  workspaceRoot: "..",
   buildOptions: {
     baseUrl: endpoints.FRONTOFFICE_ENDPOINT,
   },

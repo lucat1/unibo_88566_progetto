@@ -2,7 +2,8 @@ import type { RequestHandler, Request } from "express";
 import { z } from "zod";
 
 import json from "../res";
-import { GameScore, GameType, shadow } from "../models/game-score";
+import { GameType } from "shared/models/game-score";
+import { GameScore, shadow } from "../models/game-score";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery } from "./pagination";
 
