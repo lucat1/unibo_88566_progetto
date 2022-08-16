@@ -1,7 +1,7 @@
 import { Schema, Document, model } from "mongoose";
 import { v4 } from "node-uuid";
 import { autoIncrement } from "mongoose-plugin-autoinc-fix";
-import type { IUser } from "./user";
+import type { IUser } from "shared/models/user";
 
 export interface IPost extends Document<number> {
   name: string;

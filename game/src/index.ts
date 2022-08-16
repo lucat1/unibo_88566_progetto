@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import router from "./router";
 import App from "./App.vue";
-import { plugin, defaultConfig } from "@formkit/vue";
+const vue = await import("@formkit/vue");
 
-createApp(App).use(router).use(plugin, defaultConfig).mount("#root");
+createApp(App).use(router).use(vue.plugin, vue.defaultConfig).mount("#root");

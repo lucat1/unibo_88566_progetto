@@ -89,9 +89,9 @@ export default defineComponent({
   </div>
   <div v-else class="card">
     <div class="card-image">
-      <figure class="image is-16by9">
+      <figure class="image is-1by1">
         <img v-bind:src="data[current].image" alt="Subject of the question"
-          style="aspect-ratio: 16 / 9; object-fit: cover" />
+          style="aspect-ratio: 1 / 1; object-fit: cover" />
       </figure>
     </div>
     <div class="card-content">
