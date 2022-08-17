@@ -28,8 +28,12 @@ export const useContext = (ctx) => {
   useEffect(() => {
     const handler = () => setVal(ctx.val());
 
+    console.log("add1");
     ctx.on(handler);
-    return () => ctx.off(handler);
+    return () => {
+      console.log("del1");
+      ctx.off(handler);
+    };
   }, [setVal]);
   return [val, ctx.set];
 };

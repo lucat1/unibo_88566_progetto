@@ -61,7 +61,7 @@ let forceRender, hooks, hooksIndex;
  * @param {HTMLElement} root The DOM root target.
  */
 export const render = (vnode, root) => {
-  const currentHooks = root.__hooks || {};
+  const prevHooks = root.__hooks || {};
   root.__hooks = {};
   const ids = {};
   const vlist = []
@@ -76,7 +76,7 @@ export const render = (vnode, root) => {
       const key =
         (child.props && child.props.key) ||
         "" + child.tag + (ids[child.tag] = (ids[child.tag] || 0) + 1);
-      hooks = currentHooks[key] || [];
+      hooks = prevHooks[key] || [];
       hooksIndex = 0;
       child = child.tag(child.props, child.children);
       root.__hooks[key] = hooks;
@@ -121,10 +121,9 @@ export const render = (vnode, root) => {
     )
   );
 
-  // if (!root.__hooks[element])
-  for (const element in currentHooks)
-    if (root.__hooks[element])
-      currentHooks[element].map((h) => {
+  for (const element in prevHooks)
+    if (!root.__hooks[element])
+      prevHooks[element].map((h) => {
         h.cleanup && h.cleanup();
       });
 

@@ -1,7 +1,8 @@
-import { h, useState, useEffect } from "./h";
+import { h, useEffect } from "./h";
+import { createContext, useContext } from "./ctx";
 
 // Having a context would be much safer (and could allow for nested routers)
-let setUrl = null;
+const urlContext = createContext(window.location.pathname);
 
 /**
  * The children props
@@ -25,11 +26,8 @@ const match = (expr, url) =>
  * @param {string} url The url to navigate to
  */
 export const navigate = (url) => {
-  if (setUrl == null)
-    throw new TypeError("called navigate() outside of a router");
-
   window.history.pushState("", null, url);
-  setUrl(url);
+  urlContext.set(url);
 };
 
 /**
@@ -37,11 +35,8 @@ export const navigate = (url) => {
  * @param {string} url The url to redirect to
  */
 export const redirect = (url) => {
-  if (setUrl == null)
-    throw new TypeError("called redirect() outside of a router");
-
   window.history.replaceState("", null, url);
-  setUrl(url);
+  urlContext.set(url);
 };
 
 /**
@@ -55,14 +50,21 @@ export const Router = (_, children) => {
     if (child.tag != Route)
       throw new TypeError("Router acceps only some Route(s) as children");
 
-  const [url, s] = useState(window.location.pathname);
+  const [url, setUrl] = useContext(urlContext);
+  console.log(url);
   useEffect(() => {
-    setUrl = s;
-    const handlePop = (_) => s(window.location.pathname);
+    const handlePop = (_) => {
+      console.log("pop");
+      setUrl(window.location.pathname);
+    };
+    console.log("add");
     window.addEventListener("popstate", handlePop);
 
-    return () => window.removeEventListener("popstate", handlePop);
-  }, [s]);
+    return () => {
+      console.log("del");
+      window.removeEventListener("popstate", handlePop);
+    };
+  }, [setUrl]);
   const route = children.filter((route) => match(route.props.path, url));
 
   if (route.length > 0) return route[0];
