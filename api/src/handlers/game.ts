@@ -36,13 +36,13 @@ const getPair = (req: Request): [string, string] => {
 };
 
 export const GameBody = z.object({
-  value: z.number().min(1),
+  score: z.number().min(1),
 });
 export type IGameBody = z.infer<typeof GameBody>;
 
 export const setScore: RequestHandler = async (req, res) => {
   const [user, game] = getPair(req);
-  const { value } = req.body as IGameBody;
+  const { score: value } = req.body as IGameBody;
 
   let score =
     (await GameScore.findOne({ user, game }).exec()) ||
