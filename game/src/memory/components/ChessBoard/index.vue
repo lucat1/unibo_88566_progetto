@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "pinia";
 import { ICard, IStatus } from "../../IType";
 import { GameStoreKey } from "../../stores";
 import Card from "./Card.vue";

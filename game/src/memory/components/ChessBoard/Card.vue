@@ -5,7 +5,7 @@
       <img v-if="card.name === 'baked-potato'" class="front" src="../../assets/baked-potato.png" />
       <img v-if="card.name === 'dinosaur'" class="front" src="../../assets/dinosaur.png" />
       <img v-if="card.name === 'kronos'" class="front" src="../../assets/kronos.png" />
-      <img v-if="card.name === 'rocket'" class="vue" ; import { useStore } from "vuex" ; import { ICard, IStatus }
+      <img v-if="card.name === 'rocket'" class="vue" ; import { useStore } from "pinia" ; import { ICard, IStatus }
         from "../../IType" ; import { GameStoreKey } from "@/stores" ; import Card from "./Card.vue" ; export default
         defineComponent({ name: "ChessBoard" , components: { Card }, setup: ()=> {
       let lastCard = ref<ICard | null>(null);

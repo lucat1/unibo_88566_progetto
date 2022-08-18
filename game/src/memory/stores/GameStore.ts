@@ -1,25 +1,29 @@
-import { InjectionKey } from "vue";
-import { createStore, Store } from "vuex";
-import { ICard, IState, IStatus } from "../IType";
+import { defineStore } from "pinia";
+import { ICard, IStatus } from "../IType";
 import {
   getHighestRecord,
   saveHighestRecord,
   shuffleAllCards,
 } from "../helper";
-import CountTimer from "./CountTimer";
 
-export const GameStoreKey: InjectionKey<Store<IState>> = Symbol();
+export interface GameScore {
+  nonMatchedPairs: number;
+  highestRecord: number;
+  status: IStatus;
+  cards: ICard[];
+  timeCost: number;
+  timerId?: NodeJS.Timer;
+}
 
-const GameStore = createStore<IState>({
-  state() {
-    return {
-      nonMatchedPairs: 8,
-      highestRecord: getHighestRecord(),
-      status: IStatus.READY,
-      cards: shuffleAllCards(),
-      timeCost: 0,
-    };
-  },
+export const useGameStore = defineStore("memory", {
+  state: (): GameScore => ({
+    nonMatchedPairs: 8,
+    highestRecord: getHighestRecord(),
+    status: IStatus.READY,
+    cards: shuffleAllCards(),
+    timeCost: 0,
+    timerId: undefined,
+  }),
   getters: {
     nonMatchedPairs: (s) => s.nonMatchedPairs,
     highestRecord: (s) => s.highestRecord,
@@ -28,48 +32,51 @@ const GameStore = createStore<IState>({
     timeCost: (s) => s.timeCost,
   },
   actions: {
-    updateStatus: (context, status: IStatus) => {
-      context.commit("changeStatus", status);
-      CountTimer.tryStartGame(status, context);
-      CountTimer.tryEndGame(status, context);
+    updateStatus(status: IStatus) {
+      this.status = status;
+      switch (this.status) {
+        case IStatus.PLAYING:
+          this.timerId = setInterval(() => {
+            this.count();
+          }, 1000);
+          break;
+        case IStatus.PASSED:
+          clearInterval(this.timerId!);
+          this.updateTopScore();
+          break;
+      }
+      if (status === IStatus.PLAYING) {
+      }
+      if (status === IStatus.PASSED) {
+      }
     },
-    flipsDelay: (
-      context,
-      { timeout, cards }: { timeout: number; cards: ICard[] }
-    ) => {
+    flipsDelay({ timeout, cards }: { timeout: number; cards: ICard[] }) {
       setTimeout(() => {
-        context.commit("flips", cards);
+        this.flips(cards);
       }, timeout);
     },
-  },
-  mutations: {
-    reset: (state) => {
-      state.nonMatchedPairs = 8;
-      state.highestRecord = getHighestRecord();
-      state.cards = shuffleAllCards();
-      state.status = IStatus.READY;
-      state.timeCost = 0;
+
+    reset() {
+      this.$reset();
     },
-    counting: (state) => {
-      state.timeCost = state.timeCost + 1;
+    count() {
+      this.timeCost = this.timeCost + 1;
     },
-    updateNonMatchedPairs: (state, payload) => {
-      state.nonMatchedPairs = state.nonMatchedPairs + payload;
+    flips(cards: ICard[]) {
+      this.cards = this.cards.map((c) =>
+        cards.some((cc) => cc.id === c.id)
+          ? {
+              ...c,
+              flipped: !c.flipped,
+            }
+          : c
+      );
     },
-    flips: (state, cards: ICard[]) => {
-      state.cards
-        .filter((c) => cards.some((cc) => cc.id === c.id))
-        .forEach((c) => {
-          c.flipped = !c.flipped;
-        });
+    updateNonMatchedPairs(payload: number) {
+      this.nonMatchedPairs = this.nonMatchedPairs + payload;
     },
-    changeStatus: (state, status: IStatus) => {
-      state.status = status;
-    },
-    updateTopScore(state) {
-      saveHighestRecord(state.timeCost);
+    updateTopScore() {
+      saveHighestRecord(this.timeCost);
     },
   },
 });
-
-export { GameStore };

@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "pinia";
 import { GameStoreKey } from "../../stores";
 export default defineComponent({
   name: "Score",

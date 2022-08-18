@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "pinia";
 import { ScoreBoard, ChessBoard, GameStatus } from "./components";
 
 import { GameStoreKey } from "./stores";

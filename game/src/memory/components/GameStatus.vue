@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "pinia";
 import { GameStoreKey } from "../stores";
 import { IStatus } from "../IType";
 
