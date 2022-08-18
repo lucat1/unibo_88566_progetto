@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import fetch from "shared/fetch";
+import internalFetch from "shared/fetch";
+import type { IGameScore } from "shared/models/game-score";
 
 interface TrueOrFalse {
   question: string;
@@ -46,14 +47,13 @@ export default defineComponent({
           let randomBoolean = Math.random() >= 0.5,
             randomAttribute =
               attributesToQuestions[
-                Math.floor(Math.random() * attributesToQuestions.length)
+              Math.floor(Math.random() * attributesToQuestions.length)
               ],
             subject = animals[2 * i],
             distractor = animals[2 * i + 1];
           questions[i] = {
-            question: `The ${subject.name}'s ${randomAttribute[1]} ${
-              (randomBoolean ? subject : distractor)[randomAttribute[0]]
-            }.`,
+            question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
+              }.`,
             answer:
               randomBoolean ||
               subject[randomAttribute[0]] === distractor[randomAttribute[0]],
@@ -63,7 +63,9 @@ export default defineComponent({
         return questions;
       }
       this.data = animalsToQuestions(await res.json());
-      this.highscore = (await fetch("game/score/quiz")).score;
+      this.highscore = (
+        await internalFetch<IGameScore>(`game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`)
+      ).score;
       this.isLoading = false;
     } catch (e: any) {
       this.error = e;
@@ -93,29 +95,22 @@ export default defineComponent({
   </div>
   <div v-else class="card">
     <div class="card-image">
-      <figure class="image is-1by1">
-        <img
-          v-bind:src="data[current].image"
-          alt="Subject of the question"
-          style="aspect-ratio: 1 / 1; object-fit: cover"
-        />
+      <figure class="image is-16by9">
+        <img v-bind:src="data[current].image" alt="Subject of the question"
+          style="aspect-ratio: 1 / 1; object-fit: cover" />
       </figure>
     </div>
     <div class="card-content">
       <div class="content">
         <p>
-          {{ highscore }}
+          Your highscore: {{ highscore }}
         </p>
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>
           {{ data[current].question }}
         </p>
       </div>
-      <progress
-        class="progress is-primary"
-        v-bind:value="current"
-        v-bind:max="amount"
-      ></progress>
+      <progress class="progress is-primary" v-bind:value="current" v-bind:max="amount"></progress>
     </div>
     <footer class="card-footer">
       <a href="#" @click="answer(true)" class="card-footer-item">True</a>
