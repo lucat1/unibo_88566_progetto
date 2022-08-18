@@ -2,6 +2,7 @@
 import { defineComponent, reactive } from "vue";
 import internalFetch from "shared/fetch";
 import type { IGameScore } from "shared/models/game-score";
+import Leaderboard from "./leaderboard/Leaderboard";
 
 interface TrueOrFalse {
   question: string;
@@ -64,7 +65,9 @@ export default defineComponent({
       }
       this.data = animalsToQuestions(await res.json());
       this.highscore = (
-        await internalFetch<IGameScore>(`game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`)
+        await internalFetch<IGameScore>(
+          `game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`
+        )
       ).score;
       this.isLoading = false;
     } catch (e: any) {
@@ -73,10 +76,24 @@ export default defineComponent({
     }
   },
   methods: {
-    answer(myAnswer: boolean) {
+    async answer(myAnswer: boolean) {
       if (myAnswer == this.data[this.current].answer) ++this.result;
-      ++this.current;
+      if (++this.current == this.amount && this.result > this.highscore) {
+        console.log(
+          await internalFetch<IGameScore>(
+            `game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`,
+            {
+              method: "PATCH",
+              body: `{score:${this.result}}`,
+            }
+          )
+        );
+        this.highscore = this.result;
+      }
     },
+  },
+  components: {
+    Leaderboard,
   },
 });
 </script>
@@ -92,6 +109,7 @@ export default defineComponent({
   </div>
   <div v-else-if="current >= amount">
     <div class="notification is-primary">Result: {{ result }}</div>
+    <Leaderboard game="quiz" />
   </div>
   <div v-else class="card">
     <div class="card-image">
@@ -102,9 +120,7 @@ export default defineComponent({
     </div>
     <div class="card-content">
       <div class="content">
-        <p>
-          Your highscore: {{ highscore }}
-        </p>
+        <p>Your highscore: {{ highscore }}</p>
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>
           {{ data[current].question }}
