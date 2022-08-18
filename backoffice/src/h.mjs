@@ -115,17 +115,24 @@ export const render = (vnode, root) => {
     } else if (node.textContent != child) node.textContent = child;
   });
 
-  Object.values(root.__hooks).forEach((hooks) =>
-    hooks.forEach(
-      (h) => h.callback && ((h.cleanup = h.callback()), (h.callback = false))
-    )
-  );
+  for (const hooks of Object.values(root.__hooks))
+    for (const h of hooks)
+      if (h.callback) {
+        h.cleanup = h.callback();
+        h.callback = false;
+      }
+  // Object.values(root.__hooks).forEach((hooks) =>
+  //   hooks.forEach(
+  //     (h) => h.callback && ((h.cleanup = h.callback()), (h.callback = false))
+  //   )
+  // );
 
   for (const element in prevHooks)
-    if (!root.__hooks[element])
-      prevHooks[element].map((h) => {
-        h.cleanup && h.cleanup();
-      });
+    if (!(element in root.__hooks))
+      for (const h of prevHooks[element]) {
+        console.log(h, h.cleanup);
+        if (h.cleanup) h.cleanup();
+      }
 
   /* Remove hooks from any unmounted component */
   let child;

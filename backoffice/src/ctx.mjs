@@ -4,20 +4,20 @@ export const createContext = (init) => {
   let mitt = [];
   let val = init;
 
-  const emit = () => mitt.forEach((f) => f());
-
   return {
     val() {
       return val;
     },
     set(v) {
       val = v;
-      emit();
+      mitt.forEach((f) => f());
     },
     on(fn) {
+      console.log("(on) len", mitt.length);
       mitt.push(fn);
     },
     off(fn) {
+      console.log("(off) len", mitt.length);
       mitt = mitt.filter((f) => f != fn);
     },
   };
@@ -28,12 +28,8 @@ export const useContext = (ctx) => {
   useEffect(() => {
     const handler = () => setVal(ctx.val());
 
-    console.log("add1");
     ctx.on(handler);
-    return () => {
-      console.log("del1");
-      ctx.off(handler);
-    };
+    return () => ctx.off(handler);
   }, [setVal]);
   return [val, ctx.set];
 };

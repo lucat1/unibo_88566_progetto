@@ -51,7 +51,7 @@ export const Router = (_, children) => {
       throw new TypeError("Router acceps only some Route(s) as children");
 
   const [url, setUrl] = useContext(urlContext);
-  console.log(url);
+  // console.log(url);
   useEffect(() => {
     const handlePop = (_) => {
       console.log("pop");
