@@ -17,6 +17,7 @@ export default defineComponent({
       highscore: 0,
       current: 0,
       isLoading: true,
+      leaderboard: false,
       error: null,
       data: Array<TrueOrFalse>(),
       result: 0,
@@ -48,13 +49,14 @@ export default defineComponent({
           let randomBoolean = Math.random() >= 0.5,
             randomAttribute =
               attributesToQuestions[
-              Math.floor(Math.random() * attributesToQuestions.length)
+                Math.floor(Math.random() * attributesToQuestions.length)
               ],
             subject = animals[2 * i],
             distractor = animals[2 * i + 1];
           questions[i] = {
-            question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
-              }.`,
+            question: `The ${subject.name}'s ${randomAttribute[1]} ${
+              (randomBoolean ? subject : distractor)[randomAttribute[0]]
+            }.`,
             answer:
               randomBoolean ||
               subject[randomAttribute[0]] === distractor[randomAttribute[0]],
@@ -78,17 +80,22 @@ export default defineComponent({
   methods: {
     async answer(myAnswer: boolean) {
       if (myAnswer == this.data[this.current].answer) ++this.result;
-      if (++this.current == this.amount && this.result > this.highscore) {
+      if (++this.current == this.amount) {
+        this.highscore += this.result;
         console.log(
           await internalFetch<IGameScore>(
             `game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`,
             {
               method: "PATCH",
-              body: `{score:${this.result}}`,
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ score: this.highscore }),
             }
           )
         );
-        this.highscore = this.result;
+        this.leaderboard = true;
       }
     },
   },
@@ -109,13 +116,16 @@ export default defineComponent({
   </div>
   <div v-else-if="current >= amount">
     <div class="notification is-primary">Result: {{ result }}</div>
-    <Leaderboard game="quiz" />
+    <Leaderboard v-if="leaderboard" game="quiz" />
   </div>
   <div v-else class="card">
     <div class="card-image">
       <figure class="image is-16by9">
-        <img v-bind:src="data[current].image" alt="Subject of the question"
-          style="aspect-ratio: 1 / 1; object-fit: cover" />
+        <img
+          v-bind:src="data[current].image"
+          alt="Subject of the question"
+          style="aspect-ratio: 1 / 1; object-fit: cover"
+        />
       </figure>
     </div>
     <div class="card-content">
@@ -126,7 +136,11 @@ export default defineComponent({
           {{ data[current].question }}
         </p>
       </div>
-      <progress class="progress is-primary" v-bind:value="current" v-bind:max="amount"></progress>
+      <progress
+        class="progress is-primary"
+        v-bind:value="current"
+        v-bind:max="amount"
+      ></progress>
     </div>
     <footer class="card-footer">
       <a href="#" @click="answer(true)" class="card-footer-item">True</a>

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import Page from "./Page";
 
 export default defineComponent({
   props: {
@@ -9,15 +10,16 @@ export default defineComponent({
       default: 10,
     },
   },
-  async data() {
+  data() {
     return {
-      page: 0,
+      page: 1,
       max: 10,
     };
   },
   computed: {
-    min() {
-      return Math.max(0, this.page - 5);
+    pages() {
+      const min = Math.max(1, this.page - 5);
+      return Array.from({ length: this.max - min }).map((_, i) => min + i);
     },
   },
   methods: {
@@ -25,22 +27,19 @@ export default defineComponent({
       this.max = i;
     },
   },
+  components: { Page },
 });
 </script>
 
 <template>
   <h1>Leaderboard</h1>
   <Suspense>
-    <Page @pagescount="pagescount" :page="page" :game="game" />
+    <Page @pagescount="pagescount" :page="page" :game="game" :limit="limit" />
 
     <template #fallback> Loading... </template>
   </Suspense>
   <div>
-    <button
-      v-for="index in 10"
-      :key="index"
-      v-if="index > min + 1 && index < max + 1 && index < pages"
-    >
+    <button v-for="index in pages" :key="index">
       {{ index }}
     </button>
   </div>

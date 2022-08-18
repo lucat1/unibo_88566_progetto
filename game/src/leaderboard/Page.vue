@@ -4,19 +4,39 @@ import fetch from "shared/fetch";
 import type { IGameScorePaginated } from "shared/models/game-score";
 
 export default defineComponent({
+  emits: ["pagescount"],
   props: {
     page: Number,
     limit: Number,
     game: String,
   },
-  async data() {
+  async setup(props, context) {
     const { pages, docs } = await fetch<IGameScorePaginated>(
-      `game/leaderboad/${this.game}?page=${this.page}&limit=${this.limit}`
+      `game/leaderboard/${props.game}?page=${props.page}&limit=${props.limit}`
     );
-    this.$emit("pagescount", pages);
-    return docs;
+    context.emit("pagescount", pages);
+    return { docs };
   },
 });
 </script>
 
-<template></template>
+<template>
+  <table
+    class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+  >
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(entry, i) in docs">
+        <td>{{ limit * (page - 1) + i + 1 }}</td>
+        <td>{{ entry.user }}</td>
+        <td>{{ entry.score }}</td>
+      </tr>
+    </tbody>
+  </table>
+</template>
