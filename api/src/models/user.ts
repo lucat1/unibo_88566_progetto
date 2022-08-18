@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
-import { PASSWORD_SALT_ROUNDS } from "../../../endpoints.json";
+import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
 import { IUser, UserLevel } from "shared/models/user";
 
 const UserSchema = new Schema<IUser>({

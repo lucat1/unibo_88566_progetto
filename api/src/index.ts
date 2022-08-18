@@ -8,7 +8,7 @@ import { connect } from "mongoose";
 
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
+import { API_PORT, API_ENDPOINT, MONGO_URL } from "shared/endpoints";
 import { UserLevel } from "shared/models/user";
 import {
   register as registerWrapper,
@@ -113,13 +113,13 @@ const main = async () => {
   app.get("/api/auth/id", authNotRequired, id);
   app.post(
     "/api/auth/register",
-    authNotRequired,
+    // authNotRequired,
     validateBody(RegisterData),
     registerWrapper(register)
   );
   app.post(
     "/api/auth/login",
-    authNotRequired,
+    // authNotRequired,
     validateBody(LoginData),
     loginWrapper(login)
   );

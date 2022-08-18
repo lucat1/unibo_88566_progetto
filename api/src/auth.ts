@@ -4,10 +4,11 @@ import type { IncomingMessage } from "http";
 import { z } from "zod";
 import { promisify } from "util";
 import { Secret, sign, verify } from "jsonwebtoken";
+import { v4 } from "node-uuid";
 
 import json from "./res";
 import type { UserLevel } from "shared/models/user";
-import { JWT_SECRET } from "../../endpoints.json";
+import { JWT_SECRET } from "shared/endpoints";
 
 export const RegisterData = z.object({
   username: z.string(),
@@ -15,6 +16,7 @@ export const RegisterData = z.object({
   firstName: z.string(),
   lastName: z.string().optional().default(""),
   city: z.string().optional().default("World"),
+  fromuuid: z.string().uuid().nullable().optional().default(null),
 });
 export type IRegisterData = z.infer<typeof RegisterData>;
 

@@ -5,7 +5,7 @@ import NotFound from "./NotFound.vue";
 import Register from "./Register.vue";
 import Login from "./Login.vue";
 import Quiz from "./Quiz.vue";
-import Memry from "./Memory.vue";
+import Memory from "./Memory.vue";
 
 export const routes = [
   {

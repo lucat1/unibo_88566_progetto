@@ -3,17 +3,17 @@
     <aside class="menu">
       <p class="menu-label">Services</p>
       <ul class="menu-list">
-        <li><a href="./offers">Offers</a></li>
-        <li><a href="./trivia">Trivia</a></li>
-        <li><a href="./videos">Videos</a></li>
-        <li><a href="./help">Help</a></li>
+        <li><router-link to="/offers">Offers</router-link></li>
+        <li><router-link to="/trivia">Trivia</router-link></li>
+        <li><router-link to="/videos">Videos</router-link></li>
+        <li><router-link to="/help">Help</router-link></li>
       </ul>
       <p class="menu-label">Games</p>
       <ul class="menu-list">
-        <li><a href="./quiz">Quiz</a></li>
-        <li><a href="./memory">Memory</a></li>
-        <li><a href="./hangman">Hangman</a></li>
-        <li><a href="./spot">Spot</a></li>
+        <li><router-link to="/quiz">Quiz</router-link></li>
+        <li><router-link to="/memory">Memory</router-link></li>
+        <li><router-link to="/hangman">Hangman</router-link></li>
+        <li><router-link to="/spot">Spot</router-link></li>
       </ul>
     </aside>
   </div>

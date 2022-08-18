@@ -14,7 +14,8 @@ export const register = async (
   try {
     if ((await User.findOne({ username: data.username }).exec()) != null)
       return { message: "This username is already taken" };
-    const user = new User({ ...data, level: UserLevel.BASIC });
+
+    const user = new User({ _id: data.fromuuid ? data.fromuuid : v4(), ...data, level: UserLevel.BASIC })
     await user.save();
     return { _id: user._id, level: user.level };
   } catch (err) {

@@ -1,4 +1,4 @@
-import endpoint from "../../endpoints.json";
+import {API_ENDPOINT} from "./endpoints";
 import { getAuthToken, isAuthenticated } from "./auth";
 
 export interface Error<T> {
@@ -17,7 +17,7 @@ const fetch = async <T = Object>(
       Authorization: "Bearer " + getAuthToken()!,
     };
   }
-  const req = await window.fetch(endpoint.API_ENDPOINT + resource, init);
+  const req = await window.fetch(API_ENDPOINT + resource, init);
   const json = (await req.json()) as T;
   if (req.status != 200) throw json;
   return json;

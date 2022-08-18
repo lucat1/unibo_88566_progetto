@@ -15,6 +15,10 @@ export const setAuthToken = (token: string) => {
   localStorage.setItem(AUTH_TOKEN_KEY, token);
 };
 
+export const removeAuthToken = () => {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+};
+
 export const me = async (): Promise<IUser | null> => {
   if (!isAuthenticated()) return null;
   return await fetch<IUser>("auth/me");
