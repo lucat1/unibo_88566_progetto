@@ -5,6 +5,7 @@ import NotFound from "./NotFound.vue";
 import Register from "./Register.vue";
 import Login from "./Login.vue";
 import Quiz from "./Quiz.vue";
+import Memry from "./Memory.vue";
 
 export const routes = [
   {
@@ -16,6 +17,11 @@ export const routes = [
     path: "/quiz",
     name: "Quiz",
     component: Quiz,
+  },
+  {
+    path: "/memory",
+    name: "Memory",
+    component: Memory,
   },
   /* TODO: add more games */
   {

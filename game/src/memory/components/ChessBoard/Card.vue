@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, PropType } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "pinia";
 import type { ICard } from "../../IType";
 import { GameStoreKey } from "../../stores";
 
