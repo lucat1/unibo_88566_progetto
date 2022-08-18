@@ -43,4 +43,7 @@ export default defineComponent({
       {{ index }}
     </button>
   </div>
+  <router-link class="navbar-item" to="/quiz">
+    <button class="button is-primary">Retry</button>
+  </router-link>
 </template>
