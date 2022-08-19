@@ -6,7 +6,7 @@ import Register from "./Register.vue";
 import Login from "./Login.vue";
 import Quiz from "./Quiz.vue";
 import Memory from "./Memory.vue";
-import Leaderboard from './Leaderboard'
+import Leaderboard from "./Leaderboard";
 
 export const routes = [
   {

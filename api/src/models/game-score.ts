@@ -4,7 +4,6 @@ import { IGameScore, GameType } from "shared/models/game-score";
 
 const GameScoreSchema = new Schema<IGameScore>({
   user: { type: String, required: true },
-  username: String,
   game: {
     type: String,
     required: true,

@@ -1,4 +1,4 @@
-import type { Document } from 'mongoose'
+import type { Document } from "mongoose";
 import type { IStock } from "./stock";
 
 export interface IStore extends Document {
@@ -8,4 +8,3 @@ export interface IStore extends Document {
 
   warehouse: IStock[];
 }
-

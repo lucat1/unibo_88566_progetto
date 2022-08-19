@@ -1,4 +1,4 @@
-import {API_ENDPOINT} from "./endpoints";
+import { API_ENDPOINT } from "./endpoints";
 import { getAuthToken, isAuthenticated } from "./auth";
 
 export interface Error<T> {
@@ -23,7 +23,7 @@ const fetch = async <T = Object>(
   return json;
 };
 
-const JSON_MIME = "application/json"
+const JSON_MIME = "application/json";
 
 export const withOptions = (
   method: "POST" | "PATCH" | "PUT",

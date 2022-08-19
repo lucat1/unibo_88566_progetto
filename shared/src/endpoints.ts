@@ -1,4 +1,4 @@
-import endpoint from '../../endpoints.json'
+import endpoint from "../../endpoints.json";
 
 export const GAME_ENDPOINT = endpoint.GAME_ENDPOINT;
 export const FRONTOFFICE_ENDPOINT = endpoint.FRONTOFFICE_ENDPOINT;

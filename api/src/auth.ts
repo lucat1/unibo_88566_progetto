@@ -47,12 +47,12 @@ export const register =
   (
     registerUser: (user: IRegisterData) => Promise<AuthUser | AuthError>
   ): RequestHandler =>
-    async (req, res) => {
-      const data = req.body as IRegisterData;
-      const result = await registerUser(data);
-      if ((result as AuthError).message) json(res, 500, result);
-      else json(res, 200, jwtResponse(result as AuthUser));
-    };
+  async (req, res) => {
+    const data = req.body as IRegisterData;
+    const result = await registerUser(data);
+    if ((result as AuthError).message) json(res, 500, result);
+    else json(res, 200, jwtResponse(result as AuthUser));
+  };
 
 export const login =
   (
@@ -61,12 +61,12 @@ export const login =
       password: string
     ) => Promise<AuthUser | AuthError>
   ): RequestHandler =>
-    async (req, res) => {
-      const data = req.body as ILoginData;
-      const result = await findUser(data.username, data.password);
-      if ((result as AuthError).message) json(res, 500, result);
-      else json(res, 200, jwtResponse(result as AuthUser));
-    };
+  async (req, res) => {
+    const data = req.body as ILoginData;
+    const result = await findUser(data.username, data.password);
+    if ((result as AuthError).message) json(res, 500, result);
+    else json(res, 200, jwtResponse(result as AuthUser));
+  };
 
 export const authMiddleware: Middleware = async (req, _, next) => {
   try {
@@ -81,34 +81,34 @@ export const authMiddleware: Middleware = async (req, _, next) => {
       );
       (req as AuthenticatedRequest).user = payload;
     }
-  } catch (_) { }
+  } catch (_) {}
   next(null);
 };
 
 const generateAuthMiddleware =
   (required: boolean): Middleware =>
-    (req, res, next) => {
-      const isAuthenticated = (req as AuthenticatedRequest).user != undefined;
-      if (isAuthenticated == required) next();
-      else
-        json(res, 401, {
-          message: "Authentication error",
-          error: required
-            ? "Authentication is required"
-            : "Authentication is NOT required",
-        });
-    };
+  (req, res, next) => {
+    const isAuthenticated = (req as AuthenticatedRequest).user != undefined;
+    if (isAuthenticated == required) next();
+    else
+      json(res, 401, {
+        message: "Authentication error",
+        error: required
+          ? "Authentication is required"
+          : "Authentication is NOT required",
+      });
+  };
 export const authRequired = generateAuthMiddleware(true);
 export const authNotRequired = generateAuthMiddleware(false);
 export const priviledged =
   (level: UserLevel): Middleware =>
-    (req, res, next) => {
-      const { user } = req as AuthenticatedRequest;
-      const ul = user?.level || 0;
-      if (ul >= level) next(null);
-      else
-        json(res, 403, {
-          message: "Higher priviledges are required",
-          error: `Your level is ${ul}<${level}`,
-        });
-    };
+  (req, res, next) => {
+    const { user } = req as AuthenticatedRequest;
+    const ul = user?.level || 0;
+    if (ul >= level) next(null);
+    else
+      json(res, 403, {
+        message: "Higher priviledges are required",
+        error: `Your level is ${ul}<${level}`,
+      });
+  };

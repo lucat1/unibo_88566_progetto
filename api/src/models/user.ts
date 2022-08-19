@@ -20,7 +20,7 @@ const UserSchema = new Schema<IUser>({
 
   pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
 });
-UserSchema.pre("save", async function() {
+UserSchema.pre("save", async function () {
   this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
 });
 

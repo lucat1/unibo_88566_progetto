@@ -13,4 +13,4 @@ export interface IGameScore extends Document {
   score: number;
 }
 
-export type IGameScorePaginated = PaginateResult<IGameScore>
+export type IGameScorePaginated = PaginateResult<IGameScore>;

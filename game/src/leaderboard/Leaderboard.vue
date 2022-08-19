@@ -19,7 +19,7 @@ export default defineComponent({
   computed: {
     pages() {
       const min = Math.max(1, this.page - 5);
-      return Array.from({ length: this.max - min+1 }).map((_, i) => min + i);
+      return Array.from({ length: this.max - min + 1 }).map((_, i) => min + i);
     },
   },
   methods: {
@@ -27,8 +27,8 @@ export default defineComponent({
       this.max = i;
     },
     goto(i: number) {
-      this.page = i
-    }
+      this.page = i;
+    },
   },
   components: { Page },
 });
@@ -42,9 +42,14 @@ export default defineComponent({
   </Suspense>
   <div>
     <span class="subtitle">Pages:</span>
-    <button v-for="index in pages" :key="index" :disabled="index == page" @click="goto(index)">
+    <button
+      v-for="index in pages"
+      :key="index"
+      :disabled="index == page"
+      @click="goto(index)"
+    >
       {{ index }}
     </button>
   </div>
-  <router-link :to="'/'+game" class="button is-primary">Retry</router-link>
+  <router-link :to="'/' + game" class="button is-primary">Retry</router-link>
 </template>

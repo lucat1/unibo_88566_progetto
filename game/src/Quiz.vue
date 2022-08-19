@@ -13,7 +13,7 @@ interface TrueOrFalse {
 
 export default defineComponent({
   data() {
-    const auth = useAuth()
+    const auth = useAuth();
 
     return reactive({
       auth,
@@ -79,13 +79,15 @@ export default defineComponent({
       if (myAnswer == this.data[this.current].answer) ++this.result;
       if (++this.current == this.amount) {
         await internalFetch<IGameScore>(
-          this.auth.authenticated ? 'game/score/quiz' : `game/score/quiz?id=${getUUID()}`,
+          this.auth.authenticated
+            ? "game/score/quiz"
+            : `game/score/quiz?id=${getUUID()}`,
           withOptions("PATCH", { score: this.result })
-        )
-        router.push(`/leaderboard/quiz?score=${this.result}`)
+        );
+        router.push(`/leaderboard/quiz?score=${this.result}`);
       }
     },
-  }
+  },
 });
 </script>
 
@@ -108,7 +110,7 @@ export default defineComponent({
         />
       </figure>
     </div>
-    <div class="card-content">
+    <div v-if="current < amount" class="card-content">
       <div class="content">
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>

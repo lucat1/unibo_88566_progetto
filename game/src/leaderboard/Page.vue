@@ -17,15 +17,18 @@ export default defineComponent({
         `game/leaderboard/${game}?page=${page}&limit=${limit}`
       );
       context.emit("pagescount", pages);
-      return docs.map(entry => ({...entry, profileUrl: `${FRONTOFFICE_ENDPOINT}/user/${entry.user}`}))
-    }
+      return docs.map((entry) => ({
+        ...entry,
+        profileUrl: `${FRONTOFFICE_ENDPOINT}/user/${entry.user}`,
+      }));
+    };
     let docs = ref(await f(props.game!, props.page!, props.limit!));
 
     watch([props], async ([props]) => {
       docs.value = await f(props.game!, props.page!, props.limit!);
-    })
+    });
 
-    return { docs }
+    return { docs };
   },
 });
 </script>
@@ -44,7 +47,9 @@ export default defineComponent({
     <tbody>
       <tr v-for="(entry, i) in docs">
         <td>{{ limit * (page - 1) + i + 1 }}</td>
-        <td><a :href="entry.profileUrl">{{ entry.username || "anonymous" }}</a></td>
+        <td>
+          <a :href="entry.profileUrl">{{ entry.username || "anonymous" }}</a>
+        </td>
         <td>{{ entry.score }}</td>
       </tr>
     </tbody>
