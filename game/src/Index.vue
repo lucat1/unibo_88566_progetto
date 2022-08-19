@@ -10,6 +10,7 @@
       </ul>
       <p class="menu-label">Games</p>
       <ul class="menu-list">
+        <li><router-link to="/leaderboard/quiz">Leaderboards</router-link></li>
         <li><router-link to="/quiz">Quiz</router-link></li>
         <li><router-link to="/memory">Memory</router-link></li>
         <li><router-link to="/hangman">Hangman</router-link></li>

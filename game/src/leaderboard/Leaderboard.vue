@@ -19,31 +19,32 @@ export default defineComponent({
   computed: {
     pages() {
       const min = Math.max(1, this.page - 5);
-      return Array.from({ length: this.max - min }).map((_, i) => min + i);
+      return Array.from({ length: this.max - min+1 }).map((_, i) => min + i);
     },
   },
   methods: {
     pagescount(i: number) {
       this.max = i;
     },
+    goto(i: number) {
+      this.page = i
+    }
   },
   components: { Page },
 });
 </script>
 
 <template>
-  <h1>Leaderboard</h1>
   <Suspense>
     <Page @pagescount="pagescount" :page="page" :game="game" :limit="limit" />
 
     <template #fallback> Loading... </template>
   </Suspense>
   <div>
-    <button v-for="index in pages" :key="index">
+    <span class="subtitle">Pages:</span>
+    <button v-for="index in pages" :key="index" :disabled="index == page" @click="goto(index)">
       {{ index }}
     </button>
   </div>
-  <router-link class="navbar-item" to="/quiz">
-    <button class="button is-primary">Retry</button>
-  </router-link>
+  <router-link :to="'/'+game" class="button is-primary">Retry</router-link>
 </template>

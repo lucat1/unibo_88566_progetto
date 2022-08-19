@@ -3,6 +3,7 @@ import type { PaginateResult } from "mongoose";
 
 export enum GameType {
   QUIZ = "quiz",
+  MEMORY = "memory",
 }
 
 export interface IGameScore extends Document {

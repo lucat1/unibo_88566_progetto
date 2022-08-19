@@ -2,8 +2,8 @@
 import { defineComponent, reactive } from "vue";
 import internalFetch, { withOptions } from "shared/fetch";
 import type { IGameScore } from "shared/models/game-score";
-import Leaderboard from "./leaderboard/Leaderboard";
 import { useAuth, getUUID } from "./auth";
+import router from "./router";
 
 interface TrueOrFalse {
   question: string;
@@ -20,7 +20,6 @@ export default defineComponent({
       amount: 5,
       current: 0,
       isLoading: true,
-      leaderboard: false,
       error: null,
       data: Array<TrueOrFalse>(),
       result: 0,
@@ -83,13 +82,10 @@ export default defineComponent({
           this.auth.authenticated ? 'game/score/quiz' : `game/score/quiz?id=${getUUID()}`,
           withOptions("PATCH", { score: this.result })
         )
-        this.leaderboard = true;
+        router.push(`/leaderboard/quiz?score=${this.result}`)
       }
     },
-  },
-  components: {
-    Leaderboard,
-  },
+  }
 });
 </script>
 
@@ -101,10 +97,6 @@ export default defineComponent({
     <div class="notification is-danger is-light">
       {{ error }}
     </div>
-  </div>
-  <div v-else-if="current >= amount">
-    <div class="notification is-primary">Result: {{ result }}</div>
-    <Leaderboard v-if="leaderboard" game="quiz" />
   </div>
   <div v-else class="card">
     <div class="card-image">
@@ -118,7 +110,6 @@ export default defineComponent({
     </div>
     <div class="card-content">
       <div class="content">
-        <p>Your highscore: {{ highscore }}</p>
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>
           {{ data[current].question }}
