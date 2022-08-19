@@ -100,7 +100,7 @@ export default defineComponent({
       {{ error }}
     </div>
   </div>
-  <div v-else class="card">
+  <div v-else-if="current < amount" class="card">
     <div class="card-image">
       <figure class="image is-16by9">
         <img
@@ -110,7 +110,7 @@ export default defineComponent({
         />
       </figure>
     </div>
-    <div v-if="current < amount" class="card-content">
+    <div class="card-content">
       <div class="content">
         <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
         <p>

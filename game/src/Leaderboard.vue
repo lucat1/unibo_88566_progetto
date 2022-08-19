@@ -37,6 +37,6 @@ export default defineComponent({
       </li>
     </ul>
   </div>
-  <Leaderboard :game="current" :limit="3" />
+  <Leaderboard :game="current" />
   <router-link v-if="score != undefined" :to="'/' + current" class="button is-primary">Retry</router-link>
 </template>

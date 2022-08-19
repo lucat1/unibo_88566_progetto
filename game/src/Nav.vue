@@ -36,7 +36,7 @@ export default defineComponent({
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img alt="Animal House Logo" src="logo.png" width="112" height="28" />
+        <img alt="Animal House Logo" src="/logo.png" style="width:64px;height:64px" />
         Animal House Game
       </router-link>
 
