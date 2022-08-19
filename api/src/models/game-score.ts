@@ -7,7 +7,7 @@ const GameScoreSchema = new Schema<IGameScore>({
   game: {
     type: String,
     required: true,
-    enum: [GameType.QUIZ],
+    enum: [GameType.QUIZ, GameType.MEMORY],
   },
   score: { type: Number, required: true },
 });

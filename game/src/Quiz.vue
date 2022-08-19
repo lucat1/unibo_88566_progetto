@@ -11,73 +11,60 @@ interface TrueOrFalse {
   image: string;
 }
 
-export default defineComponent({
-  data() {
-    const auth = useAuth();
+const N_OF_QUESTIONS = 5
 
-    return reactive({
-      auth,
-      amount: 5,
-      current: 0,
-      isLoading: true,
-      error: null,
-      data: Array<TrueOrFalse>(),
-      result: 0,
-    });
-  },
-  async created() {
-    this.isLoading = true;
-    try {
-      const res = await fetch(
-        `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * this.amount}`
-      );
-      function animalsToQuestions(animals: any): Array<TrueOrFalse> {
-        let n = animals.length / 2,
-          questions = new Array<TrueOrFalse>(n);
-        for (let i = 0; i < n; ++i) {
-          const attributesToQuestions = [
-            ["latin_name", "latin name is"],
-            ["animal_type", "class is"],
-            ["active_time", "activity behavior is"],
-            ["length_min", "minimum length in feet is"],
-            ["length_max", "maximum length in feet is"],
-            ["weight_min", "minimum weight in pounds is"],
-            ["weight_max", "maximum weight in pounds is"],
-            ["lifespan", "average lifespan in years is"],
-            ["habitat", "habitat is/are the"],
-            ["diet", "diet is"],
-            ["geo_range", "can be found in"],
-          ];
-          let randomBoolean = Math.random() >= 0.5,
-            randomAttribute =
-              attributesToQuestions[
-                Math.floor(Math.random() * attributesToQuestions.length)
-              ],
-            subject = animals[2 * i],
-            distractor = animals[2 * i + 1];
-          questions[i] = {
-            question: `The ${subject.name}'s ${randomAttribute[1]} ${
-              (randomBoolean ? subject : distractor)[randomAttribute[0]]
-            }.`,
-            answer:
-              randomBoolean ||
-              subject[randomAttribute[0]] === distractor[randomAttribute[0]],
-            image: subject.image_link,
-          };
-        }
-        return questions;
-      }
-      this.data = animalsToQuestions(await res.json());
-      this.isLoading = false;
-    } catch (e: any) {
-      this.error = e;
-      this.isLoading = false;
+export default defineComponent({
+  async setup() {
+    const auth = useAuth();
+    const res = await fetch(
+      `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * N_OF_QUESTIONS}`
+    );
+    const animals = await res.json()
+    let n = animals.length / 2,
+    questions = new Array<TrueOrFalse>(n);
+    for (let i = 0; i < n; ++i) {
+      const attributesToQuestions = [
+        ["latin_name", "latin name is"],
+        ["animal_type", "class is"],
+        ["active_time", "activity behavior is"],
+        ["length_min", "minimum length in feet is"],
+        ["length_max", "maximum length in feet is"],
+        ["weight_min", "minimum weight in pounds is"],
+        ["weight_max", "maximum weight in pounds is"],
+        ["lifespan", "average lifespan in years is"],
+        ["habitat", "habitat is/are the"],
+        ["diet", "diet is"],
+        ["geo_range", "can be found in"],
+      ];
+      let randomBoolean = Math.random() >= 0.5,
+      randomAttribute =
+        attributesToQuestions[
+        Math.floor(Math.random() * attributesToQuestions.length)
+      ],
+      subject = animals[2 * i],
+      distractor = animals[2 * i + 1];
+      questions[i] = {
+        question: `The ${subject.name}'s ${randomAttribute[1]} ${
+(randomBoolean ? subject : distractor)[randomAttribute[0]]
+}.`,
+        answer:
+        randomBoolean ||
+          subject[randomAttribute[0]] === distractor[randomAttribute[0]],
+        image: subject.image_link,
+      };
     }
+
+    return {
+      auth,
+      questions,
+      current: 0,
+      result: 0,
+    };
   },
   methods: {
     async answer(myAnswer: boolean) {
-      if (myAnswer == this.data[this.current].answer) ++this.result;
-      if (++this.current == this.amount) {
+      if (myAnswer == this.questions[this.current].answer) ++this.result;
+      if (++this.current == N_OF_QUESTIONS) {
         await internalFetch<IGameScore>(
           this.auth.authenticated
             ? "game/score/quiz"
@@ -92,19 +79,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="isLoading">
-    <progress class="progress is-primary is-widescreen" max="100">15%</progress>
-  </div>
-  <div v-else-if="!isLoading && error != null">
-    <div class="notification is-danger is-light">
-      {{ error }}
-    </div>
-  </div>
-  <div v-else-if="current < amount" class="card">
+  <div v-if="current < questions.length" class="card">
     <div class="card-image">
       <figure class="image is-16by9">
         <img
-          v-bind:src="data[current].image"
+          v-bind:src="questions[current].image"
           alt="Subject of the question"
           style="aspect-ratio: 1 / 1; object-fit: cover"
         />
@@ -112,15 +91,15 @@ export default defineComponent({
     </div>
     <div class="card-content">
       <div class="content">
-        <h4 class="title is-4">Question {{ current + 1 }} / {{ amount }}</h4>
+        <h4 class="title is-4">Question {{ current + 1 }} / {{ questions.length }}</h4>
         <p>
-          {{ data[current].question }}
+          {{ questions[current].question }}
         </p>
       </div>
       <progress
         class="progress is-primary"
         v-bind:value="current"
-        v-bind:max="amount"
+        v-bind:max="questions.length"
       ></progress>
     </div>
     <footer class="card-footer">

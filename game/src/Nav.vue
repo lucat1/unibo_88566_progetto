@@ -20,7 +20,7 @@ export default defineComponent({
   },
   computed: {
     userProfile() {
-      return FRONTOFFICE_ENDPOINT + "/users/" + this.auth.uuid;
+      return FRONTOFFICE_ENDPOINT + "users/" + this.auth.uuid;
     },
   },
   methods: {
@@ -36,7 +36,11 @@ export default defineComponent({
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img alt="Animal House Logo" src="/logo.png" style="width:64px;height:64px" />
+        <img
+          alt="Animal House Logo"
+          src="/logo.png"
+          style="width: 64px; height: 64px"
+        />
         Animal House Game
       </router-link>
 
@@ -67,12 +71,14 @@ export default defineComponent({
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
-          <div v-if="auth.authenticated">
-            <a :href="userProfile">{{ auth.username }}</a>
-            <button @click="logout" class="button is-light">Log out</button>
-          </div>
-          <div v-else class="buttons">
+        <div v-if="auth.authenticated" class="navbar-item">
+          <a class="mr-4 has-text-white" :href="userProfile">{{
+            auth.username
+          }}</a>
+          <button @click="logout" class="button is-light">Log out</button>
+        </div>
+        <div v-else class="navbar-item">
+          <div class="buttons">
             <!-- TODO: are these links accessible? not working with <space> -->
             <router-link to="/register" class="button is-primary">
               <strong>Sign up</strong>

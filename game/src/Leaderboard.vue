@@ -38,5 +38,10 @@ export default defineComponent({
     </ul>
   </div>
   <Leaderboard :game="current" />
-  <router-link v-if="score != undefined" :to="'/' + current" class="button is-primary">Retry</router-link>
+  <router-link
+    v-if="score != undefined"
+    :to="'/' + current"
+    class="button is-primary"
+    >Retry</router-link
+  >
 </template>

@@ -1,107 +1,139 @@
 <template>
-  <div class="app">
-    <div class="lg:flex lg:justify-center lg:flex-col lg:items-center">
-      <div
-        class="w-screen flex justify-around flex-wrap content-start pt-4 md:px-24 lg:max-w-screen-lg"
-      >
-        <Card
-          v-for="villager in villagers"
-          :key="villager.id"
-          :card="villager"
-          @click="handleClick"
-          :active="
-            firstPick === villager ||
-            secondPick === villager ||
-            villager.matched
-          "
-        />
-      </div>
-    </div>
-    <div
-      class="w-full flex justify-center items-center z-0 text-2xl text-gray font-bold"
-    >
-      Turns: {{ turns }}
-    </div>
-    <Modal v-show="done" :turns="turns" @click="resetGame" />
+  <div v-for="(row, i) in rows" :key="i" class="columns">
+    <Card
+      v-for="(card, i) in row"
+      :key="i"
+      :card="card"
+      @click="handleClick(card)"
+      :active="
+        card.matched || 
+        (firstPick && firstPick.row == card.row && firstPick.col == card.col) || 
+        (secondPick && secondPick.row == card.row && secondPick.col == card.col)
+      "
+    />
+  </div>
+  <div
+    class="w-full flex justify-center items-center z-0 text-2xl text-gray font-bold"
+  >
+    Turn: {{ turn }}
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import Card from "./memory/Card";
-import Modal from "./memory/Modal";
-export default {
+import router from "./router";
+import type { IGameScore } from "shared/models/game-score";
+import { useAuth, getUUID } from "./auth";
+import type { Auth as AuthState } from "./auth";
+import internalFetch, { withOptions } from "shared/fetch";
+
+const CARDS_PER_ROW = 4,
+  NUMBER_OF_PAIRS = 6;
+
+interface Card {
+  name: string
+  img: string
+  row: number
+  col: number
+  matched: boolean
+}
+
+interface State {
+  auth: AuthState
+  rows: Card[][];
+  firstPick?: Card
+  secondPick?: Card
+  turn: number
+}
+
+export default defineComponent({
   name: "App",
   components: {
     Card,
-    Modal,
   },
-  data() {
+  async setup() {
+    const auth = useAuth();
+    const req = await fetch(
+      `http://zoo-animal-api.herokuapp.com/animals/rand/${NUMBER_OF_PAIRS}`
+    );
+    const animals = await req.json();
+    const images = animals.map((a: any) => ({
+        img: a.image_link,
+        name: a.name,
+      }))
+    const rows = [...images, ...images]
+        .map((image) => ({
+          ...image,
+          matched: false,
+        }))
+        .reduce(
+          (rows, obj, i): Card[][] =>
+            i % CARDS_PER_ROW != 0
+              ? rows
+                  .slice(0, -1)
+                  .concat([
+                    rows[rows.length - 1].concat([
+                      {
+                        ...obj,
+                        row: rows.length - 1,
+                        col: rows[rows.length - 1].length,
+                      },
+                    ]),
+                  ])
+              : rows.concat([[{ ...obj, row: rows.length, col: 0 }]]),
+          []
+        );
+
     return {
-      images: [
-        { img: "dom.png" },
-        { img: "filbert.png" },
-        { img: "judy.png" },
-        { img: "lily.png" },
-        { img: "lucky.png" },
-        { img: "sherb.png" },
-      ],
-      villagers: [],
-      firstPick: null,
-      secondPick: null,
-      turns: 0,
-      done: false,
-    };
+      auth,
+      rows: ref(rows),
+      firstPick: undefined,
+      secondPick: undefined,
+      turn: 0,
+    } as State;
   },
   methods: {
-    handleClick(card) {
-      this.firstPick ? (this.secondPick = card) : (this.firstPick = card);
+    handleClick(card: Card) {
+      if(this.firstPick) 
+        this.secondPick = card
+      else
+        this.firstPick = card
+
       if (this.firstPick && this.secondPick) {
         if (this.firstPick.img === this.secondPick.img) {
-          const ind1 = this.villagers.indexOf(card);
-          const ind2 = this.villagers.indexOf(this.firstPick);
-          this.villagers[ind1].matched = true;
-          this.villagers[ind2].matched = true;
-          this.resetActive();
-        } else {
-          this.resetActive();
-        }
-        this.turns++;
+          this.rows[this.firstPick.row][this.firstPick.col].matched = true;
+          this.rows[this.secondPick.row][this.secondPick.col].matched = true;
+        } 
+        this.resetActive();
+        ++this.turn;
       }
-      this.checkIfCompleted();
+      // TODO: not ideal
+      this.$forceUpdate()
+      if (this.rows.every(row => row.every((card) => card.matched)))
+        this.completed()
     },
     resetActive() {
       setTimeout(() => {
-        Memo;
-        this.firstPick = null;
-        this.secondPick = null;
+        this.firstPick = undefined;
+        this.secondPick = undefined;
+        // TODO: not ideal
+        this.$forceUpdate()
       }, 500);
     },
-    shuffle() {
-      this.villagers.sort(() => Math.random() - 0.5);
-    },
-    checkIfCompleted() {
-      if (this.villagers.every((villager) => villager.matched))
-        this.done = true;
-    },
-    resetGame() {
-      this.firstPick = null;
-      this.secondPick = null;
-      this.turns = 0;
-      this.done = false;
-      this.villagers.forEach((v) => (v.matched = false));
-      setTimeout(() => {
-        this.shuffle();
-      }, 500);
+    async completed() {
+      console.log('completed')
+      // TODO: compute based on turns
+      const result = Math.round((1/this.turn)*1337)
+      await internalFetch<IGameScore>(
+        this.auth.authenticated
+          ? "game/score/memory"
+          : `game/score/memory?id=${getUUID()}`,
+        withOptions("PATCH", { score: result })
+      );
+      console.log('redirect')
+      router.push(`/leaderboard/memory?score=${result}`)
     },
   },
-  mounted() {
-    this.villagers = [...this.images, ...this.images].map(
-      (villager, index) => ({
-        ...villager,
-        matched: false,
-        id: index,
-      })
-    );
-  },
-};
+});
 </script>

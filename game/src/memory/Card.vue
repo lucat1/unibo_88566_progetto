@@ -1,33 +1,33 @@
 <template>
-  <div
-    class="card xs:h-24 xs:w-20 xs:justify-center xs:m-2 sm:h-26"
-    :class="{ flipped: active }"
-    @click="clickHandler"
-  >
-    <div
-      class="imgcon h-full w-full custom-green front shadow-lg flex items-center justify-center"
-    >
-      <img
-        :src="`${card.img}`"
-        alt="ac"
-        class="h-full w-full object-full xs:h-4/5 xs:w-4/5"
-      />
+  <div class="column" :class="{ 'is-danger': active }" @click="clickHandler">
+    <div class="card-image">
+      <figure class="image is-4by3"
+          :style="{display: active ? 'block' : 'none'}"
+      >
+        <img
+          :src="card.img"
+          :aria-hidden="!active"
+          :alt="active ? card.name : 'Hidden'"
+          class="h-full w-full object-full"
+        />
+      </figure>
+        <div
+          :aria-hidden="active"
+          class="image is-4by3 has-background-info-light"
+          :style="{display: active ? 'none' : 'block', height: '100%', width: '100%'}"/>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "card",
+<script lang="ts">
+import { defineComponent, watch, ref } from 'vue';
+
+export default defineComponent({
   props: ["card", "active"],
-  methods: {
-    clickHandler() {
-      if (!this.active) {
-        this.$emit("click", this.card);
-      }
-    },
-  },
-};
+  watch: {
+    props(_){console.log('!!!!',_);this.$forceUpdate()}
+  }
+});
 </script>
 
 <style scoped>
