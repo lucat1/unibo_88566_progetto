@@ -7,6 +7,7 @@ export enum GameType {
 
 export interface IGameScore extends Document {
   user: ObjectId;
+  username?: string;
   game: GameType;
   score: number;
 }

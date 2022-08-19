@@ -23,13 +23,16 @@ const fetch = async <T = Object>(
   return json;
 };
 
+const JSON_MIME = "application/json"
+
 export const withOptions = (
   method: "POST" | "PATCH" | "PUT",
   obj: Object
 ): RequestInit => ({
   method,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": JSON_MIME,
+    Accept: JSON_MIME,
   },
   body: JSON.stringify(obj),
 });

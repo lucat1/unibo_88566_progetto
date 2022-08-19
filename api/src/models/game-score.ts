@@ -4,6 +4,7 @@ import { IGameScore, GameType } from "shared/models/game-score";
 
 const GameScoreSchema = new Schema<IGameScore>({
   user: { type: String, required: true },
+  username: String,
   game: {
     type: String,
     required: true,
@@ -21,9 +22,10 @@ export const GameScore: PaginateModel<IGameScore> = model<IGameScore>(
   GameScoreSchema
 ) as PaginateModel<IGameScore>;
 
-export const shadow = ({ _id, user, game, score }: IGameScore) => ({
+export const shadow = ({ _id, user, username, game, score }: IGameScore) => ({
   _id,
   user,
+  username,
   game,
   score,
 });

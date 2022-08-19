@@ -4,8 +4,11 @@ import { z } from "zod";
 import json from "../res";
 import { GameType } from "shared/models/game-score";
 import { GameScore, shadow } from "../models/game-score";
+import { User  } from "../models/user";
+import type { ObjectId } from "mongoose";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery } from "./pagination";
+import type { IUser } from "shared/models/user";
 
 export const GameParams = z.object({
   game: z.nativeEnum(GameType),
@@ -41,14 +44,18 @@ export const GameBody = z.object({
 export type IGameBody = z.infer<typeof GameBody>;
 
 export const setScore: RequestHandler = async (req, res) => {
-  const [user, game] = getPair(req);
+  const [uuid, game] = getPair(req);
+  let user: IUser & {_id: ObjectId}| null = null;
+  try {
+    user = await User.findOne({_id: uuid}).exec()
+  } catch (_) {}
   const { score: value } = req.body as IGameBody;
 
   let score =
-    (await GameScore.findOne({ user, game }).exec()) ||
-    new GameScore({ user, game, score: 0 });
+    (await GameScore.findOne({ user: uuid, game }).exec()) ||
+    new GameScore({ user: uuid, username: user?.username, game, score: 0 });
 
-  score.score = value;
+  score.score += value;
   await score.save();
   json(res, 200, shadow(score));
 };

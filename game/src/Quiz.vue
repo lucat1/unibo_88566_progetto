@@ -1,8 +1,9 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import internalFetch from "shared/fetch";
+import internalFetch, { withOptions } from "shared/fetch";
 import type { IGameScore } from "shared/models/game-score";
 import Leaderboard from "./leaderboard/Leaderboard";
+import { useAuth, getUUID } from "./auth";
 
 interface TrueOrFalse {
   question: string;
@@ -12,9 +13,11 @@ interface TrueOrFalse {
 
 export default defineComponent({
   data() {
+    const auth = useAuth()
+
     return reactive({
+      auth,
       amount: 5,
-      highscore: 0,
       current: 0,
       isLoading: true,
       leaderboard: false,
@@ -66,11 +69,6 @@ export default defineComponent({
         return questions;
       }
       this.data = animalsToQuestions(await res.json());
-      this.highscore = (
-        await internalFetch<IGameScore>(
-          `game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`
-        )
-      ).score;
       this.isLoading = false;
     } catch (e: any) {
       this.error = e;
@@ -81,20 +79,10 @@ export default defineComponent({
     async answer(myAnswer: boolean) {
       if (myAnswer == this.data[this.current].answer) ++this.result;
       if (++this.current == this.amount) {
-        this.highscore += this.result;
-        console.log(
-          await internalFetch<IGameScore>(
-            `game/score/quiz?id=d8c0c983-579b-417e-b274-a754e676b550`,
-            {
-              method: "PATCH",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ score: this.highscore }),
-            }
-          )
-        );
+        await internalFetch<IGameScore>(
+          this.auth.authenticated ? 'game/score/quiz' : `game/score/quiz?id=${getUUID()}`,
+          withOptions("PATCH", { score: this.result })
+        )
         this.leaderboard = true;
       }
     },
