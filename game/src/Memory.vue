@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import Card from "./memory/Card";
+import Card from "./MemoryCard";
 import router from "./router";
 import type { IGameScore } from "shared/models/game-score";
 import { useAuth, getUUID } from "./auth";

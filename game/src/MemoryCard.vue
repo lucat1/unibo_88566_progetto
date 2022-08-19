@@ -20,13 +20,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  props: ["card", "active"],
-  watch: {
-    props(_){console.log('!!!!',_);this.$forceUpdate()}
-  }
+  props: ["card", "active"]
 });
 </script>
 
