@@ -51,5 +51,4 @@ export default defineComponent({
       {{ index }}
     </button>
   </div>
-  <router-link :to="'/' + game" class="button is-primary">Retry</router-link>
 </template>

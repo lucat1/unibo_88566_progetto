@@ -89,7 +89,6 @@ export const getLeaderboard: RequestHandler = async (req, res) => {
       return { ...score.toObject(), username: user?.username }
     })
   );
-  console.log(docs)
 
   json(res, 200, { ...result, docs: docs.map(shadow) });
 };
