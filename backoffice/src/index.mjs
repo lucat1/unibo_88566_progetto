@@ -16,23 +16,27 @@ render(
   [
     h(Nav, {}),
     h(
-      Router,
-      {},
-      h(Route, { path: /^\/$/, element: h(Index, {}) }),
-      h(Route, { path: /^\/login$/, element: h(Login, {}) }),
-      h(Route, {
-        path: /^\/categories\/add$/,
-        element: h(CategoryAdd, {}),
-      }),
-      h(Route, {
-        path: /^\/categories$/,
-        element: h(Categories, {}),
-      }),
-      h(Route, {
-        path: /^\/categories\/\d+$/,
-        element: h(Category, {}),
-      }),
-      h(Route, { path: /^.*$/, element: h(NotFound, {}) })
+      "main",
+      { style: { flex: 1 }, className: "m-5" },
+      h(
+        Router,
+        {},
+        h(Route, { path: /^\/$/, element: h(Index, {}) }),
+        h(Route, { path: /^\/login$/, element: h(Login, {}) }),
+        h(Route, {
+          path: /^\/categories\/add$/,
+          element: h(CategoryAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/categories$/,
+          element: h(Categories, {}),
+        }),
+        h(Route, {
+          path: /^\/categories\/\d+$/,
+          element: h(Category, {}),
+        }),
+        h(Route, { path: /^.*$/, element: h(NotFound, {}) })
+      )
     ),
   ],
   document.getElementById("root")

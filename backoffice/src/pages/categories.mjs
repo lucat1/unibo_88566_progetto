@@ -9,20 +9,35 @@ const Categories = () => {
   return h(
     "main",
     {},
-    h(Link, { to: "/categories/add" }, "add"),
-    h("h1", {}, "categories"),
     loading
-      ? h("span", {}, "loading")
+      ? h("progress", { className: "progress is-primary" })
       : err
-      ? h("span", {}, "err: ", err)
+      ? h("div", { className: "notification is-danger" }, "Error: ", err)
       : h(
-          "ul",
-          {},
-          ...data.map((ele, i) =>
+          "div",
+          { className: "menu" },
+          h(
+            "div",
+            {
+              className:
+                "is-flex is-flex-direction-row is-justify-content-space-between",
+            },
+            h("p", { className: "menu-label" }, "Categories"),
             h(
-              "li",
-              { key: i },
-              h(Link, { to: `/categories/${ele._id}` }, ele.name)
+              Link,
+              { to: "/categories/add" },
+              h("button", { className: "button is-primary" }, "Add")
+            )
+          ),
+          h(
+            "ul",
+            { className: "menu-list" },
+            ...data.map((ele, i) =>
+              h(
+                "li",
+                { key: i },
+                h(Link, { to: `/categories/${ele._id}` }, ele.name)
+              )
             )
           )
         )
