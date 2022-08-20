@@ -39,7 +39,7 @@ export default defineComponent({
         <img
           alt="Animal House Logo"
           src="/logo.png"
-          style="width: 64px; height: 64px"
+          class="mr-4"
         />
         Animal House Game
       </router-link>

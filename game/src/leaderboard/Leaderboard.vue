@@ -43,9 +43,10 @@ export default defineComponent({
   <div>
     <span class="subtitle">Pages:</span>
     <button
+      class="button"
+      :class="{ 'is-active': index == page }"
       v-for="index in pages"
       :key="index"
-      :disabled="index == page"
       @click="goto(index)"
     >
       {{ index }}

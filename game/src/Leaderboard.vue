@@ -37,7 +37,7 @@ export default defineComponent({
       </li>
     </ul>
   </div>
-  <Leaderboard :game="current" />
+  <Leaderboard :game="current" :limit="5"/>
   <router-link
     v-if="score != undefined"
     :to="'/' + current"

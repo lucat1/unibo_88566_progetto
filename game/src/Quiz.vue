@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent } from "vue";
 import internalFetch, { withOptions } from "shared/fetch";
 import type { IGameScore } from "shared/models/game-score";
 import { useAuth, getUUID } from "./auth";
