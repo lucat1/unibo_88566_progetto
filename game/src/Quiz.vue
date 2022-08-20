@@ -1,9 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import internalFetch, { withOptions } from "shared/fetch";
-import type { IGameScore } from "shared/models/game-score";
-import { useAuth, getUUID } from "./auth";
-import router from "./router";
+import { setScore } from "./auth";
 
 interface TrueOrFalse {
   question: string;
@@ -11,17 +9,16 @@ interface TrueOrFalse {
   image: string;
 }
 
-const N_OF_QUESTIONS = 5
+const N_OF_QUESTIONS = 5;
 
 export default defineComponent({
   async setup() {
-    const auth = useAuth();
     const res = await fetch(
       `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * N_OF_QUESTIONS}`
     );
-    const animals = await res.json()
+    const animals = await res.json();
     let n = animals.length / 2,
-    questions = new Array<TrueOrFalse>(n);
+      questions = new Array<TrueOrFalse>(n);
     for (let i = 0; i < n; ++i) {
       const attributesToQuestions = [
         ["latin_name", "latin name is"],
@@ -37,25 +34,24 @@ export default defineComponent({
         ["geo_range", "can be found in"],
       ];
       let randomBoolean = Math.random() >= 0.5,
-      randomAttribute =
-        attributesToQuestions[
-        Math.floor(Math.random() * attributesToQuestions.length)
-      ],
-      subject = animals[2 * i],
-      distractor = animals[2 * i + 1];
+        randomAttribute =
+          attributesToQuestions[
+            Math.floor(Math.random() * attributesToQuestions.length)
+          ],
+        subject = animals[2 * i],
+        distractor = animals[2 * i + 1];
       questions[i] = {
         question: `The ${subject.name}'s ${randomAttribute[1]} ${
-(randomBoolean ? subject : distractor)[randomAttribute[0]]
-}.`,
+          (randomBoolean ? subject : distractor)[randomAttribute[0]]
+        }.`,
         answer:
-        randomBoolean ||
+          randomBoolean ||
           subject[randomAttribute[0]] === distractor[randomAttribute[0]],
         image: subject.image_link,
       };
     }
 
     return {
-      auth,
       questions,
       current: 0,
       result: 0,
@@ -65,13 +61,7 @@ export default defineComponent({
     async answer(myAnswer: boolean) {
       if (myAnswer == this.questions[this.current].answer) ++this.result;
       if (++this.current == N_OF_QUESTIONS) {
-        await internalFetch<IGameScore>(
-          this.auth.authenticated
-            ? "game/score/quiz"
-            : `game/score/quiz?id=${getUUID()}`,
-          withOptions("PATCH", { score: this.result })
-        );
-        router.push(`/leaderboard/quiz?score=${this.result}`);
+        await setScore("quiz", this.result);
       }
     },
   },
@@ -91,7 +81,9 @@ export default defineComponent({
     </div>
     <div class="card-content">
       <div class="content">
-        <h4 class="title is-4">Question {{ current + 1 }} / {{ questions.length }}</h4>
+        <h4 class="title is-4">
+          Question {{ current + 1 }} / {{ questions.length }}
+        </h4>
         <p>
           {{ questions[current].question }}
         </p>

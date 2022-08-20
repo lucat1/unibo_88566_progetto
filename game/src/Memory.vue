@@ -6,8 +6,8 @@
       :card="card"
       @click="handleClick(card)"
       :active="
-        card.matched || 
-        (firstPick && firstPick.row == card.row && firstPick.col == card.col) || 
+        card.matched ||
+        (firstPick && firstPick.row == card.row && firstPick.col == card.col) ||
         (secondPick && secondPick.row == card.row && secondPick.col == card.col)
       "
     />
@@ -20,31 +20,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive } from "vue";
 import Card from "./MemoryCard";
 import router from "./router";
-import type { IGameScore } from "shared/models/game-score";
-import { useAuth, getUUID } from "./auth";
-import type { Auth as AuthState } from "./auth";
-import internalFetch, { withOptions } from "shared/fetch";
+import { setScore } from "./auth";
 
 const CARDS_PER_ROW = 4,
   NUMBER_OF_PAIRS = 6;
 
 interface Card {
-  name: string
-  img: string
-  row: number
-  col: number
-  matched: boolean
+  name: string;
+  img: string;
+  row: number;
+  col: number;
+  matched: boolean;
 }
 
 interface State {
-  auth: AuthState
   rows: Card[][];
-  firstPick?: Card
-  secondPick?: Card
-  turn: number
+  firstPick?: Card;
+  secondPick?: Card;
+  turn: number;
 }
 
 export default defineComponent({
@@ -53,86 +49,71 @@ export default defineComponent({
     Card,
   },
   async setup() {
-    const auth = useAuth();
     const req = await fetch(
       `http://zoo-animal-api.herokuapp.com/animals/rand/${NUMBER_OF_PAIRS}`
     );
     const animals = await req.json();
     const images = animals.map((a: any) => ({
-        img: a.image_link,
-        name: a.name,
-      }))
+      img: a.image_link,
+      name: a.name,
+    }));
     const rows = [...images, ...images]
-        .map((image) => ({
-          ...image,
-          matched: false,
-        }))
-        .reduce(
-          (rows, obj, i): Card[][] =>
-            i % CARDS_PER_ROW != 0
-              ? rows
-                  .slice(0, -1)
-                  .concat([
-                    rows[rows.length - 1].concat([
-                      {
-                        ...obj,
-                        row: rows.length - 1,
-                        col: rows[rows.length - 1].length,
-                      },
-                    ]),
-                  ])
-              : rows.concat([[{ ...obj, row: rows.length, col: 0 }]]),
-          []
-        );
+      .map((image) => ({
+        ...image,
+        matched: false,
+      }))
+      .reduce(
+        (rows, obj, i): Card[][] =>
+          i % CARDS_PER_ROW != 0
+            ? rows.slice(0, -1).concat([
+                rows[rows.length - 1].concat([
+                  {
+                    ...obj,
+                    row: rows.length - 1,
+                    col: rows[rows.length - 1].length,
+                  },
+                ]),
+              ])
+            : rows.concat([[{ ...obj, row: rows.length, col: 0 }]]),
+        []
+      );
 
-    return {
-      auth,
-      rows: ref(rows),
+    return reactive({
+      rows,
       firstPick: undefined,
       secondPick: undefined,
       turn: 0,
-    } as State;
+    }) as State;
   },
   methods: {
     handleClick(card: Card) {
-      if(this.firstPick) 
-        this.secondPick = card
-      else
-        this.firstPick = card
+      if (this.firstPick) this.secondPick = card;
+      else this.firstPick = card;
 
       if (this.firstPick && this.secondPick) {
         if (this.firstPick.img === this.secondPick.img) {
           this.rows[this.firstPick.row][this.firstPick.col].matched = true;
           this.rows[this.secondPick.row][this.secondPick.col].matched = true;
-        } 
+        }
         this.resetActive();
         ++this.turn;
       }
       // TODO: not ideal
-      this.$forceUpdate()
-      if (this.rows.every(row => row.every((card) => card.matched)))
-        this.completed()
+      if (this.rows.every((row) => row.every((card) => card.matched)))
+        this.completed();
     },
     resetActive() {
       setTimeout(() => {
         this.firstPick = undefined;
         this.secondPick = undefined;
         // TODO: not ideal
-        this.$forceUpdate()
       }, 500);
     },
     async completed() {
-      console.log('completed')
+      console.log("completed");
       // TODO: compute based on turns
-      const result = Math.round((1/this.turn)*1337)
-      await internalFetch<IGameScore>(
-        this.auth.authenticated
-          ? "game/score/memory"
-          : `game/score/memory?id=${getUUID()}`,
-        withOptions("PATCH", { score: result })
-      );
-      console.log('redirect')
-      router.push(`/leaderboard/memory?score=${result}`)
+      const result = Math.round((1 / this.turn) * 1337);
+      await setScore("memory", result);
     },
   },
 });

@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 
 import type { IUser } from "shared/models/user";
-import fetch from "shared/fetch";
+import type { IGameScore } from "shared/models/game-score";
+import fetch, { withOptions } from "shared/fetch";
 import { isAuthenticated } from "shared/auth";
+
+import router from "./router";
 
 const ANONYMOUS = "anonymous",
   UUIDKEY = "authuuid";
@@ -83,4 +86,14 @@ export const getUUID = (): string => {
 
 export const removeUUID = () => {
   return localStorage.removeItem(UUIDKEY);
+};
+
+export const setScore = async (game: string, score: number) => {
+  await fetch<IGameScore>(
+    useAuth().authenticated
+      ? `game/score/${game}`
+      : `game/score/${game}?id=${getUUID()}`,
+    withOptions("PATCH", { score })
+  );
+  router.push(`/leaderboard/${game}?score=${score}`);
 };

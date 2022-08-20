@@ -6,6 +6,7 @@ import Register from "./Register.vue";
 import Login from "./Login.vue";
 import Quiz from "./Quiz.vue";
 import Memory from "./Memory.vue";
+import Hangman from "./Hangman.vue";
 import Leaderboard from "./Leaderboard";
 
 export const routes = [
@@ -23,6 +24,11 @@ export const routes = [
     path: "/memory",
     name: "Memory",
     component: Memory,
+  },
+  {
+    path: "/hangman",
+    name: "Hangman",
+    component: Hangman,
   },
   {
     path: "/leaderboard/:game",
