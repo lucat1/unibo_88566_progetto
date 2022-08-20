@@ -1,6 +1,11 @@
 import { createApp } from "vue";
+const vue = await import("@formkit/vue");
+import { createPinia } from "pinia";
 import router from "./router";
-import App from "./App.vue";
-import { plugin, defaultConfig } from "@formkit/vue";
+import AppWrapper from "./AppWrapper.vue";
 
-createApp(App).use(router).use(plugin, defaultConfig).mount("#root");
+createApp(AppWrapper)
+  .use(router)
+  .use(createPinia())
+  .use(vue.plugin, vue.defaultConfig)
+  .mount("#root");

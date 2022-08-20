@@ -85,6 +85,14 @@
                     }
                   },
                   {
+                    "type": "object",
+                    "properties": {
+                      "fromuuid": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
                     "required": [
                       "username",
                       "password",

@@ -14,6 +14,7 @@
     "typescript": "^4.7.4"
   },
   "exports": {
+    "./endpoints": "./build/shared/src/endpoints.js",
     "./auth": "./build/shared/src/auth.js",
     "./fetch": "./build/shared/src/fetch.js",
     "./models/category": "./build/shared/src/models/category.js",

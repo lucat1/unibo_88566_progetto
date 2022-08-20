@@ -1,71 +1,102 @@
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-export default defineComponent({
-  data() {
-    return reactive({
-      amount: 5,
-      current: 0,
-      difficultyColors: {
-        easy: "is-green",
-        medium: "is-orange",
-        hard: "is-red",
-        _: "is-black",
-      },
+import { defineComponent } from "vue";
+import internalFetch, { withOptions } from "shared/fetch";
+import { setScore } from "./auth";
 
-      isLoading: true,
-      error: null,
-      data: null,
-    });
-  },
-  async created() {
-    this.isLoading = true;
-    try {
-      const res = await fetch(
-        `https://opentdb.com/api.php?amount=${this.amount}&category=27`
-      );
-      this.data = (await res.json()).results.map((quiz) => ({
-        ...quiz,
-        answers: [...quiz.incorrect_answers, quiz.correct_answer],
-      }));
-      this.isLoading = false;
-    } catch (e) {
-      this.error = e as any;
-      this.isLoading = false;
+interface TrueOrFalse {
+  question: string;
+  answer: boolean;
+  image: string;
+}
+
+const N_OF_QUESTIONS = 5;
+
+export default defineComponent({
+  async setup() {
+    const res = await fetch(
+      `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * N_OF_QUESTIONS}`
+    );
+    const animals = await res.json();
+    let n = animals.length / 2,
+      questions = new Array<TrueOrFalse>(n);
+    for (let i = 0; i < n; ++i) {
+      const attributesToQuestions = [
+        ["latin_name", "latin name is"],
+        ["animal_type", "class is"],
+        ["active_time", "activity behavior is"],
+        ["length_min", "minimum length in feet is"],
+        ["length_max", "maximum length in feet is"],
+        ["weight_min", "minimum weight in pounds is"],
+        ["weight_max", "maximum weight in pounds is"],
+        ["lifespan", "average lifespan in years is"],
+        ["habitat", "habitat is/are the"],
+        ["diet", "diet is"],
+        ["geo_range", "can be found in"],
+      ];
+      let randomBoolean = Math.random() >= 0.5,
+        randomAttribute =
+          attributesToQuestions[
+            Math.floor(Math.random() * attributesToQuestions.length)
+          ],
+        subject = animals[2 * i],
+        distractor = animals[2 * i + 1];
+      questions[i] = {
+        question: `The ${subject.name}'s ${randomAttribute[1]} ${
+          (randomBoolean ? subject : distractor)[randomAttribute[0]]
+        }.`,
+        answer:
+          randomBoolean ||
+          subject[randomAttribute[0]] === distractor[randomAttribute[0]],
+        image: subject.image_link,
+      };
     }
+
+    return {
+      questions,
+      current: 0,
+      result: 0,
+    };
+  },
+  methods: {
+    async answer(myAnswer: boolean) {
+      if (myAnswer == this.questions[this.current].answer) ++this.result;
+      if (++this.current == N_OF_QUESTIONS) {
+        await setScore("quiz", this.result);
+      }
+    },
   },
 });
 </script>
 
 <template>
-  <div v-if="isLoading">TODO: handle loading</div>
-  <div v-else-if="!isLoading && error != null">
-    TODO: handle error in a pretty visual way
-  </div>
-  <div v-else class="card">
+  <div v-if="current < questions.length" class="card">
+    <div class="card-image">
+      <figure class="image is-16by9">
+        <img
+          v-bind:src="questions[current].image"
+          alt="Subject of the question"
+          style="aspect-ratio: 1 / 1; object-fit: cover"
+        />
+      </figure>
+    </div>
     <div class="card-content">
       <div class="content">
-        <h4 class="title is-4">Quiz #{{ current + 1 }}</h4>
-        <span
-          v-bind:class="
-            difficultyColors[data[current].difficulty] || difficultyColors._
-          "
-          class="tag is-medium"
-          >{{ data[current].difficulty }}</span
-        >
+        <h4 class="title is-4">
+          Question {{ current + 1 }} / {{ questions.length }}
+        </h4>
         <p>
-          {{ data[current].querstion }}
+          {{ questions[current].question }}
         </p>
-        <div v-if="data[current].type == 'boolean'">
-          <button v-for="answer in data[current].answers" class="button">
-            {{ answer }}
-          </button>
-        </div>
-        <div v-else-if="data[current].type == 'multiple'"></div>
-        <div v-else>TODO: implement quiz type: {{ data[current].type }}</div>
       </div>
+      <progress
+        class="progress is-primary"
+        v-bind:value="current"
+        v-bind:max="questions.length"
+      ></progress>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">Skip</a>
+      <a href="#" @click="answer(true)" class="card-footer-item">True</a>
+      <a href="#" @click="answer(false)" class="card-footer-item">False</a>
     </footer>
   </div>
 </template>

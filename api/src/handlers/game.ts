@@ -2,10 +2,13 @@ import type { RequestHandler, Request } from "express";
 import { z } from "zod";
 
 import json from "../res";
-import { GameType } from "shared/models/game-score";
+import { GameType, IGameScore } from "shared/models/game-score";
 import { GameScore, shadow } from "../models/game-score";
+import { User } from "../models/user";
+import type { ObjectId } from "mongoose";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery } from "./pagination";
+import type { IUser } from "shared/models/user";
 
 export const GameParams = z.object({
   game: z.nativeEnum(GameType),
@@ -36,31 +39,35 @@ const getPair = (req: Request): [string, string] => {
 };
 
 export const GameBody = z.object({
-  value: z.number().min(1),
+  score: z.number().min(1),
 });
 export type IGameBody = z.infer<typeof GameBody>;
 
 export const setScore: RequestHandler = async (req, res) => {
-  const [user, game] = getPair(req);
-  const { value } = req.body as IGameBody;
+  const [uuid, game] = getPair(req);
+  const { score: value } = req.body as IGameBody;
 
   let score =
-    (await GameScore.findOne({ user, game }).exec()) ||
-    new GameScore({ user, game, score: 0 });
+    (await GameScore.findOne({ user: uuid, game }).exec()) ||
+    new GameScore({ user: uuid, game, score: 0 });
 
-  score.score = value;
+  score.score += value;
   await score.save();
   json(res, 200, shadow(score));
 };
 
 export const getScore: RequestHandler = async (req, res) => {
-  const [user, game] = getPair(req);
+  const [uuid, game] = getPair(req);
 
-  let result = await GameScore.findOne({ user, game }).exec();
+  let result = await GameScore.findOne({ user: uuid, game }).exec();
   if (result == null)
-    await (result = new GameScore({ user, game, score: 0 })).save();
+    await (result = new GameScore({ user: uuid, game, score: 0 })).save();
+  let user: (IUser & { _id: ObjectId }) | null = null;
+  try {
+    user = await User.findOne({ _id: result.user }).exec();
+  } catch (_) {}
 
-  json(res, 200, shadow(result));
+  json(res, 200, shadow({ ...result.toObject(), username: user?.username } as IGameScore));
 };
 
 export const getLeaderboard: RequestHandler = async (req, res) => {
@@ -73,5 +80,15 @@ export const getLeaderboard: RequestHandler = async (req, res) => {
     { limit, page, sort: { score: -1 } }
   );
 
-  json(res, 200, { ...result, docs: result.docs.map(shadow) });
+  const docs = await Promise.all(
+    result.docs.map(async (score) => {
+      let user: (IUser & { _id: ObjectId }) | null = null;
+      try {
+        user = await User.findOne({ _id: score.user }).exec();
+      } catch (_) {}
+      return { ...score.toObject(), username: user?.username }
+    })
+  );
+
+  json(res, 200, { ...result, docs: docs.map(shadow) });
 };

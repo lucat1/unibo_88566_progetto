@@ -1,14 +1,17 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { me, setAuthToken } from "shared/auth";
+import { setAuthToken } from "shared/auth";
 import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
 import router from "./router";
+import { useAuth } from "./auth";
 
 export default defineComponent({
   async setup() {
-    if ((await me()) != null) router.push("/");
+    const auth = useAuth();
+    if (auth.authenticated) router.push("/");
     return reactive({
+      auth,
       loading: false,
       error: "",
     });
@@ -29,6 +32,7 @@ export default defineComponent({
           withOptions("POST", { username, password })
         );
         setAuthToken(token);
+        await this.auth.try();
         router.push("/");
       } catch (err: Error<never>) {
         this.error = err.message || "Invalid username/password combination";
@@ -40,14 +44,41 @@ export default defineComponent({
 </script>
 <template>
   <div class="center h-full">
-    <FormKit type="form" form-class="box" @submit="login" :actions="false" :errors="[error]" :disabled="loading">
+    <FormKit
+      type="form"
+      form-class="box"
+      @submit="login"
+      :actions="false"
+      :errors="[error]"
+      :disabled="loading"
+    >
       <h1 class="title">Login</h1>
-      <FormKit type="text" name="username" label="Username" validation="required" validation-visibility="live"
-        outer-class="field" label-class="label" inner-class="control" input-class="input" help-class="help"
-        message-class="help is-danger" />
-      <FormKit type="password" name="password" label="Password" validation="required" validation-visibility="live"
-        outer-class="field" label-class="label" inner-class="control" input-class="input" help-class="help"
-        message-class="help is-danger" />
+      <FormKit
+        type="text"
+        name="username"
+        label="Username"
+        validation="required"
+        validation-visibility="live"
+        outer-class="field"
+        label-class="label"
+        inner-class="control"
+        input-class="input"
+        help-class="help"
+        message-class="help is-danger"
+      />
+      <FormKit
+        type="password"
+        name="password"
+        label="Password"
+        validation="required"
+        validation-visibility="live"
+        outer-class="field"
+        label-class="label"
+        inner-class="control"
+        input-class="input"
+        help-class="help"
+        message-class="help is-danger"
+      />
       <div class="field">
         <div class="control">
           <button class="button is-link" :disabeld="loading">Login</button>

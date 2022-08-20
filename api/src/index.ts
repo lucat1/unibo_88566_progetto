@@ -8,7 +8,7 @@ import { connect } from "mongoose";
 
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { API_PORT, API_ENDPOINT, MONGO_URL } from "../../endpoints.json";
+import { API_PORT, API_ENDPOINT, MONGO_URL } from "shared/endpoints";
 import { UserLevel } from "shared/models/user";
 import {
   register as registerWrapper,
@@ -26,7 +26,15 @@ import {
   validateParams,
   validateQuery,
 } from "./validate";
-import { register, login, me, id } from "./handlers/auth";
+import {
+  register,
+  login,
+  password,
+  getMe,
+  deleteMe,
+  patchMe,
+  id,
+} from "./handlers/auth";
 import {
   GameBody,
   GameParams,
@@ -36,6 +44,21 @@ import {
   getLeaderboard,
 } from "./handlers/game";
 import { PaginationQuery, SortingQuery } from "./handlers/pagination";
+import {
+  BoardBody,
+  BoardParams,
+  PostBody,
+  addBoard,
+  getBoards,
+  getBoard,
+  deleteBoard,
+  setBoard,
+  addPost,
+  getPosts,
+  getPost,
+  deletePost,
+  setPost,
+} from "./handlers/board";
 import {
   CategoryBody,
   CategoryParams,
@@ -87,21 +110,23 @@ const main = async () => {
   app.use("/api", json());
   app.use("/api", authMiddleware);
 
+  app.get("/api/auth/id", authNotRequired, id);
   app.post(
     "/api/auth/register",
-    authNotRequired,
+    // authNotRequired,
     validateBody(RegisterData),
     registerWrapper(register)
   );
   app.post(
     "/api/auth/login",
-    authNotRequired,
+    // authNotRequired,
     validateBody(LoginData),
     loginWrapper(login)
   );
-
-  app.get("/api/auth/id", authNotRequired, id);
-  app.get("/api/auth/me", authRequired, catcher(me));
+  app.patch("/api/auth/password", authRequired, catcher(password));
+  app.get("/api/auth/me", authRequired, catcher(getMe));
+  app.delete("/api/auth/me", authRequired, catcher(deleteMe));
+  app.patch("/api/auth/me", authRequired, catcher(patchMe));
 
   app.patch(
     "/api/game/score/:game",
@@ -121,6 +146,62 @@ const main = async () => {
     validateParams(GameParams),
     validateQuery(PaginationQuery),
     catcher(getLeaderboard)
+  );
+
+  app.get(
+    "/api/community/boards/",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getBoards)
+  );
+  app.put(
+    "/api/community/boards/",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(BoardBody),
+    catcher(addBoard)
+  );
+  app.get(
+    "/api/community/boards/:id/",
+    validateParams(BoardParams),
+    catcher(getBoard)
+  );
+  app.put(
+    "/api/community/boards/:id/",
+    authRequired,
+    priviledged(UserLevel.BASIC),
+    validateParams(BoardParams),
+    validateBody(PostBody),
+    catcher(addPost)
+  );
+  app.delete(
+    "/api/community/boards/:id/",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(BoardParams),
+    catcher(deleteBoard)
+  );
+  app.patch(
+    "/api/community/boards/:id/",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(BoardParams),
+    validateBody(BoardBody),
+    catcher(setBoard)
+  );
+  app.delete(
+    "/api/community/posts/:id/",
+    authRequired,
+    priviledged(UserLevel.BASIC),
+    validateParams(BoardParams),
+    catcher(deletePost)
+  );
+  app.patch(
+    "/api/community/posts/:id/",
+    authRequired,
+    priviledged(UserLevel.BASIC),
+    validateParams(BoardParams),
+    validateBody(PostBody),
+    catcher(setPost)
   );
 
   app.get(

@@ -16,7 +16,6 @@ const Login = () => {
     e.preventDefault();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    console.log("submit", username, password);
     setLoading(true);
     setError(null);
     try {

@@ -7,7 +7,7 @@ const GameScoreSchema = new Schema<IGameScore>({
   game: {
     type: String,
     required: true,
-    enum: [GameType.QUIZ],
+    enum: [GameType.QUIZ, GameType.MEMORY, GameType.HANGMAN],
   },
   score: { type: Number, required: true },
 });
@@ -21,9 +21,10 @@ export const GameScore: PaginateModel<IGameScore> = model<IGameScore>(
   GameScoreSchema
 ) as PaginateModel<IGameScore>;
 
-export const shadow = ({ _id, user, game, score }: IGameScore) => ({
+export const shadow = ({ _id, user, username, game, score }: IGameScore) => ({
   _id,
   user,
+  username,
   game,
   score,
 });

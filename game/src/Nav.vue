@@ -1,15 +1,33 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import { removeAuthToken } from "shared/auth";
+import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
+
 import { routes } from "./router";
+import { useAuth, removeUUID } from "./auth";
 
 export default defineComponent({
   data() {
+    const auth = useAuth();
     return {
+      auth,
       routes: routes.filter(
-        (route) => !/Register|Login|NotFound/.test(route.name || "")
+        (route) =>
+          !/Register|Login|NotFound|Index|Leaderboard/.test(route.name || "")
       ),
       opened: false,
     };
+  },
+  computed: {
+    userProfile() {
+      return FRONTOFFICE_ENDPOINT + "users/" + this.auth.uuid;
+    },
+  },
+  methods: {
+    async logout() {
+      removeAuthToken();
+      await this.auth.try();
+    },
   },
 });
 </script>
@@ -18,7 +36,12 @@ export default defineComponent({
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img alt="" src="TODO" width="112" height="28" />
+        <img
+          alt="Animal House Logo"
+          src="/logo.png"
+          class="mr-4"
+        />
+        Animal House Game
       </router-link>
 
       <a
@@ -48,7 +71,13 @@ export default defineComponent({
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div v-if="auth.authenticated" class="navbar-item">
+          <a class="mr-4 has-text-white" :href="userProfile">{{
+            auth.username
+          }}</a>
+          <button @click="logout" class="button is-light">Log out</button>
+        </div>
+        <div v-else class="navbar-item">
           <div class="buttons">
             <!-- TODO: are these links accessible? not working with <space> -->
             <router-link to="/register" class="button is-primary">

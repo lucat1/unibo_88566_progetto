@@ -2,7 +2,7 @@ import { h, useState } from "../h";
 import { Link } from "../router";
 import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
-import { deleteAuthToken } from "shared/auth";
+import { removeAuthToken } from "shared/auth";
 
 const links = ["Categories", "Products"];
 
@@ -61,7 +61,7 @@ const Nav = () => {
                   "a",
                   {
                     onClick: () => {
-                      deleteAuthToken();
+                      removeAuthToken();
                       setUser(null);
                     },
                   },
