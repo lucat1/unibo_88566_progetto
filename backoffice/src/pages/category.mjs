@@ -10,7 +10,6 @@ const Category = () => {
   const id = parseInt(
     window.location.pathname.match(/^\/categories\/(\d+)\/?$/)[1]
   );
-  console.log(id);
   return h("h1", {}, "category #", id);
 };
 

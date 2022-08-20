@@ -79,7 +79,7 @@ export const render = (vnode, root) => {
       hooks = prevHooks[key] || [];
       hooksIndex = 0;
       child = child.tag(child.props, child.children);
-      root.__hooks[key] = hooks;
+      root.__hooks[key] = hooks.slice(0, hooksIndex);
       if (!child)
         throw new TypeError(
           "You lickely forgot to return from one of you components"
@@ -118,6 +118,7 @@ export const render = (vnode, root) => {
   for (const hooks of Object.values(root.__hooks))
     for (const h of hooks)
       if (h.callback) {
+        if (h.cleanup) h.cleanup();
         h.cleanup = h.callback();
         h.callback = false;
       }
@@ -129,10 +130,8 @@ export const render = (vnode, root) => {
 
   for (const element in prevHooks)
     if (!(element in root.__hooks))
-      for (const h of prevHooks[element]) {
-        console.log(h, h.cleanup);
+      for (const h of prevHooks[element])
         if (h.cleanup) h.cleanup();
-      }
 
   /* Remove hooks from any unmounted component */
   let child;

@@ -51,17 +51,11 @@ export const Router = (_, children) => {
       throw new TypeError("Router acceps only some Route(s) as children");
 
   const [url, setUrl] = useContext(urlContext);
-  // console.log(url);
   useEffect(() => {
-    const handlePop = (_) => {
-      console.log("pop");
-      setUrl(window.location.pathname);
-    };
-    console.log("add");
-    window.addEventListener("popstate", handlePop);
+    const handlePop = (_) => setUrl(window.location.pathname);
 
+    window.addEventListener("popstate", handlePop);
     return () => {
-      console.log("del");
       window.removeEventListener("popstate", handlePop);
     };
   }, [setUrl]);
