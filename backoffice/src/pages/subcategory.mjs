@@ -1,22 +1,18 @@
 import { h, useState } from "../h";
 
 import fetch, { withOptions } from "shared/fetch";
-import { Link, navigate } from "../router";
+import { navigate, back } from "../router";
 import req from "../async";
-import { useContext } from "../ctx";
-import { user as userContext } from "../ctxs";
 
-import Subcategories from "./subcategories";
-
-const Category = () => {
+const Subcategory = () => {
   const id = parseInt(
-    window.location.pathname.match(/^\/categories\/(\d+)\/?$/)[1]
+    window.location.pathname.match(/^\/subcategories\/(\d+)\/?$/)[1]
   );
   const {
     data,
     loading: fetching,
     err: fetchErr,
-  } = req(`store/categories/${id}`, fetch);
+  } = req(`store/subcategories/${id}`, fetch);
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
@@ -27,7 +23,7 @@ const Category = () => {
     setErr(null);
     try {
       const { name: newName } = await fetch(
-        `store/categories/${id}`,
+        `store/subcategories/${id}`,
         withOptions("PATCH", { name })
       );
       data.name = newName;
@@ -41,8 +37,8 @@ const Category = () => {
     setLoading(true);
     setErr(null);
     try {
-      await fetch(`store/categories/${id}`, withOptions("DELETE"));
-      navigate("/categories");
+      await fetch(`store/subcategories/${id}`, withOptions("DELETE"));
+      back();
     } catch (err) {
       setErr("Error while deleting: " + (err.message || "Could not rename"));
     }
@@ -56,10 +52,8 @@ const Category = () => {
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
       ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(
-          "main",
-          {},
-          h("h1", { className: "is-size-3" }, "Category #", data._id),
+      : [
+          h("h1", { className: "is-size-3" }, "Subcategory #", data._id),
           h(
             "form",
             { onSubmit: rename },
@@ -108,9 +102,8 @@ const Category = () => {
             ),
             err && h("div", { className: "notification is-danger" }, err)
           ),
-          h(Subcategories, { category: id })
-        )
+        ]
   );
 };
 
-export default Category;
+export default Subcategory;

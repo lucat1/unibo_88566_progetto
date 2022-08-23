@@ -3,8 +3,9 @@ import { defineComponent, reactive } from "vue";
 import { setAuthToken } from "shared/auth";
 import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
-import router from "./router";
-import { useAuth } from "./auth";
+
+import router from "../router";
+import { useAuth } from "../auth";
 
 export default defineComponent({
   async setup() {

@@ -28,6 +28,6 @@ export const useContext = (ctx) => {
 
     ctx.on(handler);
     return () => ctx.off(handler);
-  }, [ctx,setVal]);
+  }, [ctx, setVal]);
   return [val, ctx.set];
 };

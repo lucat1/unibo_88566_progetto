@@ -31,6 +31,11 @@ export const navigate = (url) => {
 };
 
 /**
+ * Move back one navigation step
+ */
+export const back = window.history.back.bind(window.history);
+
+/**
  * Redirect to a url (replacing the previous history item)
  * @param {string} url The url to redirect to
  */

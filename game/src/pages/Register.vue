@@ -5,8 +5,8 @@ import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
 import type { IUser } from "shared/models/user";
 
-import router from "./router";
-import { useAuth, hasUUID, removeUUID, getUUID } from "./auth";
+import router from "../router";
+import { useAuth, hasUUID, removeUUID, getUUID } from "../auth";
 
 export default defineComponent({
   async setup() {

@@ -1,8 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import Nav from "./Nav.vue";
 
 import { useAuth } from "./auth";
+import Nav from "./components/Nav.vue";
 
 export default defineComponent({
   async setup() {
@@ -20,7 +20,9 @@ export default defineComponent({
     <Suspense>
       <router-view />
       <template #fallback>
-        <progress class="progress is-primary is-widescreen" max="100">15%</progress>
+        <progress class="progress is-primary is-widescreen" max="100">
+          15%
+        </progress>
       </template>
     </Suspense>
   </main>

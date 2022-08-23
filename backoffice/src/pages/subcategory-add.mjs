@@ -1,7 +1,10 @@
 import { h, useState } from "../h";
 import fetch, { withOptions } from "shared/fetch";
 
-const CategoryAdd = () => {
+const SubcategoryAdd = () => {
+  const id = parseInt(
+    window.location.pathname.match(/^\/categories\/(\d+)\/add$/)[1]
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
@@ -13,13 +16,15 @@ const CategoryAdd = () => {
     setMessage(null);
     try {
       const { _id, name: n } = await fetch(
-        "store/categories",
+        `store/categories/${id}/subcategories`,
         withOptions("PUT", { name: name.value })
       );
       name.value = "";
-      setMessage(`New category (#${_id}) added with name "${n}"`);
+      setMessage(`New subcategory (#${_id}) added with name "${n}"`);
     } catch (err) {
-      setError(err.message || "An error occourred while adding a new category");
+      setError(
+        err.message || "An error occourred while adding a new subcategory"
+      );
     }
     setLoading(false);
   };
@@ -29,7 +34,12 @@ const CategoryAdd = () => {
     h(
       "form",
       { className: "box", onSubmit: handleSubmit },
-      h("h1", { className: "title" }, "Add a category"),
+      h(
+        "h1",
+        { className: "title" },
+        "Addding a subcategory for category #",
+        id
+      ),
 
       h(
         "div",
@@ -70,4 +80,4 @@ const CategoryAdd = () => {
   );
 };
 
-export default CategoryAdd;
+export default SubcategoryAdd;

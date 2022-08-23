@@ -1,13 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Index from "./Index.vue";
-import NotFound from "./NotFound.vue";
-import Register from "./Register.vue";
-import Login from "./Login.vue";
-import Quiz from "./Quiz.vue";
-import Memory from "./Memory.vue";
-import Hangman from "./Hangman.vue";
-import Leaderboard from "./Leaderboard";
+import Index from "./pages/Index.vue";
+import NotFound from "./pages/NotFound.vue";
+import Register from "./pages/Register.vue";
+import Login from "./pages/Login.vue";
+import Quiz from "./pages/Quiz.vue";
+import Memory from "./pages/Memory.vue";
+import Hangman from "./pages/Hangman.vue";
+import Leaderboard from "./pages/Leaderboard.vue";
 
 export const routes = [
   {

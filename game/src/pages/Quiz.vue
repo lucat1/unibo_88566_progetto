@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import internalFetch, { withOptions } from "shared/fetch";
-import { setScore } from "./auth";
+import { setScore } from "../util";
 
 interface TrueOrFalse {
   question: string;
@@ -36,14 +36,13 @@ export default defineComponent({
       let randomBoolean = Math.random() >= 0.5,
         randomAttribute =
           attributesToQuestions[
-            Math.floor(Math.random() * attributesToQuestions.length)
+          Math.floor(Math.random() * attributesToQuestions.length)
           ],
         subject = animals[2 * i],
         distractor = animals[2 * i + 1];
       questions[i] = {
-        question: `The ${subject.name}'s ${randomAttribute[1]} ${
-          (randomBoolean ? subject : distractor)[randomAttribute[0]]
-        }.`,
+        question: `The ${subject.name}'s ${randomAttribute[1]} ${(randomBoolean ? subject : distractor)[randomAttribute[0]]
+          }.`,
         answer:
           randomBoolean ||
           subject[randomAttribute[0]] === distractor[randomAttribute[0]],
@@ -72,11 +71,8 @@ export default defineComponent({
   <div v-if="current < questions.length" class="card">
     <div class="card-image">
       <figure class="image is-16by9">
-        <img
-          v-bind:src="questions[current].image"
-          alt="Subject of the question"
-          style="aspect-ratio: 1 / 1; object-fit: cover"
-        />
+        <img v-bind:src="questions[current].image" alt="Subject of the question"
+          style="aspect-ratio: 1 / 1; object-fit: cover" />
       </figure>
     </div>
     <div class="card-content">
@@ -88,11 +84,7 @@ export default defineComponent({
           {{ questions[current].question }}
         </p>
       </div>
-      <progress
-        class="progress is-primary"
-        v-bind:value="current"
-        v-bind:max="questions.length"
-      ></progress>
+      <progress class="progress is-primary" v-bind:value="current" v-bind:max="questions.length"></progress>
     </div>
     <footer class="card-footer">
       <a href="#" @click="answer(true)" class="card-footer-item">True</a>

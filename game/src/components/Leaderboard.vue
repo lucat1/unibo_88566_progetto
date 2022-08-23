@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import Page from "./Page";
+
+import Page from "./LeaderboardPage.vue";
 
 export default defineComponent({
   props: {

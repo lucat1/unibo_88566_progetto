@@ -87,13 +87,3 @@ export const getUUID = (): string => {
 export const removeUUID = () => {
   return localStorage.removeItem(UUIDKEY);
 };
-
-export const setScore = async (game: string, score: number) => {
-  await fetch<IGameScore>(
-    useAuth().authenticated
-      ? `game/score/${game}`
-      : `game/score/${game}?id=${getUUID()}`,
-    withOptions("PATCH", { score })
-  );
-  router.push(`/leaderboard/${game}?score=${score}`);
-};

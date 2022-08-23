@@ -10,6 +10,8 @@ import Login from "./pages/login";
 import Categories from "./pages/categories";
 import CategoryAdd from "./pages/category-add";
 import Category from "./pages/category";
+import SubcategoryAdd from "./pages/subcategory-add";
+import Subcategory from "./pages/subcategory";
 import NotFound from "./pages/not-found";
 
 render(
@@ -34,6 +36,14 @@ render(
         h(Route, {
           path: /^\/categories\/\d+$/,
           element: h(Category, {}),
+        }),
+        h(Route, {
+          path: /^\/categories\/\d+\/add$/,
+          element: h(SubcategoryAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/subcategories\/\d+$/,
+          element: h(Subcategory, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )

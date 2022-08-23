@@ -3,9 +3,11 @@ import { Link } from "../router";
 import req from "../async";
 import fetch from "shared/fetch";
 
-const Categories = () => {
-  const { data, loading, err } = req("store/categories", fetch);
-  // console.log(data, loading, err);
+const Subcategories = ({ category }) => {
+  const { data, loading, err } = req(
+    `store/categories/${category}/subcategories`,
+    fetch
+  );
   return h(
     "main",
     {},
@@ -15,17 +17,17 @@ const Categories = () => {
       ? h("div", { className: "notification is-danger" }, "Error: ", err)
       : h(
           "div",
-          { className: "menu" },
+          { className: "menu my-4" },
           h(
             "div",
             {
               className:
                 "is-flex is-flex-direction-row is-justify-content-space-between py-2",
             },
-            h("p", { className: "menu-label" }, "Categories"),
+            h("p", { className: "menu-label" }, "Subcategories"),
             h(
               Link,
-              { to: "/categories/add" },
+              { to: `/categories/${category}/add` },
               h("button", { className: "button is-primary" }, "Add")
             )
           ),
@@ -36,7 +38,7 @@ const Categories = () => {
               h(
                 "li",
                 { key: i },
-                h(Link, { to: `/categories/${ele._id}` }, ele.name)
+                h(Link, { to: `/subcategories/${ele._id}` }, ele.name)
               )
             )
           )
@@ -44,4 +46,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Subcategories;

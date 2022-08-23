@@ -130,8 +130,7 @@ export const render = (vnode, root) => {
 
   for (const element in prevHooks)
     if (!(element in root.__hooks))
-      for (const h of prevHooks[element])
-        if (h.cleanup) h.cleanup();
+      for (const h of prevHooks[element]) if (h.cleanup) h.cleanup();
 
   /* Remove hooks from any unmounted component */
   let child;

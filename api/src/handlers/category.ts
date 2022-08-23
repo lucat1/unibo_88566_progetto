@@ -1,5 +1,7 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
+// @ts-ignore
+import send from "@polka/send-type";
 
 import json from "../res";
 import {
@@ -46,7 +48,11 @@ export const getCategory: RequestHandler = async (req, res) => {
 };
 
 export const deleteCategory: RequestHandler = async (req, res) => {
-  // TODO missing implementation
+  const { id } = req.params as unknown as ICategoryParams;
+  await Category.deleteOne({
+    _id: id,
+  });
+  json(res, 200, null);
 };
 
 export const setCategory: RequestHandler = async (req, res) => {
@@ -87,7 +93,11 @@ export const getSubcategory: RequestHandler = async (req, res) => {
 };
 
 export const deleteSubcategory: RequestHandler = async (req, res) => {
-  // TODO missing implementation
+  const { id } = req.params as unknown as ICategoryParams;
+  await Subcategory.deleteOne({
+    _id: id,
+  });
+  json(res, 200, null);
 };
 
 export const setSubcategory: RequestHandler = async (req, res) => {
