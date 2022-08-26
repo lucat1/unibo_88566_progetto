@@ -2,7 +2,7 @@ import { h, useEffect } from "./h";
 import { createContext, useContext } from "./ctx";
 
 // Having a context would be much safer (and could allow for nested routers)
-const urlContext = createContext(window.location.pathname);
+export const urlContext = createContext(window.location.pathname);
 
 /**
  * The children props

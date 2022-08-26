@@ -1,10 +1,12 @@
 import { h, render } from "./h";
-import { Router, Route } from "./router.js";
+import { Router, Route, redirect, urlContext } from "./router.js";
 
 import { me } from "shared/auth";
 import { user as userContext } from "./ctxs";
 
+import App from "./components/app";
 import Nav from "./components/nav";
+
 import Index from "./pages/index";
 import Login from "./pages/login";
 import Categories from "./pages/categories";
@@ -13,6 +15,18 @@ import Category from "./pages/category";
 import SubcategoryAdd from "./pages/subcategory-add";
 import Subcategory from "./pages/subcategory";
 import NotFound from "./pages/not-found";
+
+let user = await me();
+if (user) userContext.set(user);
+
+const check = () => {
+  const url = urlContext.val();
+  const user = userContext.val();
+  if (!user && url != "/login") redirect("/login");
+};
+
+urlContext.on(check);
+check();
 
 render(
   [
@@ -51,6 +65,3 @@ render(
   ],
   document.getElementById("root")
 );
-
-let user = await me();
-if (user) userContext.set(user);

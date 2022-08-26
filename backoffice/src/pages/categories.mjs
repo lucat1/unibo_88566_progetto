@@ -5,7 +5,6 @@ import fetch from "shared/fetch";
 
 const Categories = () => {
   const { data, loading, err } = req("store/categories", fetch);
-  // console.log(data, loading, err);
   return h(
     "main",
     {},

@@ -1,5 +1,5 @@
 import { h, useState } from "../h";
-import { Link } from "../router";
+import { Link, navigate } from "../router";
 import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
@@ -63,6 +63,7 @@ const Nav = () => {
                     onClick: () => {
                       removeAuthToken();
                       setUser(null);
+                      navigate("/login");
                     },
                   },
                   "Sign out"

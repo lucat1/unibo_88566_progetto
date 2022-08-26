@@ -102,7 +102,6 @@ export default defineComponent({
       }, 500);
     },
     async completed() {
-      console.log("completed");
       // TODO: compute based on turns
       const result = Math.round((1 / this.turn) * 1337);
       await setScore("memory", result);
