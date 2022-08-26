@@ -35,6 +35,7 @@ export const shadow = ({
   description,
   price,
   photos,
-  category: typeof category == "number" ? category : category?._id,
-  subcategory: typeof subcategory == "number" ? subcategory : subcategory?._id,
+  category: typeof category == "number" ? { _id: category } : category,
+  subcategory:
+    typeof subcategory == "number" ? { _id: subcategory } : subcategory,
 });

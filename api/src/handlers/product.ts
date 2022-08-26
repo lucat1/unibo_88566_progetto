@@ -5,11 +5,15 @@ import json from "../res";
 import { Product, shadow } from "../models/product";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 
+const POPULATE = ["category", "subcategory"];
+
 export const ProductBody = z.object({
   name: z.string(),
   description: z.string().optional().default(""),
   price: z.number(),
   photos: z.array(z.string()).optional().default([]),
+  category: z.number().optional(),
+  subcategory: z.number().optional(),
 });
 export type IProductBody = z.infer<typeof ProductBody>;
 
@@ -26,7 +30,12 @@ export const getProducts: RequestHandler = async (req, res) => {
 
   const result = await Product.paginate(
     {},
-    { limit, page, sort: sort ? { [sort]: order } : {} }
+    {
+      limit,
+      page,
+      sort: sort ? { [sort]: order } : {},
+      populate: POPULATE,
+    }
   );
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
@@ -43,7 +52,7 @@ export type IProductParams = z.infer<typeof ProductParams>;
 
 export const getProduct: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IProductParams;
-  const product = await Product.findOne({ _id: id }).exec();
+  const product = await Product.findOne({ _id: id }).populate(POPULATE).exec();
   if (product == null)
     json(res, 404, {
       message: "Invalid product id",

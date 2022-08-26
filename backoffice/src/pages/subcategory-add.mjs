@@ -33,7 +33,7 @@ const SubcategoryAdd = () => {
     {},
     h(
       "form",
-      { className: "box", onSubmit: handleSubmit },
+      { onSubmit: handleSubmit },
       h(
         "h1",
         { className: "title" },

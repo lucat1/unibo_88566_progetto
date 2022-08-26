@@ -78,6 +78,7 @@ export const Link = ({ to, as, ...props }, children) => {
       href: to,
       onClick: (e) => {
         e.preventDefault();
+        e.stopPropagation();
         navigate(to);
       },
     },

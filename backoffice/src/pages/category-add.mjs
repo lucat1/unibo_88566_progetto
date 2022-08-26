@@ -28,7 +28,7 @@ const CategoryAdd = () => {
     {},
     h(
       "form",
-      { className: "box", onSubmit: handleSubmit },
+      { onSubmit: handleSubmit },
       h("h1", { className: "title" }, "Add a category"),
 
       h(
