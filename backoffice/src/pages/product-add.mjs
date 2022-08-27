@@ -1,100 +1,14 @@
 import { h, useState } from "../h";
 import { navigate } from "../router";
 import fetch, { withOptions } from "shared/fetch";
-import req from "../async";
 
-const CategorySelector = ({ onSelect }) => {
-  const { data, loading, err } = req("store/categories", fetch);
-  return err
-    ? h("div", { className: "notification is-danger" }, "Error: ", err)
-    : h(
-        "div",
-        { className: "field my-2" },
-        h(
-          "label",
-          { for: "category", className: "label" },
-          "Select a category"
-        ),
-        h(
-          "div",
-          { className: "select" },
-          h(
-            "select",
-            {
-              id: "category",
-              disabled: loading,
-              onChange: () => {
-                const i = document.getElementById("category").selectedIndex;
-                onSelect(i == 0 ? undefined : data[i - 1]);
-              },
-            },
-            h(
-              "option",
-              {
-                onSelect: () => onSelect("some"),
-              },
-              loading ? "Loading" : "Select a category"
-            ),
-            loading
-              ? null
-              : data.map((category) =>
-                  h("option", { key: category._id }, category.name)
-                )
-          )
-        )
-      );
-};
-
-const SubcategorySelector = ({ category, onSelect }) => {
-  const { data, loading, err } = req(
-    `store/categories/${category._id}/subcategories`,
-    fetch
-  );
-  return err
-    ? h("div", { className: "notification is-danger" }, "Error: ", err)
-    : h(
-        "div",
-        { className: "field my-2" },
-        h(
-          "label",
-          { for: "category", className: "label" },
-          "Select a subcategory"
-        ),
-        h(
-          "div",
-          { className: "select" },
-          h(
-            "select",
-            {
-              id: "subcategory",
-              disabled: loading,
-              onChange: () => {
-                const i = document.getElementById("subcategory").selectedIndex;
-                onSelect(i == 0 ? undefined : data[i - 1]);
-              },
-            },
-            h(
-              "option",
-              {
-                onSelect: () => onSelect("some"),
-              },
-              "Select a category"
-            ),
-            loading
-              ? null
-              : data.map((category) =>
-                  h("option", { key: category._id }, category.name)
-                )
-          )
-        )
-      );
-};
+import SelectCategory from "../components/select-category";
+import SelectSubcategory from "../components/select-subcategory";
 
 // TODO: photos?
 const ProductAdd = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
   const [category, setCategory] = useState(undefined);
   const [subcategory, setSubcategory] = useState(undefined);
   const handleSubmit = async (e) => {
@@ -104,7 +18,6 @@ const ProductAdd = () => {
     const price = parseFloat(document.getElementById("price").value);
     setLoading(true);
     setError(null);
-    setMessage(null);
     try {
       const { _id } = await fetch(
         "store/products",
@@ -174,12 +87,11 @@ const ProductAdd = () => {
         })
       )
     ),
-    h(CategorySelector, { onSelect: (c) => setCategory(c) }),
+    h(SelectCategory, { onSelect: (c) => setCategory(c) }),
     category != undefined
-      ? h(SubcategorySelector, { category, onSelect: (c) => setSubcategory(c) })
+      ? h(SelectSubcategory, { category, onSelect: (c) => setSubcategory(c) })
       : null,
     h("p", { class: "help is-danger" }, error),
-    h("p", { class: "help is-success" }, message),
     h(
       "div",
       { className: "field my-2" },

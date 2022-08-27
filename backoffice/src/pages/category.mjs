@@ -1,10 +1,8 @@
 import { h, useState } from "../h";
 
 import fetch, { withOptions } from "shared/fetch";
-import { Link, navigate } from "../router";
+import { navigate } from "../router";
 import req from "../async";
-import { useContext } from "../ctx";
-import { user as userContext } from "../ctxs";
 
 import Subcategories from "./subcategories";
 
@@ -73,7 +71,6 @@ const Category = () => {
                 h("input", {
                   id: "name",
                   type: "text",
-                  name: "name",
                   className: "input",
                   disabled: loading,
                   value: data.name,

@@ -16,6 +16,7 @@ import Subcategory from "./pages/subcategory";
 import NotFound from "./pages/not-found";
 import Products from "./pages/products";
 import ProductAdd from "./pages/product-add";
+import Product from "./pages/product";
 
 let user = await me();
 if (user) userContext.set(user);
@@ -67,6 +68,10 @@ render(
         h(Route, {
           path: /^\/products\/add$/,
           element: h(ProductAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/products\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Product, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )

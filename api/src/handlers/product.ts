@@ -42,11 +42,7 @@ export const getProducts: RequestHandler = async (req, res) => {
 };
 
 export const ProductParams = z.object({
-  id: z
-    .number()
-    .positive()
-    .or(z.string().regex(/^\d+$/).transform(Number))
-    .refine((n) => n >= 0, { message: "Product id must be unsigned" }),
+  id: z.string().uuid(),
 });
 export type IProductParams = z.infer<typeof ProductParams>;
 
