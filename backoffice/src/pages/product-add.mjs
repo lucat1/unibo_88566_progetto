@@ -25,8 +25,8 @@ const ProductAdd = () => {
           name,
           description,
           price,
-          category: category._id,
-          subcategory: subcategory._id,
+          category: category?._id,
+          subcategory: subcategory?._id,
         })
       );
       navigate(`/products/${_id}`);

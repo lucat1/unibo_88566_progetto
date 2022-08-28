@@ -2,6 +2,8 @@ import { Schema, PaginateModel, model } from "mongoose";
 import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
 import type { IProduct } from "shared/models/product";
+import { shadowCategory, shadowSubcategory } from "./category";
+import type { ICategory, ISubcategory } from "shared/models/category";
 
 const ProductSchema = new Schema<IProduct>({
   _id: { type: String, default: v4 },
@@ -35,7 +37,16 @@ export const shadow = ({
   description,
   price,
   photos,
-  category: typeof category == "number" ? { _id: category } : category,
+  category:
+    typeof category == "undefined"
+      ? undefined
+      : typeof category == "number"
+        ? { _id: category }
+        : shadowCategory(category as ICategory),
   subcategory:
-    typeof subcategory == "number" ? { _id: subcategory } : subcategory,
+    typeof subcategory == "undefined"
+      ? undefined
+      : typeof subcategory == "number"
+        ? { _id: subcategory }
+        : shadowSubcategory(subcategory as ISubcategory),
 });

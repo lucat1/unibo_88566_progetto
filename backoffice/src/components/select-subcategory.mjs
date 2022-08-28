@@ -7,14 +7,11 @@ const SelectSubcategory = ({ selected, category, onSelect }) => {
     `store/categories/${category._id}/subcategories`,
     fetch
   );
-  console.log("selected", selected);
   useEffect(() => {
     if (!selected || !data) return;
     data.forEach((d, i) => {
-      if (d._id == selected._id) {
+      if (d._id == selected._id)
         document.getElementById("subcategory").selectedIndex = i + 1;
-        console.log(i + 1);
-      }
     });
   }, [data, selected]);
   return err
@@ -37,7 +34,6 @@ const SelectSubcategory = ({ selected, category, onSelect }) => {
               disabled: loading,
               onChange: () => {
                 const i = document.getElementById("subcategory").selectedIndex;
-                console.log("aaaa");
                 onSelect(i == 0 ? undefined : data[i - 1]);
               },
             },
