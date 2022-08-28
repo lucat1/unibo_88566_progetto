@@ -20,6 +20,10 @@
       "description": "Endpoints for authentication across all sites"
     },
     {
+      "name": "image",
+      "description": "Endpoints for image upload and retrieval"
+    },
+    {
       "name": "game",
       "description": "APIs for the game frontend"
     },
@@ -33,6 +37,85 @@
     }
   ],
   "paths": {
+    "/images/{id}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Serve the required image",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/images": {
+      "put": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Upload a picture",
+        "description": "Returns the UUID associated with the uploaded picture or an error if encountered",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "image/*": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "quality",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/auth/id": {
       "get": {
         "tags": [

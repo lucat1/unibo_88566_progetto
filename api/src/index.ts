@@ -27,6 +27,12 @@ import {
   validateQuery,
 } from "./validate";
 import {
+  ImageParams,
+  ImageQuery,
+  serve as serveImage,
+  upload as uploadImage,
+} from "./handlers/upload";
+import {
   register,
   login,
   password,
@@ -127,6 +133,14 @@ const main = async () => {
   app.get("/api/auth/me", authRequired, catcher(getMe));
   app.delete("/api/auth/me", authRequired, catcher(deleteMe));
   app.patch("/api/auth/me", authRequired, catcher(patchMe));
+
+  app.get("/api/images/:id", validateParams(ImageParams), catcher(serveImage));
+  app.put(
+    "/api/images",
+    authRequired,
+    validateQuery(ImageQuery),
+    catcher(uploadImage)
+  );
 
   app.patch(
     "/api/game/score/:game",
