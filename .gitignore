@@ -133,3 +133,4 @@ dist
 
 # project specific directories
 */build
+api/images

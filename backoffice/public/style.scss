@@ -1,5 +1,30 @@
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";
+@import "fontawesome-free/css/fontawesome.css";
+
+// support disabled file input
+.file.is-primary .file-input[disabled] ~ .file-cta:hover,
+.file.is-primary .file-input[disabled] ~ .file-cta.is-hovered,
+.file.is-primary .file-input[disabled] ~ .file-cta:focus,
+.file.is-primary .file-input[disabled] ~ .file-cta.is-focused,
+.file.is-primary .file-input[disabled] ~ .file-cta:active,
+.file.is-primary .file-input[disabled] ~ .file-cta.is-active {
+  background-color: whitesmoke;
+  border-color: whitesmoke;
+  color: #7a7a7a;
+}
+.file-input[disabled] ~ .file-cta,
+.file-input[disabled] ~ .file-name {
+  background-color: whitesmoke;
+  border-color: whitesmoke;
+  color: #7a7a7a;
+}
+
+.file-input[disabled] ~ .file-cta,
+.file-input[disabled] ~ .file-name,
+.file-input[disabled] ~ .file-cta .file-label {
+  cursor: not-allowed;
+}
 
 #root {
   display: flex;

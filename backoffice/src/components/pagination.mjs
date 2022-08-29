@@ -22,13 +22,13 @@ const Pagination = ({ url, className }, children) => {
   const min = Math.max(1, page - 5);
   const pages = Array.from({ length: max - min + 1 }).map((_, i) => min + i);
   return h(
-    "main",
+    "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-      ? h("div", { className: "notification is-danger" }, "Error: ", err)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", err)
+        : h(
           "div",
           { className },
           data.docs.map((doc, i) => children[0](doc, i))

@@ -1,9 +1,10 @@
-import type { RequestHandler, Request } from "express";
+import type { RequestHandler } from "express";
 import { z } from "zod";
 import sharp from "sharp";
 import { v4 } from "node-uuid";
 import { join } from "path";
-import { mkdir, stat } from "fs/promises";
+import mkdirp from "mkdirp";
+import { stat } from "fs/promises";
 import { createReadStream } from "fs";
 
 import json from "../res";
@@ -20,7 +21,7 @@ export const ImageQuery = z.object({
     .max(100)
     .min(0)
     .optional()
-    .default(60)
+    .default(80)
     .or(z.string().regex(/^\d+$/).transform(Number)),
 });
 export type IImageQuery = z.infer<typeof ImageQuery>;
@@ -50,7 +51,7 @@ export const upload: RequestHandler = async (req, res) => {
   }
 
   const image = Buffer.concat(buffers);
-  await mkdir(dir);
+  await mkdirp(dir);
   const id = v4();
   const path = join(dir, id);
   await sharp(image).webp({ lossless: true, quality }).toFile(path);

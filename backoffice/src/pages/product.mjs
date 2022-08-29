@@ -6,6 +6,8 @@ import req from "../async";
 
 import SelectCategory from "../components/select-category";
 import SelectSubcategory from "../components/select-subcategory";
+import Pictures from "../components/pictures";
+import File from "../components/file";
 
 const ProductWrapper = () => {
   const id = window.location.pathname.match(
@@ -22,8 +24,8 @@ const ProductWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Product, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Product, { id, data })
   );
 };
 
@@ -32,6 +34,7 @@ const Product = ({ id, data }) => {
   const [error, setError] = useState(null);
   const [category, setCategory] = useState(data.category);
   const [subcategory, setSubcategory] = useState(data.subcategory);
+  const [photos, setPhotos] = useState(data.photos || []);
 
   const patch = async (e) => {
     e.preventDefault();
@@ -53,6 +56,7 @@ const Product = ({ id, data }) => {
           name,
           description,
           price,
+          photos,
           category: category?._id,
           subcategory: subcategory?._id,
         })
@@ -80,104 +84,118 @@ const Product = ({ id, data }) => {
     }
     setLoading(false);
   };
+
   return h(
     "main",
-    {},
-    h("h1", { className: "is-size-3" }, "Product #", data._id),
+    { className: "columns" },
     h(
-      "form",
-      { onSubmit: patch },
+      "section",
+      { className: "column is-one-third" },
+      h(Pictures, {
+        pictures: photos,
+        extra: h(File, { onUpload: (url) => setPhotos(photos.concat(url)) }),
+        extraIcon: h("i", { className: "fas fa-upload" }),
+      })
+    ),
+    h(
+      "section",
+      { className: "column" },
+      h("h1", { className: "is-size-3" }, "Product #", data._id),
       h(
-        "div",
-        { className: "field my-2" },
-        h("label", { for: "name", className: "label" }, "Name"),
+        "form",
+        { onSubmit: patch },
         h(
           "div",
-          { className: "control" },
-          h("input", {
-            id: "name",
-            type: "text",
-            className: "input",
-            value: data.name,
-            disabled: loading,
-          })
-        )
-      ),
-      h(
-        "div",
-        { className: "field my-2" },
-        h("label", { for: "description", className: "label" }, "Description"),
-        h(
-          "div",
-          { className: "control" },
+          { className: "field my-2" },
+          h("label", { for: "name", className: "label" }, "Name"),
           h(
-            "textarea",
-            {
-              id: "description",
+            "div",
+            { className: "control" },
+            h("input", {
+              id: "name",
               type: "text",
-              className: "textarea",
-              placeholder: "Type in a description...",
+              className: "input",
+              value: data.name,
               disabled: loading,
-            },
-            data.description
+            })
           )
-        )
-      ),
-      h(
-        "div",
-        { className: "field my-2" },
-        h("label", { for: "price", className: "label" }, "Price"),
+        ),
         h(
           "div",
-          { className: "control" },
-          h("input", {
-            id: "price",
-            type: "number",
-            step: "0.01",
-            className: "input",
-            value: data.price,
-            disabled: loading,
-          })
-        )
-      ),
-      h(SelectCategory, {
-        selected: category,
-        onSelect: (c) => setCategory(c),
-      }),
-      category != undefined
-        ? h(SelectSubcategory, {
+          { className: "field my-2" },
+          h("label", { for: "description", className: "label" }, "Description"),
+          h(
+            "div",
+            { className: "control" },
+            h(
+              "textarea",
+              {
+                id: "description",
+                type: "text",
+                className: "textarea",
+                placeholder: "Type in a description...",
+                disabled: loading,
+              },
+              data.description
+            )
+          )
+        ),
+        h(
+          "div",
+          { className: "field my-2" },
+          h("label", { for: "price", className: "label" }, "Price"),
+          h(
+            "div",
+            { className: "control" },
+            h("input", {
+              id: "price",
+              type: "number",
+              step: "0.01",
+              className: "input",
+              value: data.price,
+              disabled: loading,
+            })
+          )
+        ),
+        h(SelectCategory, {
+          selected: category,
+          onSelect: (c) => setCategory(c),
+        }),
+        category != undefined
+          ? h(SelectSubcategory, {
             selected: subcategory,
             category,
             onSelect: (c) => setSubcategory(c),
           })
-        : null,
-      h(
-        "div",
-        {
-          className:
-            "is-flex is-flex-direction-row is-justify-content-space-between py-2",
-        },
+          : null,
         h(
-          "button",
+          "div",
           {
-            className: "button is-danger",
-            action: "none",
-            onClick: del,
-            disabled: loading,
+            className:
+              "is-flex is-flex-direction-row is-justify-content-space-between py-2",
           },
-          "Delete"
+          h(
+            "button",
+            {
+              className: "button is-danger",
+              action: "none",
+              onClick: del,
+              disabled: loading,
+            },
+            "Delete"
+          ),
+          h(
+            "button",
+            {
+              action: "submit",
+              className: "button is-primary",
+              disabled: loading,
+            },
+            "Update"
+          )
         ),
-        h(
-          "button",
-          {
-            action: "submit",
-            className: "button is-primary",
-            disabled: loading,
-          },
-          "Update"
-        )
-      ),
-      error && h("div", { className: "notification is-danger" }, error)
+        error && h("div", { className: "notification is-danger" }, error)
+      )
     )
   );
 };
