@@ -4,7 +4,7 @@ import { BACKOFFICE_ENDPOINT } from "shared/endpoints";
 
 // Having a context would be much safer (and could allow for nested routers)
 export const urlContext = createContext(window.location.pathname);
-const baseURL = !BACKOFFICE_ENDPOINT.includes("unibo.it") ? "/backoffice" : "";
+const baseURL = BACKOFFICE_ENDPOINT.includes("unibo.it") ? "/backoffice" : "";
 
 /**
  * The children props
