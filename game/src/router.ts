@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+import { GAME_ENDPOINT } from "shared/endpoints";
 
 import Index from "./pages/Index.vue";
 import NotFound from "./pages/NotFound.vue";
@@ -54,7 +55,9 @@ export const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(
+    GAME_ENDPOINT.includes("unibo.it") ? "/game/" : "/"
+  ),
   routes,
   linkActiveClass: "is-active",
 });

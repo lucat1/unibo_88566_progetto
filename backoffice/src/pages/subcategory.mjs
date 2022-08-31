@@ -6,7 +6,7 @@ import req from "../async";
 
 const Subcategory = () => {
   const id = parseInt(
-    window.location.pathname.match(/^\/subcategories\/(\d+)\/?$/)[1]
+    window.location.pathname.match(/\/subcategories\/(\d+)\/?$/)[1]
   );
   const {
     data,
@@ -51,8 +51,8 @@ const Subcategory = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : [
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : [
           h("h1", { className: "is-size-3" }, "Subcategory #", data._id),
           h(
             "form",

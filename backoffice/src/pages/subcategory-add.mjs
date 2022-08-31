@@ -3,7 +3,7 @@ import fetch, { withOptions } from "shared/fetch";
 
 const SubcategoryAdd = () => {
   const id = parseInt(
-    window.location.pathname.match(/^\/categories\/(\d+)\/add$/)[1]
+    window.location.pathname.match(/\/categories\/(\d+)\/add$/)[1]
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

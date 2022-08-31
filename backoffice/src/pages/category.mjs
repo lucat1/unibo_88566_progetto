@@ -8,7 +8,7 @@ import Subcategories from "./subcategories";
 
 const Category = () => {
   const id = parseInt(
-    window.location.pathname.match(/^\/categories\/(\d+)\/?$/)[1]
+    window.location.pathname.match(/\/categories\/(\d+)\/?$/)[1]
   );
   const {
     data,
@@ -53,8 +53,8 @@ const Category = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(
           "main",
           {},
           h("h1", { className: "is-size-3" }, "Category #", data._id),

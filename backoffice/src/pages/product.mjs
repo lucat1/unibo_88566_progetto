@@ -11,7 +11,7 @@ import File from "../components/file";
 
 const ProductWrapper = () => {
   const id = window.location.pathname.match(
-    /^\/products\/([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})$/
+    /\/products\/([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})$/
   )[1];
   const {
     data,
@@ -24,8 +24,8 @@ const ProductWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(Product, { id, data })
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(Product, { id, data })
   );
 };
 
@@ -163,10 +163,10 @@ const Product = ({ id, data }) => {
         }),
         category != undefined
           ? h(SelectSubcategory, {
-            selected: subcategory,
-            category,
-            onSelect: (c) => setSubcategory(c),
-          })
+              selected: subcategory,
+              category,
+              onSelect: (c) => setSubcategory(c),
+            })
           : null,
         h(
           "div",

@@ -1,8 +1,10 @@
 import { h, useEffect } from "./h";
 import { createContext, useContext } from "./ctx";
+import { BACKOFFICE_ENDPOINT } from "shared/endpoints";
 
 // Having a context would be much safer (and could allow for nested routers)
 export const urlContext = createContext(window.location.pathname);
+const baseURL = !BACKOFFICE_ENDPOINT.includes("unibo.it") ? "/backoffice" : "";
 
 /**
  * The children props
@@ -21,13 +23,16 @@ export const Route = ({ element }) => {
 const match = (expr, url) =>
   typeof expr == "string" ? url.startsWith(expr) : expr.test(url);
 
+const resolveURL = (url) => (url.startsWith("/") ? baseURL + url : url);
+
 /**
  * Navigate to a url
  * @param {string} url The url to navigate to
  */
 export const navigate = (url) => {
-  window.history.pushState("", null, url);
-  urlContext.set(url);
+  const rurl = resolveURL(url);
+  window.history.pushState("", null, rurl);
+  urlContext.set(rurl);
 };
 
 /**
@@ -40,8 +45,9 @@ export const back = window.history.back.bind(window.history);
  * @param {string} url The url to redirect to
  */
 export const redirect = (url) => {
-  window.history.replaceState("", null, url);
-  urlContext.set(url);
+  const rurl = resolveURL(url);
+  window.history.replaceState("", null, rurl);
+  urlContext.set(rurl);
 };
 
 /**
@@ -64,7 +70,9 @@ export const Router = (_, children) => {
       window.removeEventListener("popstate", handlePop);
     };
   }, [setUrl]);
-  const route = children.filter((route) => match(route.props.path, url));
+  const route = children.filter((route) =>
+    match(route.props.path, url.replace(baseURL, ""))
+  );
 
   if (route.length > 0) return route[0];
   else return null;
