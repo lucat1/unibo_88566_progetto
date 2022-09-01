@@ -1,12 +1,11 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": "../tsconfig.json",
-  "include": [
-    "./src"
-  ],
+  "include": ["./src"],
   "compilerOptions": {
-    "module": "ES2022",
-    "esModuleInterop": false,
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "target": "ES2021",
