@@ -23,7 +23,7 @@ export const Route = ({ element }) => {
 const match = (expr, url) =>
   typeof expr == "string" ? url.startsWith(expr) : expr.test(url);
 
-const resolveURL = (url) => (url.startsWith("/") ? baseURL + url : url);
+export const resolveURL = (url) => (url.startsWith("/") ? baseURL + url : url);
 
 /**
  * Navigate to a url

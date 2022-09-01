@@ -1,5 +1,5 @@
 import { h, render } from "./h";
-import { Router, Route, redirect, urlContext } from "./router.js";
+import { Router, Route, redirect, urlContext, resolveURL } from "./router.js";
 
 import { me } from "shared/auth";
 import { user as userContext } from "./ctxs";
@@ -24,7 +24,7 @@ if (user) userContext.set(user);
 const check = () => {
   const url = urlContext.val();
   const user = userContext.val();
-  if (!user && url != "/login") redirect("/login");
+  if (!user && url != resolveURL("/login")) redirect("/login");
 };
 
 urlContext.on(check);
