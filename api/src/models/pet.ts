@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { v4 } from "node-uuid";
-import { IPet } from "shared/models/pet";
+import type { IPet } from "shared/models/pet";
 
 const PetSchema = new Schema<IPet>({
   _id: { type: String, default: v4 },
