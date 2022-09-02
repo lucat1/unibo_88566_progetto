@@ -18,8 +18,8 @@
     "@formkit/vue": "^1.0.0-beta.10",
     "bulma": "^0.9.3",
     "pinia": "^2.0.18",
-    "shared": "*",
     "vue": "^3.2.33",
+    "shared": "*",
     "vue-router": "^4.0.14"
   }
 }

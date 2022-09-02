@@ -11,6 +11,7 @@
     "snowpack": "^3.8.8"
   },
   "dependencies": {
-    "fontawesome-free": "^1.0.4"
+    "fontawesome-free": "^1.0.4",
+    "shared": "*"
   }
 }

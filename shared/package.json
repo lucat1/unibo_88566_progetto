@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "tsc --watch --preserveWatchOutput",
-    "build": "tsc"
+    "dev": "tsc -p tsconfig.es.json --watch --preserveWatchOutput",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json"
   },
   "devDependencies": {
     "@types/mongoose-paginate": "^5.0.12",
@@ -14,15 +15,45 @@
     "typescript": "^4.7.4"
   },
   "exports": {
-    "./endpoints": "./build/shared/src/endpoints.js",
-    "./auth": "./build/shared/src/auth.js",
-    "./fetch": "./build/shared/src/fetch.js",
-    "./models/category": "./build/shared/src/models/category.js",
-    "./models/game-score": "./build/shared/src/models/game-score.js",
-    "./models/pet": "./build/shared/src/models/pet.js",
-    "./models/product": "./build/shared/src/models/product.js",
-    "./models/stock": "./build/shared/src/models/stock.js",
-    "./models/store": "./build/shared/src/models/store.js",
-    "./models/user": "./build/shared/src/models/user.js"
+    "./endpoints": {
+      "import": "./es/shared/src/endpoints.js",
+      "node": "./cjs/shared/src/endpoints.js"
+    },
+    "./auth": {
+      "import": "./es/shared/src/auth.js",
+      "node": "./cjs/shared/src/auth.js"
+    },
+    "./fetch": {
+      "import": "./es/shared/src/fetch.js",
+      "node": "./cjs/shared/src/fetch.js"
+    },
+    "./models/category": {
+      "import": "./es/shared/src/models/category.js",
+      "node": "./cjs/shared/src/models/category.js"
+    },
+    "./models/game-score": {
+      "import": "./es/shared/src/models/game-score.js",
+      "node": "./cjs/shared/src/models/game-score.js"
+    },
+    "./models/pet": {
+      "import": "./es/shared/src/models/pet.js",
+      "node": "./cjs/shared/src/models/pet.js"
+    },
+    "./models/product": {
+      "import": "./es/shared/src/models/product.js",
+      "node": "./cjs/shared/src/models/product.js"
+    },
+    "./models/stock": {
+      "import": "./es/shared/src/models/stock.js",
+      "node": "./cjs/shared/src/models/stock.js"
+    },
+    "./models/store": {
+      "import": "./es/shared/src/models/store.js",
+      "node": "./cjs/shared/src/models/store.js"
+    },
+    "./models/user": {
+      "import": "./es/shared/src/models/user.js",
+      "node": "./cjs/shared/src/models/user.js"
+    }
   }
 }

@@ -1,12 +1,31 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/main",
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"]
-    },
     "dev": {
-      "cache": false
+      "cache": false,
+      "outputs": [],
+      "dependsOn": ["^dev"]
+    },
+    "api#dev": {
+      "dependsOn": []
+    },
+    "game#dev": {
+      "dependsOn": []
+    },
+    "frontoffice#dev": {
+      "dependsOn": []
+    },
+    "backoffice#dev": {
+      "dependsOn": []
+    },
+    "build": {
+      "dependsOn": ["^build", "build:cjs", "build:es"]
+    },
+    "build:cjs": {
+      "dependsOn": ["^build:cjs"]
+    },
+    "build:es": {
+      "dependsOn": ["^build:es"]
     }
   }
 }

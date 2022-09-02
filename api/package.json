@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
-    "start:": "node build/index.js"
+    "start": "node build/index.js",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -40,9 +40,9 @@
     "mongoose-plugin-autoinc-fix": "^1.2.1",
     "node-uuid": "^1.4.8",
     "polka": "^0.5.2",
-    "shared": "*",
     "sharp": "^0.30.7",
     "sirv": "^2.0.2",
+    "shared": "*",
     "zod": "^3.14.4"
   }
 }

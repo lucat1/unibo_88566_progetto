@@ -1,9 +1,11 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": "../tsconfig.json",
-  "include": ["./src"],
+  "include": [
+    "./src"
+  ],
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
@@ -14,7 +16,7 @@
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "build",
+    "outDir": "es",
     "baseUrl": "./"
   }
 }
