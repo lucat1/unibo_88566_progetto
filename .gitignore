@@ -134,3 +134,5 @@ dist
 # project specific directories
 */build
 api/images
+*/cjs
+*/es
