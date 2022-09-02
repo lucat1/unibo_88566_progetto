@@ -1,0 +1,18 @@
+@charset "utf-8";
+@import "../node_modules/bulma/bulma.sass";
+
+#root {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.h-full {
+  height: 100%;
+}

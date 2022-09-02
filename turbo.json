@@ -4,8 +4,10 @@
     "dev": {
       "cache": false,
       "outputs": [],
-      "dependsOn": ["^dev"]
+      "dependsOn": ["^dev", "shared#dev:es", "shared#dev:cjs"]
     },
+    "shared#dev:es": {},
+    "shared#dev:cjs": {},
     "api#dev": {
       "dependsOn": []
     },

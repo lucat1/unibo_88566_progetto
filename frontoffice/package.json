@@ -17,6 +17,8 @@
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "shared": "*"
+    "react-hook-form": "^7.34.2",
+    "react-router-dom": "6",
+    "swr": "^1.3.0"
   }
 }
