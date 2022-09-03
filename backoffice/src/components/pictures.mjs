@@ -20,15 +20,18 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
           "figure",
           { className: "image is-square" },
           pictures.length - 1 >= selected
-            ? h("img", { src: pictures[selected] })
+            ? h("img", {
+              style: { "object-fit": "cover" },
+              src: pictures[selected],
+            })
             : h(
-                "div",
-                {
-                  className:
-                    "has-ratio is-flex is-flex-direction-column is-align-items-center is-justify-content-center",
-                },
-                extra
-              )
+              "div",
+              {
+                className:
+                  "has-ratio is-flex is-flex-direction-column is-align-items-center is-justify-content-center",
+              },
+              extra
+            )
         )
       )
     ),
@@ -49,25 +52,32 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
               className: "card mx-4",
               style: { width: "6rem", height: "6rem" },
             },
-            h("div", { className: "card-image" }, h("img", { src: picture }))
+            h(
+              "div",
+              { className: "card-image" },
+              h("img", {
+                style: { "object-fit": "cover", width: "6rem", height: "6rem" },
+                src: picture,
+              })
+            )
           )
         )
       ),
       extra &&
-        extraIcon &&
+      extraIcon &&
+      h(
+        "a",
+        { onClick: select(pictures.lenght + 1) },
         h(
-          "a",
-          { onClick: select(pictures.lenght + 1) },
-          h(
-            "div",
-            {
-              className:
-                "card mx-4 is-flex is-align-items-center is-justify-content-center p-2",
-              style: { width: "6rem", height: "6rem" },
-            },
-            extraIcon
-          )
+          "div",
+          {
+            className:
+              "card mx-4 is-flex is-align-items-center is-justify-content-center p-2",
+            style: { width: "6rem", height: "6rem" },
+          },
+          extraIcon
         )
+      )
     )
   );
 };

@@ -88,6 +88,15 @@ import {
   deleteProduct,
   setProduct,
 } from "./handlers/product";
+import {
+  StoreBody,
+  StoreParams,
+  addStore,
+  getStores,
+  getStore,
+  deleteStore,
+  setStore,
+} from "./handlers/store";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -275,6 +284,37 @@ const main = async () => {
   //   validateBody(ServiceBody),
   //   catcher(setService)
   // );
+
+  app.get(
+    "/api/store/stores",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getStores)
+  );
+  app.put(
+    "/api/store/stores",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(StoreBody),
+    catcher(addStore)
+  );
+  app.get(
+    "/api/store/stores/:id",
+    validateParams(StoreParams),
+    catcher(getStore)
+  );
+  app.delete(
+    "/api/store/stores/:id",
+    validateParams(StoreParams),
+    catcher(deleteStore)
+  );
+  app.patch(
+    "/api/store/stores/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(StoreParams),
+    validateBody(StoreBody),
+    catcher(setStore)
+  );
 
   app.get("/api/store/categories", catcher(getCategories));
   app.put(

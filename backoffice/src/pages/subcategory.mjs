@@ -40,7 +40,7 @@ const Subcategory = () => {
       await fetch(`store/subcategories/${id}`, withOptions("DELETE"));
       back();
     } catch (err) {
-      setErr("Error while deleting: " + (err.message || "Could not rename"));
+      setErr("Error while deleting: " + (err.message || "Unknown Error"));
     }
     setLoading(false);
   };

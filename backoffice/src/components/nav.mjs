@@ -4,7 +4,7 @@ import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
 
-const links = ["Categories", "Products"];
+const links = ["Categories", "Products", "Stores"];
 
 const Nav = () => {
   const [user, setUser] = useContext(userContext);

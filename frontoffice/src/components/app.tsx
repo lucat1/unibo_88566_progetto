@@ -13,7 +13,11 @@ const App: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <>
       <Nav />
-      <React.Suspense fallback={<h1>loading...</h1>}>{children}</React.Suspense>
+      <main style={{ flex: 1 }} className="m-5">
+        <React.Suspense fallback={<h1>loading...</h1>}>
+          {children}
+        </React.Suspense>
+      </main>
     </>
   );
 };

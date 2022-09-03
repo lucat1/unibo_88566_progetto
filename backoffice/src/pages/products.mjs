@@ -3,8 +3,8 @@ import { Link } from "../router";
 
 import Pagination from "../components/pagination";
 
-const Products = () => {
-  return h(
+const Products = () =>
+  h(
     "main",
     { className: "menu" },
     h(
@@ -38,19 +38,21 @@ const Products = () => {
           h(
             "div",
             { className: "card" },
-            h(
-              "div",
-              { className: "card-image" },
-              h(
-                "figure",
-                { className: "image is-4by3" },
-                h("img", {
-                  src: "https://bulma.io/images/placeholders/1280x960.png",
-                  alt: "A placeholder image",
-                })
-                // TODO
+            prod.photos.length > 0
+              ? h(
+                "div",
+                { className: "card-image" },
+                h(
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: prod.photos[0],
+                    alt: `${prod.name} main image`,
+                  })
+                )
               )
-            ),
+              : null,
             h(
               "div",
               { className: "card-content" },
@@ -70,32 +72,31 @@ const Products = () => {
               )
             ),
             (prod.category || prod.subcategory) &&
+            h(
+              "footer",
+              { className: "card-footer" },
+              prod.category &&
               h(
-                "footer",
-                { className: "card-footer" },
-                prod.category &&
-                  h(
-                    Link,
-                    {
-                      to: `/categories/${prod.category._id}`,
-                      className: "card-footer-item",
-                    },
-                    prod.category.name
-                  ),
-                prod.subcategory &&
-                  h(
-                    Link,
-                    {
-                      to: `/subcategories/${prod.subcategory._id}`,
-                      className: "card-footer-item",
-                    },
-                    prod.subcategory.name
-                  )
+                Link,
+                {
+                  to: `/categories/${prod.category._id}`,
+                  className: "card-footer-item",
+                },
+                prod.category.name
+              ),
+              prod.subcategory &&
+              h(
+                Link,
+                {
+                  to: `/subcategories/${prod.subcategory._id}`,
+                  className: "card-footer-item",
+                },
+                prod.subcategory.name
               )
+            )
           )
         )
     )
   );
-};
 
 export default Products;

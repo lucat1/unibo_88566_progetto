@@ -42,7 +42,7 @@ const Category = () => {
       await fetch(`store/categories/${id}`, withOptions("DELETE"));
       navigate("/categories");
     } catch (err) {
-      setErr("Error while deleting: " + (err.message || "Could not rename"));
+      setErr("Error while deleting: " + (err.message || "Unknown error"));
     }
     setLoading(false);
   };

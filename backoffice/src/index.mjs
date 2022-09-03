@@ -17,6 +17,9 @@ import NotFound from "./pages/not-found";
 import Products from "./pages/products";
 import ProductAdd from "./pages/product-add";
 import Product from "./pages/product";
+import Stores from "./pages/stores";
+import StoreAdd from "./pages/store-add";
+import Store from "./pages/store";
 
 let user = await me();
 if (user) userContext.set(user);
@@ -72,6 +75,18 @@ render(
         h(Route, {
           path: /^\/products\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
           element: h(Product, {}),
+        }),
+        h(Route, {
+          path: /^\/stores$/,
+          element: h(Stores, {}),
+        }),
+        h(Route, {
+          path: /^\/stores\/add$/,
+          element: h(StoreAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/stores\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Store, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )

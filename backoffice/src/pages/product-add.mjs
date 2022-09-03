@@ -5,7 +5,6 @@ import fetch, { withOptions } from "shared/fetch";
 import SelectCategory from "../components/select-category";
 import SelectSubcategory from "../components/select-subcategory";
 
-// TODO: photos?
 const ProductAdd = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

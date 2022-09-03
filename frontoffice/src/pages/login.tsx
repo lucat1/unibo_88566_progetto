@@ -41,7 +41,6 @@ const Login: React.FC = () => {
     setLoading(false);
   };
 
-  console.log(errors);
   return (
     <div className="center h-full">
       <form onSubmit={handleSubmit(login)} className="box">

@@ -24,8 +24,8 @@ const ProductWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Product, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Product, { id, data })
   );
 };
 
@@ -68,7 +68,7 @@ const Product = ({ id, data }) => {
 
       if (newSubcategory != subcategory) setSubcategory(newSubcategory);
     } catch (err) {
-      setError(err.message || "An error occourred while adding a new product");
+      setError(err.message || "An error occourred while updating the product");
     }
     setLoading(false);
   };
@@ -80,7 +80,7 @@ const Product = ({ id, data }) => {
       await fetch(`store/products/${id}`, withOptions("DELETE"));
       navigate("/products");
     } catch (err) {
-      setError("Error while deleting: " + (err.message || "Could not rename"));
+      setError("Error while deleting: " + (err.message || "Unknown error"));
     }
     setLoading(false);
   };
@@ -163,10 +163,10 @@ const Product = ({ id, data }) => {
         }),
         category != undefined
           ? h(SelectSubcategory, {
-              selected: subcategory,
-              category,
-              onSelect: (c) => setSubcategory(c),
-            })
+            selected: subcategory,
+            category,
+            onSelect: (c) => setSubcategory(c),
+          })
           : null,
         h(
           "div",

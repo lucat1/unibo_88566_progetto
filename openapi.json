@@ -2436,12 +2436,12 @@
         }
       }
     },
-    "/store/locations/": {
+    "/store/stores/": {
       "get": {
         "tags": [
           "store"
         ],
-        "summary": "Get a listing of every location",
+        "summary": "Get a listing of every shop location",
         "parameters": [
           {
             "name": "paginationQuery",
@@ -2467,7 +2467,7 @@
                         "docs": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Location"
+                            "$ref": "#/components/schemas/Store"
                           }
                         }
                       }
@@ -2500,7 +2500,7 @@
                   "name": {
                     "type": "string"
                   },
-                  "locatio": {
+                  "location": {
                     "type": "string"
                   }
                 }
@@ -2514,7 +2514,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Location"
+                  "$ref": "#/components/schemas/Store"
                 }
               }
             }
@@ -2528,7 +2528,7 @@
         }
       }
     },
-    "/store/locations/{location}": {
+    "/store/locations/{id}": {
       "delete": {
         "tags": [
           "store"
@@ -2536,7 +2536,7 @@
         "summary": "Delete a location",
         "parameters": [
           {
-            "name": "location",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -2564,7 +2564,7 @@
         "summary": "Update an existing location",
         "parameters": [
           {
-            "name": "location",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -2597,7 +2597,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Product"
+                  "$ref": "#/components/schemas/Store"
                 }
               }
             }
@@ -2606,7 +2606,7 @@
             "description": "Invalid input"
           },
           "404": {
-            "description": "Product not found"
+            "description": "Store not found"
           },
           "500": {
             "description": "Internal server error"
@@ -2670,7 +2670,7 @@
             "format": "uuid"
           },
           "location": {
-            "$ref": "#/components/schemas/Location"
+            "$ref": "#/components/schemas/Store"
           },
           "calendar": {
             "$ref": "#/components/schemas/Calendar"
@@ -2702,7 +2702,7 @@
           "quiz"
         ]
       },
-      "Location": {
+      "Store": {
         "type": "object",
         "properties": {
           "_id": {
@@ -2713,7 +2713,11 @@
             "type": "string"
           },
           "location": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
           }
         }
       },
