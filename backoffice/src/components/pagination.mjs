@@ -12,7 +12,7 @@ import fetch from "shared/fetch";
  * @property {number} pages - Number of pages for the collection with the given limit
  */
 
-const Pagination = ({ url, className }, children) => {
+const Pagination = ({ url, ele, className }, children) => {
   const [page, setPage] = useState(1);
   const [max, setMax] = useState(10);
   const { data, loading, err } = req(url(page), fetch);
@@ -22,20 +22,20 @@ const Pagination = ({ url, className }, children) => {
   const min = Math.max(1, page - 5);
   const pages = Array.from({ length: max - min + 1 }).map((_, i) => min + i);
   return h(
-    "div",
+    ele || "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-        ? h("div", { className: "notification is-danger" }, "Error: ", err)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", err)
+      : h(
           "div",
           { className },
           data.docs.map((doc, i) => children[0](doc, i))
         ),
     h(
       "div",
-      { className: "flex is-flex-direction-row" },
+      { className: "mt-4 flex is-flex-direction-row" },
       h("span", { className: "subtitle" }, "Pages: "),
       pages.map((index) =>
         h(
