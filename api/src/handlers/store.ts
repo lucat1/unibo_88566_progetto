@@ -6,7 +6,7 @@ import { Store, shadow } from "../models/store";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 
 export const StoreBody = z.object({
-  name: z.string(),
+  name: z.string().min(1),
   location: z.tuple([z.number(), z.number()]),
 });
 export type IStoreBody = z.infer<typeof StoreBody>;

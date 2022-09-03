@@ -8,7 +8,7 @@ import type { IPaginationQuery, ISortingQuery } from "./pagination";
 const POPULATE = ["category", "subcategory"];
 
 export const ProductBody = z.object({
-  name: z.string(),
+  name: z.string().min(1),
   description: z.string().optional().default(""),
   price: z.number(),
   photos: z.array(z.string()).optional().default([]),

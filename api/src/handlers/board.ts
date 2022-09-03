@@ -5,14 +5,14 @@ import json from "../res";
 import { Board, Post, shadowBoard, shadowPost } from "../models/board";
 
 export const BoardBody = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(1),
+  description: z.string().min(1),
 });
 export type IBoardBody = z.infer<typeof BoardBody>;
 
 export const PostBody = z.object({
-  name: z.string(),
-  message: z.string(),
+  name: z.string().min(1),
+  message: z.string().min(1),
   photos: z.array(z.string()).optional().default([]),
 });
 export type IPostBody = z.infer<typeof PostBody>;

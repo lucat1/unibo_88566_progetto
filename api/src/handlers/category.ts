@@ -12,7 +12,7 @@ import {
 } from "../models/category";
 
 export const CategoryBody = z.object({
-  name: z.string(),
+  name: z.string().min(1),
 });
 export type ICategoryBody = z.infer<typeof CategoryBody>;
 
