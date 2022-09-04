@@ -17,13 +17,13 @@ export default defineComponent({
 <template>
   <Nav />
   <main style="flex: 1" class="m-5">
-    <Suspense>
-      <router-view />
-      <template #fallback>
-        <progress class="progress is-primary is-widescreen" max="100">
-          15%
-        </progress>
-      </template>
-    </Suspense>
+    <router-view v-slot="{ Component }">
+      <Suspense>
+        <component :is="Component" />
+        <template #fallback>
+          <progress class="progress is-primary" />
+        </template>
+      </Suspense>
+    </router-view>
   </main>
 </template>
