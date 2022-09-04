@@ -83,7 +83,7 @@ export const Link = ({ to, as, ...props }, children) => {
     as || "a",
     {
       ...props,
-      href: to,
+      href: resolveURL(to),
       onClick: (e) => {
         e.preventDefault();
         e.stopPropagation();
