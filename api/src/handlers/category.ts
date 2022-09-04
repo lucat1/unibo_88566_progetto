@@ -1,7 +1,5 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
-// @ts-ignore
-import send from "@polka/send-type";
 
 import json from "../res";
 import {

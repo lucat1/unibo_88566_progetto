@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, ObjectId } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
@@ -11,7 +11,7 @@ const UserSchema = new Schema<IUser>({
   level: {
     type: Number,
     required: true,
-    enum: [UserLevel.BASIC, UserLevel.VIP, UserLevel.MANAGER],
+    enum: [UserLevel.BASIC, UserLevel.MANAGER],
   },
   firstName: { type: String, required: true },
   lastName: String,
@@ -21,7 +21,12 @@ const UserSchema = new Schema<IUser>({
   pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
 });
 UserSchema.pre("save", async function () {
-  this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
+  let password = "";
+  try {
+    password = (await User.findOne({ _id: this._id }))?.password || "";
+  } catch (_) {}
+  if (password != this.password)
+    this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
 });
 
 export const User = model<IUser>("User", UserSchema);

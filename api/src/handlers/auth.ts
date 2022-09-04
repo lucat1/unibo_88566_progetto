@@ -1,4 +1,5 @@
 import type { RequestHandler } from "express";
+import { z } from "zod";
 import { v4 } from "node-uuid";
 import { compare } from "bcrypt";
 
@@ -43,8 +44,28 @@ export const login = async (
     return { message: "Internal server error" };
   }
 };
+
+export const PasswordData = z.object({
+  password: z.string().min(1),
+});
+export type IPasswordData = z.infer<typeof PasswordData>;
+
 export const password: RequestHandler = async (req, res) => {
-  // TODO
+  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
+  const { password } = req.body as unknown as IPasswordData;
+  user.password = password;
+  await user.save();
+  json(res, 200, shadow(user));
+};
+
+export const upgrade: RequestHandler = async (req, res) => {
+  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
+
+  user.level = UserLevel.MANAGER;
+  await user.save();
+  json(res, 200, shadow(user));
 };
 
 export const id: RequestHandler = (_, res) => {
@@ -57,10 +78,28 @@ export const getMe: RequestHandler = async (req, res) => {
   json(res, 200, shadow(user));
 };
 
-export const deleteMe: RequestHandler = async (req, res) => {
-  // TODO
+export const UserData = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  city: z.string().optional(),
+  avatar: z.string().optional(),
+});
+export type IUserData = z.infer<typeof UserData>;
+export const patchMe: RequestHandler = async (req, res) => {
+  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
+  const { firstName, lastName, city, avatar } =
+    req.body as unknown as IUserData;
+  if (firstName) user.firstName = firstName;
+  if (lastName) user.lastName = lastName;
+  if (city) user.city = city;
+  if (avatar) user.avatar = avatar;
+  await user.save();
+  json(res, 200, shadow(user));
 };
 
-export const patchMe: RequestHandler = async (req, res) => {
-  // TODO
+export const deleteMe: RequestHandler = async (req, res) => {
+  const user = await User.deleteOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
+  json(res, 200, null);
 };

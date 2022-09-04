@@ -36,10 +36,13 @@ import {
   register,
   login,
   password,
+  upgrade,
   getMe,
   deleteMe,
   patchMe,
   id,
+  PasswordData,
+  UserData,
 } from "./handlers/auth";
 import {
   GameBody,
@@ -138,10 +141,21 @@ const main = async () => {
     validateBody(LoginData),
     loginWrapper(login)
   );
-  app.patch("/api/auth/password", authRequired, catcher(password));
+  app.patch(
+    "/api/auth/password",
+    authRequired,
+    validateBody(PasswordData),
+    catcher(password)
+  );
   app.get("/api/auth/me", authRequired, catcher(getMe));
   app.delete("/api/auth/me", authRequired, catcher(deleteMe));
-  app.patch("/api/auth/me", authRequired, catcher(patchMe));
+  app.patch(
+    "/api/auth/me",
+    authRequired,
+    validateBody(UserData),
+    catcher(patchMe)
+  );
+  app.post("/api/auth/upgrade", authRequired, catcher(upgrade));
 
   app.get("/api/images/:id", validateParams(ImageParams), catcher(serveImage));
   app.put(

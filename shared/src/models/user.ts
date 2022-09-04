@@ -3,7 +3,6 @@ import type { IPet } from "./pet";
 
 export enum UserLevel {
   BASIC,
-  VIP,
   MANAGER,
 }
 
