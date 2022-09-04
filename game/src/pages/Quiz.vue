@@ -68,27 +68,29 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="current < questions.length" class="card">
-    <div class="card-image">
-      <figure class="image is-16by9">
-        <img v-bind:src="questions[current].image" alt="Subject of the question"
-          style="aspect-ratio: 1 / 1; object-fit: cover" />
-      </figure>
-    </div>
-    <div class="card-content">
-      <div class="content">
-        <h4 class="title is-4">
-          Question {{ current + 1 }} / {{ questions.length }}
-        </h4>
-        <p>
-          {{ questions[current].question }}
-        </p>
+  <div class="is-flex is-align-items-center is-justify-content-center">
+    <div v-if="current < questions.length" class="card">
+      <div class="card-image">
+        <figure class="image" style="max-height: 60vh">
+          <img v-bind:src="questions[current].image" alt="Subject of the question"
+            style="aspect-ratio: 1 / 1; object-fit: cover; max-height: 60vh" />
+        </figure>
       </div>
-      <progress class="progress is-primary" v-bind:value="current" v-bind:max="questions.length"></progress>
+      <div class="card-content">
+        <div class="content">
+          <h4 class="title is-4">
+            Question {{ current + 1 }} / {{ questions.length }}
+          </h4>
+          <p>
+            {{ questions[current].question }}
+          </p>
+        </div>
+        <progress class="progress is-primary" v-bind:value="current" v-bind:max="questions.length"></progress>
+      </div>
+      <footer class="card-footer">
+        <a href="#" @click="answer(true)" class="card-footer-item">True</a>
+        <a href="#" @click="answer(false)" class="card-footer-item">False</a>
+      </footer>
     </div>
-    <footer class="card-footer">
-      <a href="#" @click="answer(true)" class="card-footer-item">True</a>
-      <a href="#" @click="answer(false)" class="card-footer-item">False</a>
-    </footer>
   </div>
 </template>
