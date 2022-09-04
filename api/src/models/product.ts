@@ -11,7 +11,6 @@ const ProductSchema = new Schema<IProduct>({
   description: String,
   price: { type: Number, required: true },
   photos: [String],
-  stocks: [{ type: Schema.Types.ObjectId, ref: "Stock" }],
 
   category: { type: Number, ref: "Category" },
   subcategory: { type: Number, ref: "Subcategory" },

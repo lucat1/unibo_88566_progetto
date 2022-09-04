@@ -51,11 +51,6 @@
       "types": "./es/shared/src/models/product.d.ts",
       "node": "./cjs/shared/src/models/product.js"
     },
-    "./models/stock": {
-      "import": "./es/shared/src/models/stock.js",
-      "types": "./es/shared/src/models/stock.d.ts",
-      "node": "./cjs/shared/src/models/stock.js"
-    },
     "./models/store": {
       "import": "./es/shared/src/models/store.js",
       "types": "./es/shared/src/models/store.d.ts",
