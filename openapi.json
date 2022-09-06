@@ -2671,9 +2671,6 @@
           },
           "location": {
             "$ref": "#/components/schemas/Store"
-          },
-          "calendar": {
-            "$ref": "#/components/schemas/Calendar"
           }
         }
       },
@@ -2702,38 +2699,9 @@
           "quiz"
         ]
       },
-      "Store": {
+      "Interval": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "location": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "float"
-            }
-          }
-        }
-      },
-      "OfflineAppointment": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "service": {
-            "$ref": "#/components/schemas/OfflineService"
-          },
-          "disponibility": {
-            "$ref": "#/components/schemas/Disponibility"
-          },
           "from": {
             "type": "string",
             "format": "date-time"
@@ -2743,62 +2711,6 @@
             "format": "date-time"
           }
         }
-      },
-      "OfflineService": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Service"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "disponibilities": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Disponibility"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "OnlineAppointment": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "service": {
-            "$ref": "#/components/schemas/OnlineService"
-          },
-          "from": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "to": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "OnlineService": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Service"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "url": {
-                "type": "string"
-              },
-              "calendar": {
-                "$ref": "#/components/schemas/Calendar"
-              }
-            }
-          }
-        ]
       },
       "Order": {
         "type": "object",
@@ -2982,6 +2894,41 @@
             "items": {
               "type": "string",
               "format": "binary"
+            }
+          },
+          "disponibilities": {
+            "type": "object",
+            "format": "uuid",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Store"
+            }
+          }
+        }
+      },
+      "Store": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "timetable": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Interval"
             }
           }
         }
