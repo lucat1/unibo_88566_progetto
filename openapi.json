@@ -1626,21 +1626,7 @@
                         "docs": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "$ref": "#/components/schemas/OfflineService"
-                              },
-                              {
-                                "$ref": "#/components/schemas/OnlineService"
-                              }
-                            ],
-                            "discriminator": {
-                              "propertyName": "type",
-                              "mapping": {
-                                "offline": "#/components/schemas/OfflineService",
-                                "online": "#/components/schemas/OfflineService"
-                              }
-                            }
+                            "$ref": "#/components/schemas/Service"
                           }
                         }
                       }
@@ -1718,14 +1704,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/OfflineService"
-                    },
-                    {
-                      "$ref": "#/components/schemas/OnlineService"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Service"
                 }
               }
             }
@@ -1762,14 +1741,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/OfflineService"
-                    },
-                    {
-                      "$ref": "#/components/schemas/OnlineService"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Service"
                 }
               }
             }
@@ -1932,14 +1904,7 @@
                         "docs": {
                           "type": "array",
                           "items": {
-                            "anyOf": [
-                              {
-                                "$ref": "#/components/schemas/OfflineAppointment"
-                              },
-                              {
-                                "$ref": "#/components/schemas/OnlineAppointment"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/Appointment"
                           }
                         }
                       }
@@ -1992,7 +1957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/Appointment"
                 }
               }
             }
@@ -2617,6 +2582,28 @@
   },
   "components": {
     "schemas": {
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/User"
+          },
+          "service": {
+            "$ref": "#/components/schemas/Service"
+          },
+          "store_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/Interval"
+          }
+        }
+      },
       "Board": {
         "type": "object",
         "properties": {
