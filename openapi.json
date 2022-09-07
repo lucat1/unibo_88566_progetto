@@ -2639,15 +2639,14 @@
             "type": "string",
             "format": "uuid"
           },
-          "name": {
-            "type": "string"
-          },
           "openingHours": {
             "type": "array",
             "items": {
-              "type": "string",
-              "format": "date-time"
+              "$ref": "#/components/schemas/Interval"
             }
+          },
+          "slotDuration": {
+            "type": "integer"
           }
         }
       },
@@ -2926,10 +2925,7 @@
             }
           },
           "timetable": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Interval"
-            }
+            "$ref": "#/components/schemas/Calendar"
           }
         }
       },
