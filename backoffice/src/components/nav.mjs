@@ -4,7 +4,7 @@ import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
 
-const links = ["Categories", "Products", "Stores"];
+const links = ["Categories", "Products", "Pets", "Stores"];
 
 const Nav = () => {
   const [user, setUser] = useContext(userContext);
@@ -18,8 +18,13 @@ const Nav = () => {
     h(
       "div",
       { className: "navbar-brand" },
-      // TODO: LOGO
-      h(Link, { to: "/", className: "navbar-item" }, "Index")
+      h(Link, { to: "/", className: "navbar-item" },
+      h(
+        "img",
+        { alt: "Animal House Logo", src: "/logo.png", class: "mr-4"},
+      ),
+      "Animal House Backoffice"
+      )
     ),
     h(
       "div",

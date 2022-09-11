@@ -14,6 +14,9 @@ import Category from "./pages/category";
 import SubcategoryAdd from "./pages/subcategory-add";
 import Subcategory from "./pages/subcategory";
 import NotFound from "./pages/not-found";
+import Pets from "./pages/pets";
+import PetAdd from "./pages/pet-add";
+import Pet from "./pages/pet";
 import Products from "./pages/products";
 import ProductAdd from "./pages/product-add";
 import Product from "./pages/product";
@@ -63,6 +66,18 @@ render(
         h(Route, {
           path: /^\/subcategories\/\d+$/,
           element: h(Subcategory, {}),
+        }),
+        h(Route, {
+          path: /^\/pets$/,
+          element: h(Pets, {}),
+        }),
+        h(Route, {
+          path: /^\/pets\/add$/,
+          element: h(PetAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/pets\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Pet, {}),
         }),
         h(Route, {
           path: /^\/products$/,

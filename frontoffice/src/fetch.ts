@@ -10,7 +10,7 @@ const swr = <T = Object, E = void>(resource: string, opts?: RequestInit) => {
     [resource, opts],
     fetcher<T>,
     {
-      suspense: true,
+      suspense: true
     }
   );
 };
