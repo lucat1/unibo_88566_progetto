@@ -53,7 +53,7 @@ const Nav: React.FC = () => {
             <div className="buttons">
               <Link
                 className="navbar-item mr-4 has-text-white"
-                to={`/users/${(auth.user as any).uuid}`}
+                to={`/users/${auth.user._id}`}
               >
                 {auth.user.username}
               </Link>
