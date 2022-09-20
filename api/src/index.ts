@@ -63,10 +63,9 @@ import {
   deleteBoard,
   setBoard,
   addPost,
-  getPosts,
-  getPost,
   deletePost,
   setPost,
+  PostParams,
 } from "./handlers/board";
 import {
   CategoryBody,
@@ -193,19 +192,25 @@ const main = async () => {
   app.put(
     "/api/community/boards/",
     authRequired,
-    priviledged(UserLevel.MANAGER),
     validateBody(BoardBody),
     catcher(addBoard)
   );
   app.get(
     "/api/community/boards/:id/",
     validateParams(BoardParams),
+    validateQuery(PaginationQuery),
     catcher(getBoard)
+  );
+  app.patch(
+    "/api/community/boards/:id/",
+    authRequired,
+    validateParams(BoardParams),
+    validateBody(BoardBody),
+    catcher(setBoard)
   );
   app.put(
     "/api/community/boards/:id/",
     authRequired,
-    priviledged(UserLevel.BASIC),
     validateParams(BoardParams),
     validateBody(PostBody),
     catcher(addPost)
@@ -213,30 +218,19 @@ const main = async () => {
   app.delete(
     "/api/community/boards/:id/",
     authRequired,
-    priviledged(UserLevel.MANAGER),
     validateParams(BoardParams),
     catcher(deleteBoard)
   );
-  app.patch(
-    "/api/community/boards/:id/",
-    authRequired,
-    priviledged(UserLevel.MANAGER),
-    validateParams(BoardParams),
-    validateBody(BoardBody),
-    catcher(setBoard)
-  );
   app.delete(
-    "/api/community/posts/:id/",
+    "/api/community/boards/:id/:post",
     authRequired,
-    priviledged(UserLevel.BASIC),
-    validateParams(BoardParams),
+    validateParams(PostParams),
     catcher(deletePost)
   );
   app.patch(
     "/api/community/posts/:id/",
     authRequired,
-    priviledged(UserLevel.BASIC),
-    validateParams(BoardParams),
+    validateParams(PostParams),
     validateBody(PostBody),
     catcher(setPost)
   );

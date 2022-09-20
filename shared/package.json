@@ -60,6 +60,11 @@
       "import": "./es/shared/src/models/user.js",
       "types": "./es/shared/src/models/user.d.ts",
       "node": "./cjs/shared/src/models/user.js"
+    },
+    "./models/board": {
+      "import": "./es/shared/src/models/board.js",
+      "types": "./es/shared/src/models/board.d.ts",
+      "node": "./cjs/shared/src/models/board.js"
     }
   }
 }

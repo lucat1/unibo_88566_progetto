@@ -584,16 +584,37 @@
           "community"
         ],
         "summary": "Get the forum structure, i.e. a listing of boards (subforums)",
+        "parameters": [
+          {
+            "name": "paginationQuery",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationQuery"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Request fulfilled",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Board"
-                  }
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Board"
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -2612,9 +2633,6 @@
             "format": "uuid"
           },
           "name": {
-            "type": "string"
-          },
-          "description": {
             "type": "string"
           }
         }

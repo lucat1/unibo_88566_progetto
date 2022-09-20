@@ -1,10 +1,10 @@
-import { h, useState } from "../h";
+import { h } from "../h";
 import { Link, navigate } from "../router";
 import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
 
-const links = ["Categories", "Products", "Pets", "Stores"];
+const links = ["Categories", "Products", "Pets", "Stores", "Boards"];
 
 const Nav = () => {
   const [user, setUser] = useContext(userContext);
@@ -19,11 +19,11 @@ const Nav = () => {
       "div",
       { className: "navbar-brand" },
       h(Link, { to: "/", className: "navbar-item" },
-      h(
-        "img",
-        { alt: "Animal House Logo", src: "/logo.png", class: "mr-4"},
-      ),
-      "Animal House Backoffice"
+        h(
+          "img",
+          { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" },
+        ),
+        "Animal House Backoffice"
       )
     ),
     h(
@@ -52,28 +52,28 @@ const Nav = () => {
           { className: "navbar-item" },
           !user
             ? h(
-                "div",
-                { className: "buttons" },
-                h(Link, { to: "/login", className: "button is-light" }, "Login")
-              )
+              "div",
+              { className: "buttons" },
+              h(Link, { to: "/login", className: "button is-light" }, "Login")
+            )
             : h(
-                "span",
-                {},
-                "Signed in as ",
-                user.username,
-                ", ",
-                h(
-                  "a",
-                  {
-                    onClick: () => {
-                      removeAuthToken();
-                      setUser(null);
-                      navigate("/login");
-                    },
+              "span",
+              {},
+              "Signed in as ",
+              user.username,
+              ", ",
+              h(
+                "a",
+                {
+                  onClick: () => {
+                    removeAuthToken();
+                    setUser(null);
+                    navigate("/login");
                   },
-                  "Sign out"
-                )
+                },
+                "Sign out"
               )
+            )
         )
       )
     )

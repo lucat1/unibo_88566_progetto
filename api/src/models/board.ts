@@ -1,46 +1,46 @@
-import { Schema, Document, model } from "mongoose";
+import { Schema, PaginateModel, model } from "mongoose";
+import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
-import { autoIncrement } from "mongoose-plugin-autoinc-fix";
+import { shadow as shadowUser } from "./user";
+import type { IPost, IBoard } from 'shared/models/board'
 import type { IUser } from "shared/models/user";
-
-export interface IPost extends Document<number> {
-  name: string;
-  message: string;
-  photos: string[];
-  author: IUser;
-  parent: IBoard;
-}
-
-export interface IBoard extends Document<number> {
-  name: string;
-  description: string;
-  posts: IPost[];
-}
 
 const PostSchema = new Schema<IPost>({
   _id: { type: String, default: v4 },
-  name: { type: String, required: true },
   message: { type: String, required: true },
   photos: [String],
-  author: { type: Number, ref: "User" },
-  parent: { type: Number, ref: "Board" },
+  author: { type: String, ref: "User" },
+  board: { type: String, ref: "Board" },
 });
-PostSchema.plugin(autoIncrement, "Post");
+PostSchema.plugin(paginate);
 
 const BoardSchema = new Schema<IBoard>({
+  _id: { type: String, default: v4 },
   name: { type: String, required: true },
-  description: String,
-  posts: [{ type: Number, ref: "Post" }],
+  author: { type: String, ref: "User" },
 });
-BoardSchema.plugin(autoIncrement, "Board");
+BoardSchema.plugin(paginate);
 
-export const Post = model<IPost>("Post", PostSchema);
+export const Post: PaginateModel<IPost> = model<IPost>("Post", PostSchema
+) as PaginateModel<IPost>;
 
-export const Board = model<IBoard>("Board", BoardSchema);
+export const Board: PaginateModel<IBoard> = model<IBoard>("Board", BoardSchema
+) as PaginateModel<IBoard>;
 
-export const shadowPost = ({ _id, name, parent }: IPost) => ({
+export const shadowPost = ({ _id, message, photos, author }: IPost) => ({
   _id,
-  name,
-  parent: typeof parent == "number" ? parent : parent._id,
+  message,
+  photos,
+  author: typeof author == "undefined"
+    ? undefined
+    : typeof author == "string"
+      ? { _id: author }
+      : shadowUser(author as IUser),
 });
-export const shadowBoard = ({ _id, name }: IBoard) => ({ _id, name });
+export const shadowBoard = ({ _id, name, author }: IBoard) => ({
+  _id, name, author: typeof author == "undefined"
+    ? undefined
+    : typeof author == "string"
+      ? { _id: author }
+      : shadowUser(author as IUser),
+});

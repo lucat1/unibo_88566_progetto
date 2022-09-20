@@ -3,105 +3,160 @@ import { z } from "zod";
 
 import json from "../res";
 import { Board, Post, shadowBoard, shadowPost } from "../models/board";
+import { User } from "../models/user";
+import type { AuthenticatedRequest } from "../auth";
+import type { IPaginationQuery, ISortingQuery } from "./pagination";
+import { UserLevel } from "shared/models/user";
+
+const POPULATE = ["author"];
 
 export const BoardBody = z.object({
   name: z.string().min(1),
-  description: z.string().min(1),
 });
 export type IBoardBody = z.infer<typeof BoardBody>;
 
-export const PostBody = z.object({
-  name: z.string().min(1),
-  message: z.string().min(1),
-  photos: z.array(z.string()).optional().default([]),
-});
-export type IPostBody = z.infer<typeof PostBody>;
-
 export const addBoard: RequestHandler = async (req, res) => {
-  const { name, description } = req.body as IBoardBody;
-  const board = new Board({ name, description });
+  const { name } = req.body as IBoardBody;
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const board = new Board({ name, author });
   await board.save();
   json(res, 200, shadowBoard(board));
 };
 
-export const getBoards: RequestHandler = async (_, res) => {
-  const categories = await Board.find().exec();
-  json(res, 200, categories.map(shadowBoard));
+export const getBoards: RequestHandler = async (req, res) => {
+  const { limit, page, sort, order } =
+    req.query as unknown as IPaginationQuery & ISortingQuery;
+  const result = await Board.paginate(
+    {},
+    {
+      limit,
+      page,
+      sort: sort ? { [sort]: order } : {},
+      populate: POPULATE,
+    }
+  );
+  json(res, 200, { ...result, docs: result.docs.map(shadowBoard) });
 };
 
 export const BoardParams = z.object({
-  id: z
-    .number()
-    .positive()
-    .or(z.string().regex(/^\d+$/).transform(Number))
-    .refine((n) => n >= 0, { message: "Board id must be unsigned" }),
+  id: z.string().uuid(),
 });
 export type IBoardParams = z.infer<typeof BoardParams>;
 
+export const PostParams = z.object({
+  id: z.string().uuid(),
+  post: z.string().uuid()
+});
+export type IPostParams = z.infer<typeof PostParams>;
+
 export const getBoard: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IBoardParams;
-  const board = await Board.findOne({ _id: id }).exec();
-  if (board == null)
+  const { limit, page } =
+    req.query as unknown as IPaginationQuery;
+  const board = await Board.findOne({ _id: id }).populate(POPULATE).exec();
+  if (board == null) {
     json(res, 404, {
       message: "Invalid board id",
     });
-  else json(res, 200, shadowBoard(board));
+    return;
+  }
+  const result = await Post.paginate(
+    { board: { _id: board._id } },
+    {
+      limit,
+      page,
+      populate: POPULATE,
+    }
+  );
+  json(res, 200, { ...result, ...shadowBoard(board), docs: result.docs.map(shadowPost) });
 };
 
 export const deleteBoard: RequestHandler = async (req, res) => {
-  // TODO missing implementation
+  const { id } = req.params as unknown as IBoardParams;
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const board = await Board.findOne({ _id: id }).populate(POPULATE).exec()
+  if (board == null) {
+    json(res, 404, {
+      message: "Invalid board id",
+    });
+    return;
+  }
+  if (author.level != UserLevel.MANAGER && board.author._id != author._id)
+    throw new Error("You don't own this board")
+
+  await Post.deleteMany({ board: id }).exec();
+  await board.delete();
+  json(res, 200, null);
 };
 
 export const setBoard: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IBoardParams;
   const patch = req.body as IBoardBody;
-  const updated = await Board.findOneAndUpdate({ _id: id }, patch, {
-    new: true,
-  }).exec();
-  if (updated == null)
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const board = await Board.findOne({ _id: id }).populate(POPULATE).exec();
+  if (board == null) {
     json(res, 404, {
       message: "Invalid board id",
     });
-  else json(res, 200, shadowBoard(updated));
+    return;
+  }
+  if (author.level != UserLevel.MANAGER && board.author._id != author._id)
+    throw new Error("You don't own this board");
+  await board.update(patch, { new: true }).exec();
+  json(res, 200, shadowBoard(board));
 };
+
+export const PostBody = z.object({
+  message: z.string().min(1),
+  photos: z.array(z.string()).optional().default([]),
+});
+export type IPostBody = z.infer<typeof PostBody>;
 
 export const addPost: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IBoardParams;
-  const { name } = req.body as IBoardBody;
-  const post = new Post({ name, parent: { _id: id } });
+  const { message, photos } = req.body as IPostBody;
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const post = new Post({ message, photos, author, board: { _id: id } });
   await post.save();
   json(res, 200, shadowPost(post));
 };
 
-export const getPosts: RequestHandler = async (req, res) => {
-  const { id } = req.params as unknown as IBoardParams;
-  const subcategories = await Post.find({ parent: { _id: id } }).exec();
-  json(res, 200, subcategories.map(shadowPost));
-};
-
-export const getPost: RequestHandler = async (req, res) => {
-  const { id } = req.params as unknown as IBoardParams;
-  const post = await Post.findOne({ _id: id }).exec();
-  if (post == null)
-    json(res, 404, {
-      message: "Invalid post id",
-    });
-  else json(res, 200, shadowPost(post));
-};
-
 export const deletePost: RequestHandler = async (req, res) => {
-  // TODO missing implementation
+  const { id, post } = req.params as unknown as IPostParams;
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const postObj = await Post.findOne({ board: { _id: id }, _id: post }).populate(POPULATE).exec();
+  if (postObj == null) {
+    json(res, 404, {
+      message: "Invalid post/board id",
+    });
+    return;
+  }
+  if (author.level != UserLevel.MANAGER && postObj.author._id != author._id)
+    throw new Error("You don't own this post");
+
+  await postObj.delete();
+  json(res, 200, null);
 };
 
 export const setPost: RequestHandler = async (req, res) => {
-  const { id } = req.params as unknown as IBoardParams;
+  const { id, post } = req.params as unknown as IPostParams;
   const patch = req.body as IPostBody;
-  const updated = await Post.findOneAndUpdate({ _id: id }, patch, {
-    new: true,
-  }).exec();
-  if (updated == null)
+  const author = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (author == null) throw new Error("User not found");
+  const postObj = await Post.findOne({ board: { _id: id }, _id: post }).populate(POPULATE).exec();
+  if (postObj == null) {
     json(res, 404, {
-      message: "Invalid post id",
+      message: "Invalid post/board id",
     });
-  else json(res, 200, shadowPost(updated));
+    return;
+  }
+  if (author.level != UserLevel.MANAGER && postObj.author._id != author._id)
+    throw new Error("You don't own this post");
+  await postObj.update(patch, { new: true }).exec();
+  json(res, 200, shadowPost(postObj));
 };
