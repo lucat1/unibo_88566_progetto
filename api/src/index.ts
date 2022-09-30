@@ -43,6 +43,7 @@ import {
   id,
   PasswordData,
   UserData,
+  UserParams,
 } from "./handlers/auth";
 import {
   GameBody,
@@ -155,6 +156,8 @@ const main = async () => {
     catcher(patchMe)
   );
   app.post("/api/auth/upgrade", authRequired, catcher(upgrade));
+
+  app.get("/api/user/:id", validateParams(UserParams), catcher(upgrade));
 
   app.get("/api/images/:id", validateParams(ImageParams), catcher(serveImage));
   app.put(

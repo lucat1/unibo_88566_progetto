@@ -103,3 +103,15 @@ export const deleteMe: RequestHandler = async (req, res) => {
   if (user == null) throw new Error("User not found");
   json(res, 200, null);
 };
+
+export const UserParams = z.object({
+  id: z.string().uuid(),
+});
+export type IUserParams = z.infer<typeof UserParams>;
+
+export const get: RequestHandler = async (req, res) => {
+  const { id } = req.params as IUserParams;
+  const user = await User.findOne({ _id: id }).exec();
+  if (user == null) throw new Error("User not found");
+  json(res, 200, shadow(user));
+};
