@@ -88,14 +88,13 @@ export type IUserData = z.infer<typeof UserData>;
 export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
-  const { firstName, lastName, city, avatar } =
-    req.body as unknown as IUserData;
-  if (firstName) user.firstName = firstName;
-  if (lastName) user.lastName = lastName;
-  if (city) user.city = city;
-  if (avatar) user.avatar = avatar;
-  await user.save();
-  json(res, 200, shadow(user));
+  const patch = req.body as unknown as IUserData;
+  const updated = await User.findOneAndUpdate({ _id: user._id }, patch).exec();
+  if (updated == null)
+    json(res, 404, {
+      message: "Unkown error",
+    });
+  else json(res, 200, shadow(updated));
 };
 
 export const deleteMe: RequestHandler = async (req, res) => {
