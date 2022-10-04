@@ -18,11 +18,10 @@ const Nav = () => {
     h(
       "div",
       { className: "navbar-brand" },
-      h(Link, { to: "/", className: "navbar-item" },
-        h(
-          "img",
-          { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" },
-        ),
+      h(
+        Link,
+        { to: "/", className: "navbar-item" },
+        h("img", { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" }),
         "Animal House Backoffice"
       )
     ),
@@ -52,28 +51,28 @@ const Nav = () => {
           { className: "navbar-item" },
           !user
             ? h(
-              "div",
-              { className: "buttons" },
-              h(Link, { to: "/login", className: "button is-light" }, "Login")
-            )
-            : h(
-              "span",
-              {},
-              "Signed in as ",
-              user.username,
-              ", ",
-              h(
-                "a",
-                {
-                  onClick: () => {
-                    removeAuthToken();
-                    setUser(null);
-                    navigate("/login");
-                  },
-                },
-                "Sign out"
+                "div",
+                { className: "buttons" },
+                h(Link, { to: "/login", className: "button is-light" }, "Login")
               )
-            )
+            : h(
+                "span",
+                {},
+                "Signed in as ",
+                user.username,
+                ", ",
+                h(
+                  "a",
+                  {
+                    onClick: () => {
+                      removeAuthToken();
+                      setUser(null);
+                      navigate("/login");
+                    },
+                  },
+                  "Sign out"
+                )
+              )
         )
       )
     )

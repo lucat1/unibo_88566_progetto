@@ -67,7 +67,11 @@ export const getScore: RequestHandler = async (req, res) => {
     user = await User.findOne({ _id: result.user }).exec();
   } catch (_) {}
 
-  json(res, 200, shadow({ ...result.toObject(), username: user?.username } as IGameScore));
+  json(
+    res,
+    200,
+    shadow({ ...result.toObject(), username: user?.username } as IGameScore)
+  );
 };
 
 export const getLeaderboard: RequestHandler = async (req, res) => {
@@ -86,7 +90,7 @@ export const getLeaderboard: RequestHandler = async (req, res) => {
       try {
         user = await User.findOne({ _id: score.user }).exec();
       } catch (_) {}
-      return { ...score.toObject(), username: user?.username }
+      return { ...score.toObject(), username: user?.username };
     })
   );
 

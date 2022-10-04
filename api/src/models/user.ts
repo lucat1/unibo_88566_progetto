@@ -20,11 +20,11 @@ const UserSchema = new Schema<IUser>({
 
   pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
 });
-UserSchema.pre("save", async function() {
+UserSchema.pre("save", async function () {
   let password = "";
   try {
     password = (await User.findOne({ _id: this._id }))?.password || "";
-  } catch (_) { }
+  } catch (_) {}
   if (password != this.password)
     this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
 });

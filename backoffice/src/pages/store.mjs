@@ -21,8 +21,8 @@ const StoreWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(Store, { id, data })
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(Store, { id, data })
   );
 };
 

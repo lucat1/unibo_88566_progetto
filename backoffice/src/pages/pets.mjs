@@ -40,18 +40,18 @@ const Pets = () =>
             { className: "card" },
             pet.photos.length > 0
               ? h(
-                "div",
-                { className: "card-image" },
-                h(
-                  "figure",
-                  { className: "image is-square" },
-                  h("img", {
-                    style: { "object-fit": "cover" },
-                    src: pet.photos[0],
-                    alt: `${pet.name} main image`,
-                  })
+                  "div",
+                  { className: "card-image" },
+                  h(
+                    "figure",
+                    { className: "image is-square" },
+                    h("img", {
+                      style: { "object-fit": "cover" },
+                      src: pet.photos[0],
+                      alt: `${pet.name} main image`,
+                    })
+                  )
                 )
-              )
               : null,
             h(
               "div",
@@ -72,28 +72,28 @@ const Pets = () =>
               )
             ),
             (pet.category || pet.subcategory) &&
-            h(
-              "footer",
-              { className: "card-footer" },
-              pet.category &&
               h(
-                Link,
-                {
-                  to: `/categories/${pet.category._id}`,
-                  className: "card-footer-item",
-                },
-                pet.category.name
-              ),
-              pet.subcategory &&
-              h(
-                Link,
-                {
-                  to: `/subcategories/${pet.subcategory._id}`,
-                  className: "card-footer-item",
-                },
-                pet.subcategory.name
+                "footer",
+                { className: "card-footer" },
+                pet.category &&
+                  h(
+                    Link,
+                    {
+                      to: `/categories/${pet.category._id}`,
+                      className: "card-footer-item",
+                    },
+                    pet.category.name
+                  ),
+                pet.subcategory &&
+                  h(
+                    Link,
+                    {
+                      to: `/subcategories/${pet.subcategory._id}`,
+                      className: "card-footer-item",
+                    },
+                    pet.subcategory.name
+                  )
               )
-            )
           )
         )
     )

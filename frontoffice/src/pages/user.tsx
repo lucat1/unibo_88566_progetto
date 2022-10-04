@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import fetch, { withOptions } from "shared/fetch";
 import type { IUser } from "shared/models/user";
 import { useAuth } from "../auth";
-import File from '../components/file'
+import File from "../components/file";
 
 const User: React.FC = () => {
   const { id } = useParams();
@@ -13,17 +13,17 @@ const User: React.FC = () => {
     suspense: true,
   });
   const updateUser = async (user: Partial<IUser>) =>
-    await fetch<IUser>('auth/me', withOptions('PATCH', user));
+    await fetch<IUser>("auth/me", withOptions("PATCH", user));
   const { isLoading, isError, error, mutate } = useMutation(updateUser, {
     onSuccess: (data: IUser) =>
-      queryClient.setQueryData(['user', data._id], data)
-  })
+      queryClient.setQueryData(["user", data._id], data),
+  });
   const [{ authenticated, user }] = useAuth();
   const handleUpload = (url: string) => {
     mutate({
-      avatar: url
-    })
-  }
+      avatar: url,
+    });
+  };
 
   return (
     <main className="columns">
@@ -50,9 +50,7 @@ const User: React.FC = () => {
             {authenticated && data?._id == user?._id && (
               <File onUpload={handleUpload} />
             )}
-            {isError &&
-              <span className="is-danger">{error as string}</span>
-            }
+            {isError && <span className="is-danger">{error as string}</span>}
           </div>
         </div>
       </section>
