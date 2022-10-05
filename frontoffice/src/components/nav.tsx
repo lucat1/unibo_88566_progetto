@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { removeAuthToken } from "shared/auth";
 
 import { useAuth } from "../auth";
+import { pages } from "../pages/index";
 
 const Nav: React.FC = () => {
   const [opened, setOpened] = React.useState(false);
@@ -39,13 +40,10 @@ const Nav: React.FC = () => {
 
       <div id="nav" className={`navbar-menu ${opened ? "is-active" : ""}`}>
         <div className="navbar-start">
-          {/*
-          <Link
-            v-for="route in routes"
-            v-bind:to="route.path"
-            class="navbar-item"
-          >{route.name}</Link>
-          */}
+          {
+            pages.map((page: string) =>
+              <Link to={page.toLowerCase()} className="navbar-item">{page}</Link>)
+          }
         </div>
 
         <div className="navbar-end">
