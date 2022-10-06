@@ -9,6 +9,7 @@ import App from "./components/app";
 import Index from "./pages/index";
 import Login from "./pages/login";
 import User from "./pages/user";
+import Store from "./pages/store";
 import NotFound from "./pages/not-found";
 
 const queryClient = new QueryClient();
