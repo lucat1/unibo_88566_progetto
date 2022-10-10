@@ -2,7 +2,6 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import fetch, { withOptions } from "shared/fetch";
-import type { Error } from "shared/fetch";
 import { setAuthToken } from "shared/auth";
 
 import { useAuth } from "../auth";
@@ -69,7 +68,7 @@ const Login: React.FC = () => {
           <div className="control">
             <input
               className="input"
-              type="text"
+              type="password"
               id="password"
               disabled={loading}
               {...register("password", { required: true })}

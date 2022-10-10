@@ -8,7 +8,8 @@ const File: React.FC<{ onUpload: (id: string) => void }> = ({ onUpload }) => {
   const handleChange: React.ChangeEventHandler<HTMLInputElement> =
     React.useCallback(
       async (e) => {
-        console.log(e);
+        e.preventDefault();
+        e.stopPropagation();
         setLoading(true);
         setError(null);
         const file = (e.target.files || [])[0];

@@ -41,8 +41,8 @@ const Nav: React.FC = () => {
       <div id="nav" className={`navbar-menu ${opened ? "is-active" : ""}`}>
         <div className="navbar-start">
           {
-            pages.map((page: string) =>
-              <Link to={page.toLowerCase()} className="navbar-item">{page}</Link>)
+            pages.map((page, i) =>
+              <Link key={i} to={page.toLowerCase()} className="navbar-item">{page}</Link>)
           }
         </div>
 
