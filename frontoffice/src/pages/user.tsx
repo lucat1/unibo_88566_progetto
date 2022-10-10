@@ -7,6 +7,8 @@ import type { IUser } from "shared/models/user";
 import { useAuth } from "../auth";
 import File from "../components/file";
 
+// TODO: for some reason the picture data is stale from react-query
+
 const User: React.FC = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -17,12 +19,11 @@ const User: React.FC = () => {
     await fetch<IUser>("auth/me", withOptions("PATCH", user));
   const [editing, setEditing] = React.useState(false);
   const { isLoading, isError, mutationError, mutate } = useMutation(patchUser, {
-    onSettled: (data: IUser) =>
+    onSettled: (data: IUser) => 
       queryClient.invalidateQueries(['user', data._id])
   });
   const [{ authenticated, user }] = useAuth();
   const handleUpload = (url: string) => {
-    console.log('uploaded')
     mutate({
       avatar: url,
     });
@@ -30,11 +31,10 @@ const User: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { formErrrors },
+    formState: { errors: formErrors },
   } = useForm<IUser>();
 
   const updateUser = (data: IUser) => {
-    console.log('submitted')
     setEditing(false);
     mutate(data);
   }
@@ -64,45 +64,50 @@ const User: React.FC = () => {
             {authenticated && data?._id == user?._id && (
               <File onUpload={handleUpload} />
             )}
-            {isError && <span className="is-danger">{error as string}</span>}
+            {isError && <span className="help is-danger">{error as string}</span>}
           </div>
         </div>
       </section>
       <section className="column">
         <form onSubmit={handleSubmit(updateUser)}>
           <div className="is-flex is-flex-direction-row is-justify-content-space-between">
-              <h2 className="is-size-3 has-text-weight-semibold"
-                  aria-hidden={!editing}
-                  style={editing ? {display: 'none'} : {}}
-              >
-                {data!.firstName} {data!.lastName}
-              </h2>
-              <div className="is-flex is-flex-direction-row">
-                <input
-                  aria-hidden={!editing}
-                  style={!editing ? {display: 'none'} : {}}
-                  className="input mx-2"
-                  placeholder="First Name"
-                  aria-label="First Name"
-                  type="text"
-                  id="firstName"
-                  defaultValue={data!.firstName}
-                  disabled={isLoading}
-                  {...register("firstName", { required: true })}
-                />
-                <input
-                  aria-hidden={!editing}
-                  style={!editing ? {display: 'none'} : {}}
-                  className="input mx-2"
-                  placeholder="Last Name"
-                  aria-label="Last Name"
-                  type="text"
-                  id="lastName"
-                  defaultValue={data!.lastName}
-                  disabled={isLoading}
-                  {...register("lastName")}
-                />
+            <h2 className="is-size-3 has-text-weight-semibold"
+              aria-hidden={!editing}
+              style={editing ? { display: 'none' } : {}}
+            >
+              {data!.firstName} {data!.lastName}
+            </h2>
+            <div className="is-flex is-flex-direction-row">
+              <div className="mx-2"
+                aria-hidden={!editing}
+                style={!editing ? { display: 'none' } : {}}>
+              <input
+                className="input"
+                placeholder="First Name"
+                aria-label="First Name"
+                type="text"
+                id="firstName"
+                defaultValue={data!.firstName}
+                disabled={isLoading}
+                {...register("firstName", { required: true })}
+              />
+              {formErrors.firstName &&
+                <span className="help is-danger">First Name is required</span>
+              }
               </div>
+              <input
+                aria-hidden={!editing}
+                style={!editing ? { display: 'none' } : {}}
+                className="input mx-2"
+                placeholder="Last Name"
+                aria-label="Last Name"
+                type="text"
+                id="lastName"
+                defaultValue={data!.lastName}
+                disabled={isLoading}
+                {...register("lastName")}
+              />
+            </div>
             <button type="button" className={`button ${!editing ? 'is-success' : ''}`} aria-label="Edit profile" onClick={_ => setEditing(!editing)}>
               <span className="icon is-small">
                 <i className={`fas ${editing ? 'fa-x' : 'fa-pen-to-square'}`}></i>
