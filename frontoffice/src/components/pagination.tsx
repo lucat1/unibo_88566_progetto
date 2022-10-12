@@ -33,7 +33,7 @@ const Pagination: React.FC<PaginationProps<any>> = ({ url, resource, ele, classN
       <div className="mt-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center">
         {
           pages.map((index) =>
-            <button key={index} className={`button ${(index == page ? " is-active" : "")}`} onClick={() => index != page && setPage(index)}>{index}</button>)
+            <button key={index} className={`button ${(index == page ? " is-active" : "")}`} style={{ margin: '0 .25rem' }} onClick={() => index != page && setPage(index)}>{index}</button>)
         }
       </div>
     </Ele>

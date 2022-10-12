@@ -42,7 +42,7 @@ const Nav: React.FC = () => {
         <div className="navbar-start">
           {
             pages.map((page, i) =>
-              <Link key={i} to={page.toLowerCase()} className="navbar-item">{page}</Link>)
+              <Link key={i} to={page.url} className="navbar-item">{page.name}</Link>)
           }
         </div>
 

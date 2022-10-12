@@ -13,11 +13,10 @@ const Store: React.FC = () => {
         {(prod: IProduct, i) => (
           <Link
             key={i}
-            to={`/store/${prod._id}`}
-            className="m-4">
-            <div className="card"
-              style={{ width: "100%", "max-width": "24rem" }}
-            >
+            to={`/products/${prod._id}`}
+            className="m-4"
+            style={{ display: 'block', width: "100%", "max-width": "24rem" }}>
+            <div className="card">
               {prod.photos.length > 0 && <div className="card-image"><figure className="image is-square">
                 <img style={{ objectFit: 'cover' }} src={prod.photos[0]} alt={`${prod.name} main image`} />
               </figure></div>}

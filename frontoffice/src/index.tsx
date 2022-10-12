@@ -9,7 +9,7 @@ import App from "./components/app";
 import Index from "./pages/index";
 import Login from "./pages/login";
 import User from "./pages/user";
-import Store from "./pages/store";
+import Products from "./pages/products";
 import NotFound from "./pages/not-found";
 
 const queryClient = new QueryClient();
@@ -23,7 +23,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/users/:id" element={<User />} />
-            <Route path="/store" element={<Store />} />
+            <Route path="/products" element={<Products />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </App>
