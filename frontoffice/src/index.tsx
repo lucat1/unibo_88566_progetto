@@ -23,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/users/:id" element={<User />} />
+            <Route path="/store" element={<Store />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </App>
