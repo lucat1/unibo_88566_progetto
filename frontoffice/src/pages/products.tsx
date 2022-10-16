@@ -1,21 +1,21 @@
 import * as React from "react";
 import { Link } from 'react-router-dom'
-import { useQuery } from "@tanstack/react-query";
-import fetch, { withOptions } from "shared/fetch";
 import type { IProduct } from "shared/models/product";
 import Pagination from '../components/pagination'
 
-const Store: React.FC = () => {
+const Products: React.FC = () => {
   return (
     <>
-      <h1>Store</h1>
-      <Pagination url="store/products" resource={['products']}    >
+      <h1 className="title">Products</h1>
+      <Pagination url="store/products" resource={['products']}
+        className="is-flex is-flex-direction-row is-flex-wrap-wrap"
+      >
         {(prod: IProduct, i) => (
           <Link
             key={i}
             to={`/products/${prod._id}`}
             className="m-4"
-            style={{ display: 'block', width: "100%", "max-width": "24rem" }}>
+            style={{ display: 'block', width: "100%", maxWidth: "24rem" }}>
             <div className="card">
               {prod.photos.length > 0 && <div className="card-image"><figure className="image is-square">
                 <img style={{ objectFit: 'cover' }} src={prod.photos[0]} alt={`${prod.name} main image`} />
@@ -42,4 +42,4 @@ const Store: React.FC = () => {
   );
 };
 
-export default Store;
+export default Products;

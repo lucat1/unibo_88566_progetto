@@ -14,16 +14,18 @@ export const pages = [{
 }];
 
 const Index: React.FC = () => {
-  const links = pages.map((page) =>
-    <li><Link to={page.url}>{page.name}</Link></li>);
-  return (<div className="container">
-    <aside className="menu">
-      <p className="menu-label">Index</p>
-      <ul className="menu-list">
-        {links}
-      </ul>
-    </aside>
-  </div>);
+  return (
+    <div className="container">
+      <aside className="menu">
+        <p className="menu-label">Index</p>
+        <ul className="menu-list">
+          {pages.map((page, i) =>
+            <li key={i}><Link to={page.url}>{page.name}</Link></li>
+          )}
+        </ul>
+      </aside>
+    </div>
+  );
 };
 
 export default Index;
