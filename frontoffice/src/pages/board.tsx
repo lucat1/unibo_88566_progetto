@@ -10,6 +10,7 @@ import { useAuth } from "../auth";
 const BoardAdd: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [auth] = useAuth()
   // const queryClient = useQueryClient();
   const { data: board } = useQuery(["board", id], () => fetch<IBoard>(`community/boards/${id}`), {
     suspense: true,
@@ -22,7 +23,7 @@ const BoardAdd: React.FC = () => {
     <>
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center my-2">
         <h1 className="title m-0"><Link className="is-hidden-touch" to="/boards">Boards</Link><span className="is-hidden-touch"> > </span>{board?.name}</h1>
-        <button className="button is-danger" onClick={del}>Delete</button>
+        {auth.authenticated && auth.user?._id == board?.author._id && <button className="button is-danger" onClick={del}>Delete</button>}
       </div>
       <Pagination url={page => `community/boards/${id}?page=${page}`} resource={page => ['boards', id, 'posts', page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"

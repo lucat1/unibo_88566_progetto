@@ -7,7 +7,7 @@ const Products: React.FC = () => {
   return (
     <>
       <h1 className="title">Products</h1>
-      <Pagination url="store/products" resource={['products']}
+      <Pagination url={page => `store/products?page=${page}`} resource={page => ['products', page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(prod: IProduct, i) => (
