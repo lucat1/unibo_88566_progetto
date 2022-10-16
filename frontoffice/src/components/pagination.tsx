@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import fetch from "shared/fetch";
 
 interface PaginationProps<T> {
-  url: string
-  resource: any[]
+  url: (page: index) => string
+  resource: (page: index) => any[]
   children: (data: T, index: number) => JSX.Element
   ele?: string
   className?: string
@@ -13,7 +13,7 @@ interface PaginationProps<T> {
 const Pagination: React.FC<PaginationProps<any>> = ({ url, resource, ele, className, children }) => {
   const [page, setPage] = React.useState(1);
   const [max, setMax] = React.useState(10);
-  const { data, isLoading, isError, error } = useQuery(resource, () => fetch(url));
+  const { data, isLoading, isError, error } = useQuery(resource(page), () => fetch(url(page)));
   React.useEffect(() => {
     if (data && max != data.pages) setMax(data.pages);
   }, [data, max, setMax]);

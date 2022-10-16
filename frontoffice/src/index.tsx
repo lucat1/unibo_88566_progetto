@@ -12,6 +12,7 @@ import User from "./pages/user";
 import Products from "./pages/products";
 import Boards from "./pages/boards";
 import BoardAdd from "./pages/board-add";
+import Board from "./pages/board";
 import NotFound from "./pages/not-found";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/products" element={<Products />} />
             <Route path="/boards" element={<Boards />} />
             <Route path="/boards/add" element={<BoardAdd />} />
+            <Route path="/boards/:id" element={<Board />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </App>

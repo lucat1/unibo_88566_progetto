@@ -16,7 +16,7 @@ const Boards: React.FC = () => {
         <span className="is-size-5 has-text-weight-bold">Title</span>
         <span className="is-size-5 has-text-weight-bold">Author</span>
       </div>
-      <Pagination url="community/boards?limit=30" resource={['boards']}
+      <Pagination url={page => `community/boards?limit=30&page=${page}`} resource={page => ['boards', page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(board: IBoard, i) => (
