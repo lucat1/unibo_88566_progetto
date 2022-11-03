@@ -40,17 +40,18 @@ const Nav: React.FC = () => {
 
       <div id="nav" className={`navbar-menu ${opened ? "is-active" : ""}`}>
         <div className="navbar-start">
-          {
-            pages.map((page, i) =>
-              <Link key={i} to={page.url} className="navbar-item">{page.name}</Link>)
-          }
+          {pages.map((page, i) => (
+            <Link key={i} to={page.url} className="navbar-item">
+              {page.name}
+            </Link>
+          ))}
         </div>
 
         <div className="navbar-end">
           {auth.authenticated ? (
-            <div className="buttons">
+            <div className="navbar-item">
               <Link
-                className="navbar-item mr-4 has-text-white"
+                className="mr-4 has-text-white"
                 to={`/users/${auth.user._id}`}
               >
                 {auth.user.username}

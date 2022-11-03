@@ -19,8 +19,8 @@ const User: React.FC = () => {
     await fetch<IUser>("auth/me", withOptions("PATCH", user));
   const [editing, setEditing] = React.useState(false);
   const { isLoading, isError, mutationError, mutate } = useMutation(patchUser, {
-    onSettled: (data: IUser) => 
-      queryClient.invalidateQueries(['user', data._id])
+    onSettled: (data: IUser) =>
+      queryClient.invalidateQueries(["user", data._id]),
   });
   const [{ authenticated, user }] = useAuth();
   const handleUpload = (url: string) => {
@@ -37,7 +37,7 @@ const User: React.FC = () => {
   const updateUser = (data: IUser) => {
     setEditing(false);
     mutate(data);
-  }
+  };
 
   return (
     <main className="columns">
@@ -64,40 +64,45 @@ const User: React.FC = () => {
             {authenticated && data?._id == user?._id && (
               <File onUpload={handleUpload} />
             )}
-            {isError && <span className="help is-danger">{error as string}</span>}
+            {isError && (
+              <span className="help is-danger">{error as string}</span>
+            )}
           </div>
         </div>
       </section>
       <section className="column">
         <form onSubmit={handleSubmit(updateUser)}>
           <div className="is-flex is-flex-direction-row is-justify-content-space-between">
-            <h2 className="is-size-3 has-text-weight-semibold"
+            <h2
+              className="is-size-3 has-text-weight-semibold"
               aria-hidden={!editing}
-              style={editing ? { display: 'none' } : {}}
+              style={editing ? { display: "none" } : {}}
             >
               {data!.firstName} {data!.lastName}
             </h2>
             <div className="is-flex is-flex-direction-row">
-              <div className="mx-2"
+              <div
+                className="mx-2"
                 aria-hidden={!editing}
-                style={!editing ? { display: 'none' } : {}}>
-              <input
-                className="input"
-                placeholder="First Name"
-                aria-label="First Name"
-                type="text"
-                id="firstName"
-                defaultValue={data!.firstName}
-                disabled={isLoading}
-                {...register("firstName", { required: true })}
-              />
-              {formErrors.firstName &&
-                <span className="help is-danger">First Name is required</span>
-              }
+                style={!editing ? { display: "none" } : {}}
+              >
+                <input
+                  className="input"
+                  placeholder="First Name"
+                  aria-label="First Name"
+                  type="text"
+                  id="firstName"
+                  defaultValue={data!.firstName}
+                  disabled={isLoading}
+                  {...register("firstName", { required: true })}
+                />
+                {formErrors.firstName && (
+                  <span className="help is-danger">First Name is required</span>
+                )}
               </div>
               <input
                 aria-hidden={!editing}
-                style={!editing ? { display: 'none' } : {}}
+                style={!editing ? { display: "none" } : {}}
                 className="input mx-2"
                 placeholder="Last Name"
                 aria-label="Last Name"
@@ -108,14 +113,24 @@ const User: React.FC = () => {
                 {...register("lastName")}
               />
             </div>
-            <button type="button" className={`button ${!editing ? 'is-success' : ''}`} aria-label="Edit profile" onClick={_ => setEditing(!editing)}>
+            <button
+              type="button"
+              className={`button ${!editing ? "is-success" : ""}`}
+              aria-label="Edit profile"
+              onClick={(_) => setEditing(!editing)}
+            >
               <span className="icon is-small">
-                <i className={`fas ${editing ? 'fa-x' : 'fa-pen-to-square'}`}></i>
+                <i
+                  className={`fas ${editing ? "fa-x" : "fa-pen-to-square"}`}
+                ></i>
               </span>
             </button>
           </div>
           <div className="is-size-6 mt-4 is-flex is-flex-direction-row is-align-items-center">
-            <span>@{data?.username}</span> <span className="mx-2">·</span> {!editing ? <>{data?.city || 'World'}</> : (
+            <span>@{data?.username}</span> <span className="mx-2">·</span>{" "}
+            {!editing ? (
+              <>{data?.city || "World"}</>
+            ) : (
               <input
                 className="input"
                 placeholder="City"
@@ -128,13 +143,13 @@ const User: React.FC = () => {
               />
             )}
           </div>
-          {editing &&
+          {editing && (
             <div className="mt-4 is-flex is-justify-content-end">
               <button className="button is-success" disabled={isLoading}>
                 Save
               </button>
             </div>
-          }
+          )}
         </form>
       </section>
     </main>

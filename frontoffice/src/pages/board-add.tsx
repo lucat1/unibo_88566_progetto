@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useForm } from 'react-hook-form'
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import fetch, { withOptions } from 'shared/fetch'
+import fetch, { withOptions } from "shared/fetch";
 import type { IBoard } from "shared/models/board";
 
 import { useAuth } from "../auth";
@@ -11,16 +11,16 @@ const BoardAdd: React.FC = () => {
   const [auth] = useAuth();
   if (!auth.authenticated) navigate("/", { replace: true });
 
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState<null | string>(null)
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<null | string>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IBoard & { post: string }>();
   const newBoard = async ({ name, post }: IBoard & { post: string }) => {
-    setLoading(true)
-    setError(false)
+    setLoading(true);
+    setError(false);
     try {
       const { _id } = await fetch<IBoard>(
         "community/boards",
@@ -34,8 +34,8 @@ const BoardAdd: React.FC = () => {
     } catch (err: any) {
       setError(err.message || "An error occoured while creating the board");
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
   return (
     <>
       <h1 className="title">New Board</h1>
@@ -67,7 +67,7 @@ const BoardAdd: React.FC = () => {
               type="text"
               id="post"
               disabled={loading}
-              style={{ minHeight: '8rem' }}
+              style={{ minHeight: "8rem" }}
               {...register("post", { required: true })}
             />
           </div>
@@ -75,11 +75,7 @@ const BoardAdd: React.FC = () => {
             <span className="help is-danger">A first post is required</span>
           )}
         </div>
-        {error && (
-          <span className="help is-danger">
-            {error}
-          </span>
-        )}
+        {error && <span className="help is-danger">{error}</span>}
         <div className="field">
           <div className="control">
             <button className="button is-link" disabled={loading}>

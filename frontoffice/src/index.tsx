@@ -10,6 +10,7 @@ import Index from "./pages/index";
 import Login from "./pages/login";
 import User from "./pages/user";
 import Products from "./pages/products";
+import Product from "./pages/product";
 import Boards from "./pages/boards";
 import BoardAdd from "./pages/board-add";
 import Board from "./pages/board";
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/login" element={<Login />} />
             <Route path="/users/:id" element={<User />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<Product />} />
             <Route path="/boards" element={<Boards />} />
             <Route path="/boards/add" element={<BoardAdd />} />
             <Route path="/boards/:id" element={<Board />} />

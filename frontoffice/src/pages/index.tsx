@@ -1,17 +1,20 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-export const pages = [{
-  name: "Store",
-  url: '/products',
-}, {
-  name: "Services",
-  url: '/services',
-},
-{
-  name: "Boards",
-  url: '/boards'
-}];
+export const pages = [
+  {
+    name: "Store",
+    url: "/products",
+  },
+  {
+    name: "Services",
+    url: "/services",
+  },
+  {
+    name: "Boards",
+    url: "/boards",
+  },
+];
 
 const Index: React.FC = () => {
   return (
@@ -19,9 +22,11 @@ const Index: React.FC = () => {
       <aside className="menu">
         <p className="menu-label">Index</p>
         <ul className="menu-list">
-          {pages.map((page, i) =>
-            <li key={i}><Link to={page.url}>{page.name}</Link></li>
-          )}
+          {pages.map((page, i) => (
+            <li key={i}>
+              <Link to={page.url}>{page.name}</Link>
+            </li>
+          ))}
         </ul>
       </aside>
     </div>

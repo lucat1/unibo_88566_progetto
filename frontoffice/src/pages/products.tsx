@@ -1,13 +1,15 @@
 import * as React from "react";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import type { IProduct } from "shared/models/product";
-import Pagination from '../components/pagination'
+import Pagination from "../components/pagination";
 
 const Products: React.FC = () => {
   return (
     <>
       <h1 className="title">Products</h1>
-      <Pagination url={page => `store/products?page=${page}`} resource={page => ['products', page]}
+      <Pagination
+        url={(page) => `store/products?page=${page}`}
+        resource={(page) => ["products", page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(prod: IProduct, i) => (
@@ -15,11 +17,20 @@ const Products: React.FC = () => {
             key={i}
             to={`/products/${prod._id}`}
             className="m-4"
-            style={{ display: 'block', width: "100%", maxWidth: "24rem" }}>
+            style={{ display: "block", width: "100%", maxWidth: "24rem" }}
+          >
             <div className="card">
-              {prod.photos.length > 0 && <div className="card-image"><figure className="image is-square">
-                <img style={{ objectFit: 'cover' }} src={prod.photos[0]} alt={`${prod.name} main image`} />
-              </figure></div>}
+              {prod.photos.length > 0 && (
+                <div className="card-image">
+                  <figure className="image is-square">
+                    <img
+                      style={{ objectFit: "cover" }}
+                      src={prod.photos[0]}
+                      alt={`${prod.name} main image`}
+                    />
+                  </figure>
+                </div>
+              )}
               <div className="card-content">
                 <div className="media">
                   <div className="media-content">
@@ -27,13 +38,32 @@ const Products: React.FC = () => {
                   </div>
                 </div>
                 <div className="content">
-                  <p>{prod.description || 'No description provided'}</p>
+                  <p>
+                    {prod.description.slice(0, 147) + "..." ||
+                      "No description provided"}
+                  </p>
                 </div>
               </div>
-              {(prod.category || prod.subcategory) && (<footer className="card-footer">
-                {prod.category && <Link className="card-footer-item" to={`/categories/${prod.category._id}`}>{prod.category.name}</Link>}
-                {prod.subcategory && <Link className="card-footer-item" to={`/subcategories/${prod.subcategory._id}`}>{prod.subcategory.name}</Link>}
-              </footer>)}
+              {(prod.category || prod.subcategory) && (
+                <footer className="card-footer">
+                  {prod.category && (
+                    <Link
+                      className="card-footer-item"
+                      to={`/categories/${prod.category._id}`}
+                    >
+                      {prod.category.name}
+                    </Link>
+                  )}
+                  {prod.subcategory && (
+                    <Link
+                      className="card-footer-item"
+                      to={`/subcategories/${prod.subcategory._id}`}
+                    >
+                      {prod.subcategory.name}
+                    </Link>
+                  )}
+                </footer>
+              )}
             </div>
           </Link>
         )}
