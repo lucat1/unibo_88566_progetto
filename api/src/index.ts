@@ -100,6 +100,7 @@ import {
   deleteStore,
   setStore,
 } from "./handlers/store";
+import { addOrder, deleteOrder, getOrder, getOrders, OrderBody, OrderPrams } from "./handlers/order";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -267,6 +268,32 @@ const main = async () => {
     validateParams(ProductParams),
     validateBody(ProductBody),
     catcher(setProduct)
+  );
+
+  app.get(
+    "/api/store/orders/",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getOrders)
+  );
+  app.put(
+    "/api/store/orders/",
+    authRequired,
+    validateBody(OrderBody),
+    catcher(addOrder)
+  );
+  app.get(
+    "/api/store/orders/:id/",
+    authRequired,
+    validateParams(OrderPrams),
+    catcher(getOrder)
+  );
+  app.delete(
+    "/api/store/orders/:id/",
+    authRequired,
+    validateParams(OrderPrams),
+    catcher(deleteOrder)
   );
 
   // app.get("/api/store/services", catcher(getServices));

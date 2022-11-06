@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetch from "shared/fetch";
 import type { IProduct } from "shared/models/product";
 
+import useCart from "../cart";
 import Pictures from "../components/pictures";
 
 const Product: React.FC = () => {
@@ -15,6 +16,7 @@ const Product: React.FC = () => {
       suspense: true,
     }
   );
+  const [_, addToCart] = useCart()
   return (
     <>
       <main className="columns">
@@ -27,7 +29,7 @@ const Product: React.FC = () => {
           </h1>
           <span className="is-size-5">{product?.description}</span>
           <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
-          {product?.price}
+          {product?.price.toFixed(2)}
           <div className="is-flex">
             {product?.category && (
               <div className="mr-6">
@@ -47,7 +49,7 @@ const Product: React.FC = () => {
             )}
           </div>
           <div className="my-3 is-flex is-justify-content-end">
-            <button className="button is-primary">Buy</button>
+            <button className="button is-primary" onClick={_ => addToCart(product!, 1)}>Buy</button>
           </div>
         </section>
       </main>

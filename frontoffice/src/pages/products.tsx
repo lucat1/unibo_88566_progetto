@@ -13,13 +13,14 @@ const Products: React.FC = () => {
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(prod: IProduct, i) => (
-          <Link
+          <div
             key={i}
-            to={`/products/${prod._id}`}
-            className="m-4"
+            className="card m-4"
             style={{ display: "block", width: "100%", maxWidth: "24rem" }}
           >
-            <div className="card">
+            <Link
+              to={`/products/${prod._id}`}
+            >
               {prod.photos.length > 0 && (
                 <div className="card-image">
                   <figure className="image is-square">
@@ -44,28 +45,28 @@ const Products: React.FC = () => {
                   </p>
                 </div>
               </div>
-              {(prod.category || prod.subcategory) && (
-                <footer className="card-footer">
-                  {prod.category && (
-                    <Link
-                      className="card-footer-item"
-                      to={`/categories/${prod.category._id}`}
-                    >
-                      {prod.category.name}
-                    </Link>
-                  )}
-                  {prod.subcategory && (
-                    <Link
-                      className="card-footer-item"
-                      to={`/subcategories/${prod.subcategory._id}`}
-                    >
-                      {prod.subcategory.name}
-                    </Link>
-                  )}
-                </footer>
-              )}
-            </div>
-          </Link>
+            </Link>
+            {(prod.category || prod.subcategory) && (
+              <footer className="card-footer">
+                {prod.category && (
+                  <Link
+                    className="card-footer-item"
+                    to={`/categories/${prod.category._id}`}
+                  >
+                    {prod.category.name}
+                  </Link>
+                )}
+                {prod.subcategory && (
+                  <Link
+                    className="card-footer-item"
+                    to={`/subcategories/${prod.subcategory._id}`}
+                  >
+                    {prod.subcategory.name}
+                  </Link>
+                )}
+              </footer>
+            )}
+          </div>
         )}
       </Pagination>
     </>
