@@ -14,8 +14,16 @@ export const ItemBody = z.object({
   amount: z.number().min(1)
 });
 export type IItemBody = z.infer<typeof ItemBody>;
+export const ShippingBody = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  address: z.string(),
+  phone: z.number(),
+});
+export type IShippingBody = z.infer<typeof ShippingBody>;
 export const OrderBody = z.object({
-  items: z.array(ItemBody)
+  items: z.array(ItemBody),
+  shipping: ShippingBody
 });
 export type IOrderBody = z.infer<typeof OrderBody>;
 

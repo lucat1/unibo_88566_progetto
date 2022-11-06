@@ -80,7 +80,7 @@ const Login: React.FC = () => {
         </div>
         {error && (
           <span className="help is-danger">
-            Wrong username/password combination
+            {error}
           </span>
         )}
         <div className="field">

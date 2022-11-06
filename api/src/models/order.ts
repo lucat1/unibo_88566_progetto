@@ -1,7 +1,7 @@
 import { Schema, PaginateModel, model } from "mongoose";
 import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
-import type { IOrder, IItem } from "shared/models/order";
+import type { IOrder, IItem, IShipping } from "shared/models/order";
 import { shadow as shadowProduct } from "./product";
 
 const ItemSchema = new Schema<IItem>({
@@ -9,10 +9,18 @@ const ItemSchema = new Schema<IItem>({
   amount: { type: Number }
 })
 
+const ShippingSchema = new Schema<IShipping>({
+  firstName: { type: String },
+  lastName: { type: String },
+  address: { type: String },
+  phone: { type: Number },
+})
+
 const OrderSchema = new Schema<IOrder>({
   _id: { type: String, default: v4 },
   items: [{ type: ItemSchema }],
-  user: { type: String, ref: "User" }
+  user: { type: String, ref: "User" },
+  shipping: { type: ShippingSchema }
 });
 OrderSchema.plugin(paginate);
 
