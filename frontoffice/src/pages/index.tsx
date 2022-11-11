@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 
 export const pages = [
   {
-    name: "Store",
+    name: "Products",
     url: "/products",
+  },
+  {
+    name: "Pets",
+    url: "/pets",
   },
   {
     name: "Services",

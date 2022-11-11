@@ -149,16 +149,17 @@ const Cart: React.FC = () => {
                 </span>
               )}
               <section className="is-flex is-justify-content-end">
-                <div className="control">
+                <div className="is-flex is-flex-direction-column is-justify-content-end">
                   <button className="button is-link" disabled={loading || !auth.authenticated}>
                     Checkout
                   </button>
+                  {!auth.authenticated && <span className="help is-danger">You need to be logged in in order to check out</span>}
                 </div>
               </section>
             </form>
           </>
         )}
-      </main>)
+      </main >)
   )
 }
 

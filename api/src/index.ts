@@ -101,6 +101,7 @@ import {
   setStore,
 } from "./handlers/store";
 import { addOrder, deleteOrder, getOrder, getOrders, OrderBody, OrderPrams } from "./handlers/order";
+import { addPet, deletePet, getPet, getPets, PetBody, setPet } from "./handlers/pet";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -268,6 +269,37 @@ const main = async () => {
     validateParams(ProductParams),
     validateBody(ProductBody),
     catcher(setProduct)
+  );
+
+  app.get(
+    "/api/store/pets",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getPets)
+  );
+  app.put(
+    "/api/store/pets",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(PetBody),
+    catcher(addPet)
+  );
+  app.get(
+    "/api/store/pets/:id",
+    validateParams(ProductParams),
+    catcher(getPet)
+  );
+  app.delete(
+    "/api/store/pet/:id",
+    validateParams(ProductParams),
+    catcher(deletePet)
+  );
+  app.patch(
+    "/api/store/pets/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(ProductParams),
+    validateBody(ProductBody),
+    catcher(setPet)
   );
 
   app.get(

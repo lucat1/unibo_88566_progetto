@@ -9,7 +9,7 @@ const POPULATE = ["category", "subcategory"];
 
 export const PetBody = z.object({
   name: z.string().min(1),
-  photos: z.array(z.string().min(1)),
+  description: z.string().min(1),
 
   category: z.number(),
   subcategory: z.number().optional(),
@@ -56,13 +56,13 @@ export const getPet: RequestHandler = async (req, res) => {
   else json(res, 200, shadow(pet));
 };
 
-export const deleteProduct: RequestHandler = async (req, res) => {
+export const deletePet: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IPetParams;
   await Pet.deleteOne({ _id: id });
   json(res, 200, null);
 };
 
-export const setProduct: RequestHandler = async (req, res) => {
+export const setPet: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IPetParams;
   const patch = req.body as IPetBody;
   const updated = await Pet.findOneAndUpdate({ _id: id }, patch, {
