@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <aside class="menu">
+  <div class="columns">
+    <aside class="menu column is-one-third">
       <p class="menu-label">Services</p>
       <ul class="menu-list">
         <li><router-link to="/trivia">Trivia</router-link></li>
@@ -16,5 +16,21 @@
         <li><router-link to="/spot">Spot</router-link></li>
       </ul>
     </aside>
+    <div class="column is two-thirds">
+      <Ads />
+    </div>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import Ads from "../components/Ads.vue";
+
+export default defineComponent({
+  name: "Index",
+  components: {
+    Ads,
+  }
+})
+</script>
