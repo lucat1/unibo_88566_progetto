@@ -36,7 +36,7 @@ interface State {
 }
 
 export default defineComponent({
-  name: "App",
+  name: "Memory",
   components: {
     Card,
   },
