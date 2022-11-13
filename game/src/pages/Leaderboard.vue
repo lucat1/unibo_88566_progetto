@@ -33,11 +33,16 @@ export default defineComponent({
     <ul>
       <li v-for="page in pages" :class="page == current && 'is-active'">
         <router-link :to="'/leaderboard/' + page">{{
-            page.charAt(0).toUpperCase() + page.slice(1)
+          page.charAt(0).toUpperCase() + page.slice(1)
         }}</router-link>
       </li>
     </ul>
   </div>
   <Leaderboard :game="current" :limit="5" />
-  <router-link v-if="score != undefined" :to="'/' + current" class="button is-primary">Retry</router-link>
+  <router-link
+    v-if="score != undefined"
+    :to="'/' + current"
+    class="button is-primary"
+    >Retry</router-link
+  >
 </template>

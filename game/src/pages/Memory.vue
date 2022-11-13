@@ -1,12 +1,20 @@
 <template>
   <div v-for="(row, i) in rows" :key="i" class="columns">
-    <Card v-for="(card, i) in row" :key="i" :card="card" @click="handleClick(card)" :active="
-      card.matched ||
-      (firstPick && firstPick.row == card.row && firstPick.col == card.col) ||
-      (secondPick && secondPick.row == card.row && secondPick.col == card.col)
-    " />
+    <Card
+      v-for="(card, i) in row"
+      :key="i"
+      :card="card"
+      @click="handleClick(card)"
+      :active="
+        card.matched ||
+        (firstPick && firstPick.row == card.row && firstPick.col == card.col) ||
+        (secondPick && secondPick.row == card.row && secondPick.col == card.col)
+      "
+    />
   </div>
-  <div class="w-full flex justify-center items-center z-0 text-2xl text-gray font-bold">
+  <div
+    class="w-full flex justify-center items-center z-0 text-2xl text-gray font-bold"
+  >
     Turn: {{ turn }}
   </div>
 </template>
@@ -58,14 +66,14 @@ export default defineComponent({
         (rows, obj, i): Card[][] =>
           i % CARDS_PER_ROW != 0
             ? rows.slice(0, -1).concat([
-              rows[rows.length - 1].concat([
-                {
-                  ...obj,
-                  row: rows.length - 1,
-                  col: rows[rows.length - 1].length,
-                },
-              ]),
-            ])
+                rows[rows.length - 1].concat([
+                  {
+                    ...obj,
+                    row: rows.length - 1,
+                    col: rows[rows.length - 1].length,
+                  },
+                ]),
+              ])
             : rows.concat([[{ ...obj, row: rows.length, col: 0 }]]),
         []
       );

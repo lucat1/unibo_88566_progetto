@@ -40,8 +40,15 @@ export default defineComponent({
         Animal House Game
       </router-link>
 
-      <a role="button" class="navbar-burger" v-bind:class="{ 'is-active': opened }" v-on:click="opened = !opened"
-        aria-label="menu" aria-expanded="false" data-target="nav">
+      <a
+        role="button"
+        class="navbar-burger"
+        v-bind:class="{ 'is-active': opened }"
+        v-on:click="opened = !opened"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="nav"
+      >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -51,13 +58,18 @@ export default defineComponent({
     <div id="nav" class="navbar-menu" v-bind:class="{ 'is-active': opened }">
       <div class="navbar-start">
         <!-- TODO: are these links accessible? not working with <space> -->
-        <router-link v-for="route in routes" v-bind:to="route.path" class="navbar-item">{{ route.name }}</router-link>
+        <router-link
+          v-for="route in routes"
+          v-bind:to="route.path"
+          class="navbar-item"
+          >{{ route.name }}</router-link
+        >
       </div>
 
       <div class="navbar-end">
         <div v-if="auth.authenticated" class="navbar-item">
           <a class="mr-4 has-text-white" :href="userProfile">{{
-              auth.username
+            auth.username
           }}</a>
           <button @click="logout" class="button is-light">Log out</button>
         </div>
@@ -67,7 +79,9 @@ export default defineComponent({
             <router-link to="/register" class="button is-primary">
               <strong>Sign up</strong>
             </router-link>
-            <router-link to="/login" class="button is-light">Log in</router-link>
+            <router-link to="/login" class="button is-light"
+              >Log in</router-link
+            >
           </div>
         </div>
       </div>

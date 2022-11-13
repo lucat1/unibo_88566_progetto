@@ -1,8 +1,9 @@
 <template>
   <div class="column" :class="{ 'is-danger': active }" @click="clickHandler">
     <div class="card-image">
-      <figure class="image is-4by3"
-          :style="{display: active ? 'block' : 'none'}"
+      <figure
+        class="image is-4by3"
+        :style="{ display: active ? 'block' : 'none' }"
       >
         <img
           :src="card.img"
@@ -11,19 +12,24 @@
           class="h-full w-full object-full"
         />
       </figure>
-        <div
-          :aria-hidden="active"
-          class="image is-4by3 has-background-info-light"
-          :style="{display: active ? 'none' : 'block', height: '100%', width: '100%'}"/>
+      <div
+        :aria-hidden="active"
+        class="image is-4by3 has-background-info-light"
+        :style="{
+          display: active ? 'none' : 'block',
+          height: '100%',
+          width: '100%',
+        }"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["card", "active"]
+  props: ["card", "active"],
 });
 </script>
 
