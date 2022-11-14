@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <aside class="menu column is-one-third">
+    <aside class="menu column is-one-fifths">
       <p class="menu-label">Services</p>
       <ul class="menu-list">
         <li><router-link to="/trivia">Trivia</router-link></li>
@@ -16,7 +16,7 @@
         <li><router-link to="/spot">Spot</router-link></li>
       </ul>
     </aside>
-    <div class="column is two-thirds">
+    <div class="column is-four-fifths">
       <Ads />
     </div>
   </div>

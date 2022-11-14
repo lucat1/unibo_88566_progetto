@@ -37,6 +37,24 @@ export const getServices: RequestHandler = async (req, res) => {
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };
 
+export const ServiceRandomParams = z.object({
+  length: z.number(),
+})
+export type IServiceRandomParams = z.infer<typeof ServiceRandomParams>;
+
+export const getRandomServices: RequestHandler = async (req, res) => {
+  const services = await Service.find().exec();
+  let { length } = req.query as unknown as IServiceRandomParams
+  length = Math.min(length, services.length)
+  for (let i = 0; i < length; ++i) {
+    const j = i + Math.floor(Math.random() * length - i),
+          t = services[i]
+    services[i] = services[j]
+    services[j] = t
+  }
+  json(res, 200, services.slice(0, length).map(shadow));
+}
+
 export const ServiceParams = z.object({
   id: z.string().uuid(),
 });
