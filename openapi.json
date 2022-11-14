@@ -1681,6 +1681,45 @@
         }
       }
     },
+    "/store/services/random": {
+      "get": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Get a random sample from the services listing",
+        "parameters": [
+          {
+            "name": "length",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "description": "Number of services to query"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/store/services/{service}": {
       "get": {
         "tags": [
