@@ -92,6 +92,17 @@ import {
   setProduct,
 } from "./handlers/product";
 import {
+  ServiceBody,
+  ServiceParams,
+  ServiceRandomParams,
+  addService,
+  getServices,
+  getRandomServices,
+  getService,
+  deleteService,
+  setService,
+} from "./handlers/service";
+import {
   StoreBody,
   StoreParams,
   addStore,
@@ -354,6 +365,41 @@ const main = async () => {
   //   validateBody(ServiceBody),
   //   catcher(setService)
   // );
+  app.get(
+    "/api/store/services",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getServices)
+  );
+  app.get(
+    "/api/store/services/random",
+    validateQuery(ServiceRandomParams),
+    catcher(getRandomServices)
+  )
+  app.put(
+    "/api/store/services",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(ServiceBody),
+    catcher(addService)
+  );
+  app.get(
+    "/api/store/services/:id",
+    validateParams(ServiceParams),
+    catcher(getService)
+  );
+  app.delete(
+    "/api/store/services/:id",
+    validateParams(ServiceParams),
+    catcher(deleteService)
+  );
+  app.patch(
+    "/api/store/services/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(ProductParams),
+    validateBody(ServiceBody),
+    catcher(setService)
+  );
 
   app.get(
     "/api/store/stores",
