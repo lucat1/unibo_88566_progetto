@@ -56,6 +56,11 @@
       "types": "./es/shared/src/models/order.d.ts",
       "node": "./cjs/shared/src/models/order.js"
     },
+    "./models/service": {
+      "import": "./es/shared/src/models/service.js",
+      "types": "./es/shared/src/models/service.d.ts",
+      "node": "./cjs/shared/src/models/service.js"
+    },
     "./models/store": {
       "import": "./es/shared/src/models/store.js",
       "types": "./es/shared/src/models/store.d.ts",
