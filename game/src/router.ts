@@ -5,6 +5,7 @@ import Index from "./pages/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 import Register from "./pages/Register.vue";
 import Login from "./pages/Login.vue";
+import Trivia from "./pages/Trivia.vue";
 import Videos from "./pages/Videos.vue";
 import Help from "./pages/Help.vue";
 import Quiz from "./pages/Quiz.vue";
@@ -17,6 +18,11 @@ export const routes = [
     path: "/",
     name: "Index",
     component: Index,
+  },
+  {
+    path: "/trivia",
+    name: "Trivia",
+    component: Trivia,
   },
   {
     path: "/videos",

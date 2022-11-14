@@ -14,7 +14,7 @@ async function getImageUrl() {
 }
 
 export default defineComponent({
-  name: "Memory",
+  name: "Videos",
   async setup() {
     return reactive({
       url: await getImageUrl(),
@@ -29,7 +29,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1 class="title is-1">Videos</h1>
+  <h1 class="title is-1">Funny Dog Videos</h1>
   <div class="card">
     <div class="card-image">
       <div class="columns is-centered">

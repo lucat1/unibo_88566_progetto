@@ -13,7 +13,7 @@ export default defineComponent({
       auth,
       routes: routes.filter(
         (route) =>
-          !/Register|Login|NotFound|Index|Leaderboard/.test(route.name || "")
+          !/Register|Login|NotFound|Index/.test(route.name || "")
       ),
       opened: false,
     };
