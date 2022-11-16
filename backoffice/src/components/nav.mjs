@@ -18,11 +18,10 @@ const Nav = () => {
     h(
       "div",
       { className: "navbar-brand" },
-      h(Link, { to: "/", className: "navbar-item" },
-        h(
-          "img",
-          { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" },
-        ),
+      h(
+        Link,
+        { to: "/", className: "navbar-item" },
+        h("img", { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" }),
         "Animal House Backoffice"
       )
     ),
@@ -53,7 +52,7 @@ const Nav = () => {
           !user
             ? h(
               "div",
-              { className: "buttons" },
+              { className: "buttons mr-4" },
               h(Link, { to: "/login", className: "button is-light" }, "Login")
             )
             : h(

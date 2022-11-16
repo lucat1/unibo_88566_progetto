@@ -2,11 +2,15 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { removeAuthToken } from "shared/auth";
 
+import useCart from "../cart";
 import { useAuth } from "../auth";
+import { pages } from "../pages/index";
 
 const Nav: React.FC = () => {
   const [opened, setOpened] = React.useState(false);
   const [auth, setAuth] = useAuth();
+  const [cart] = useCart()
+  const productsInCart = React.useMemo(() => cart.reduce((prev, item) => prev + item.amount, 0), [cart])
   const logout = React.useCallback(() => {
     removeAuthToken();
     setAuth(false);
@@ -39,20 +43,24 @@ const Nav: React.FC = () => {
 
       <div id="nav" className={`navbar-menu ${opened ? "is-active" : ""}`}>
         <div className="navbar-start">
-          {/*
-          <Link
-            v-for="route in routes"
-            v-bind:to="route.path"
-            class="navbar-item"
-          >{route.name}</Link>
-          */}
+          {pages.map((page, i) => (
+            <Link key={i} to={page.url} className="navbar-item">
+              {page.name}
+            </Link>
+          ))}
         </div>
 
         <div className="navbar-end">
+          <Link to="/cart" className="navbar-item">
+            <span className="file-icon">
+              <i className="fa-solid fa-cart-shopping" style={{ color: "white" }}></i>
+            </span>
+            <span>{productsInCart}</span>
+          </Link>
           {auth.authenticated ? (
-            <div className="buttons">
+            <div className="navbar-item">
               <Link
-                className="navbar-item mr-4 has-text-white"
+                className="mr-4 has-text-white"
                 to={`/users/${auth.user._id}`}
               >
                 {auth.user.username}

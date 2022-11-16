@@ -7,7 +7,7 @@ export const PaginationQuery = z.object({
     .min(1)
     .or(z.string().regex(/^\d+$/).transform(Number))
     .refine((n) => n >= 1, { message: "Minimum value is 1" })
-    .refine((n) => n <= 20, { message: "Maximum value is 20" })
+    .refine((n) => n <= 30, { message: "Maximum value is 30" })
     .optional()
     .default(10),
   page: z

@@ -89,7 +89,7 @@ export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const patch = req.body as unknown as IUserData;
-  const updated = await User.findOneAndUpdate({ _id: user._id }, patch).exec();
+  const updated = await User.findOneAndUpdate({ _id: user._id }, patch, { new: true }).exec();
   if (updated == null)
     json(res, 404, {
       message: "Unkown error",

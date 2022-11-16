@@ -1538,64 +1538,6 @@
         }
       }
     },
-    "/store/orders/{order}": {
-      "patch": {
-        "tags": [
-          "store"
-        ],
-        "summary": "Update an order's status",
-        "parameters": [
-          {
-            "name": "order",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "placed",
-                      "approved",
-                      "rejected",
-                      "delivered"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Request fulfilled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Order"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/store/services/": {
       "get": {
         "tags": [
@@ -2952,10 +2894,6 @@
           },
           "price": {
             "type": "number"
-          },
-          "disponibility": {
-            "type": "number",
-            "format": "uint64"
           },
           "photos": {
             "type": "array",

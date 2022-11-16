@@ -27,15 +27,15 @@ const Pagination = ({ url, ele, className }, children) => {
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-      ? h("div", { className: "notification is-danger" }, "Error: ", err)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", err)
+        : h(
           "div",
           { className },
           data.docs.map((doc, i) => children[0](doc, i))
         ),
     h(
       "div",
-      { className: "mt-4 flex is-flex-direction-row" },
+      { className: "mt-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center" },
       h("span", { className: "subtitle" }, "Pages: "),
       pages.map((index) =>
         h(
