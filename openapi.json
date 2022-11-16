@@ -384,7 +384,7 @@
                       "$ref": "#/components/schemas/Category"
                     }
                   },
-                  "ownedPets": {
+                  "pets": {
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/OwnedPet"
@@ -2999,7 +2999,7 @@
               "$ref": "#/components/schemas/Category"
             }
           },
-          "ownedPets": {
+          "pets": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OwnedPet"
