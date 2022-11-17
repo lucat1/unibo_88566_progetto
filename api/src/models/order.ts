@@ -6,21 +6,21 @@ import { shadow as shadowProduct } from "./product";
 
 const ItemSchema = new Schema<IItem>({
   product: { type: String, ref: "Product" },
-  amount: { type: Number }
-})
+  amount: { type: Number },
+});
 
 const ShippingSchema = new Schema<IShipping>({
   firstName: { type: String },
   lastName: { type: String },
   address: { type: String },
   phone: { type: Number },
-})
+});
 
 const OrderSchema = new Schema<IOrder>({
   _id: { type: String, default: v4 },
   items: [{ type: ItemSchema }],
   user: { type: String, ref: "User" },
-  shipping: { type: ShippingSchema }
+  shipping: { type: ShippingSchema },
 });
 OrderSchema.plugin(paginate);
 
@@ -29,12 +29,11 @@ export const Order: PaginateModel<IOrder> = model<IOrder>(
   OrderSchema
 ) as PaginateModel<IOrder>;
 
-export const shadow = ({
+export const shadow = ({ _id, items, user }: IOrder) => ({
   _id,
-  items,
-  user
-}: IOrder) => ({
-  _id,
-  items: items.map(({ amount, product }) => ({ product: shadowProduct(product), amount })),
+  items: items.map(({ amount, product }) => ({
+    product: shadowProduct(product),
+    amount,
+  })),
   user,
 });

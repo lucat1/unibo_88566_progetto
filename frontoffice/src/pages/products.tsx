@@ -18,9 +18,7 @@ const Products: React.FC = () => {
             className="card m-4"
             style={{ display: "block", width: "100%", maxWidth: "24rem" }}
           >
-            <Link
-              to={`/products/${prod._id}`}
-            >
+            <Link to={`/products/${prod._id}`}>
               {prod.photos.length > 0 && (
                 <div className="card-image">
                   <figure className="image is-square">

@@ -9,7 +9,7 @@ import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
 
-const POPULATE = ['pets']
+const POPULATE = ["pets"];
 
 export const register = async (
   data: IRegisterData
@@ -75,15 +75,17 @@ export const id: RequestHandler = (_, res) => {
 };
 
 export const getMe: RequestHandler = async (req, res) => {
-  const user = await User.findOne((req as AuthenticatedRequest).user).populate(POPULATE).exec();
+  const user = await User.findOne((req as AuthenticatedRequest).user)
+    .populate(POPULATE)
+    .exec();
   if (user == null) throw new Error("User not found");
   json(res, 200, shadow(user));
 };
 
 export const UserPetBody = z.object({
   name: z.string(),
-  type: z.string()
-})
+  type: z.string(),
+});
 
 export const UserBody = z.object({
   firstName: z.string().optional(),
@@ -91,7 +93,7 @@ export const UserBody = z.object({
   city: z.string().optional(),
   avatar: z.string().optional(),
 
-  pets: z.array(UserPetBody)
+  pets: z.array(UserPetBody),
 });
 export type IUserData = z.infer<typeof UserBody>;
 
@@ -99,7 +101,9 @@ export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const patch = req.body as unknown as IUserData;
-  const updated = await User.findOneAndUpdate({ _id: user._id }, patch, { new: true }).exec();
+  const updated = await User.findOneAndUpdate({ _id: user._id }, patch, {
+    new: true,
+  }).exec();
   if (updated == null)
     json(res, 404, {
       message: "Unkown error",

@@ -22,7 +22,15 @@ export const Pet: PaginateModel<IPet> = model<IPet>(
   PetSchema
 ) as PaginateModel<IPet>;
 
-export const shadow = ({ _id, name, description, photos, price, category, subcategory }: IPet) => ({
+export const shadow = ({
+  _id,
+  name,
+  description,
+  photos,
+  price,
+  category,
+  subcategory,
+}: IPet) => ({
   _id,
   name,
   description,
@@ -32,12 +40,12 @@ export const shadow = ({ _id, name, description, photos, price, category, subcat
     typeof category == "undefined"
       ? undefined
       : typeof category == "number"
-        ? { _id: category }
-        : shadowCategory(category as ICategory),
+      ? { _id: category }
+      : shadowCategory(category as ICategory),
   subcategory:
     typeof subcategory == "undefined"
       ? undefined
       : typeof subcategory == "number"
-        ? { _id: subcategory }
-        : shadowSubcategory(subcategory as ISubcategory),
+      ? { _id: subcategory }
+      : shadowSubcategory(subcategory as ISubcategory),
 });

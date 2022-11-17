@@ -18,9 +18,7 @@ const Pets: React.FC = () => {
             className="card m-4"
             style={{ display: "block", width: "100%", maxWidth: "24rem" }}
           >
-            <Link
-              to={`/pets/${pet._id}`}
-            >
+            <Link to={`/pets/${pet._id}`}>
               {pet.photos.length > 0 && (
                 <div className="card-image">
                   <figure className="image is-square">

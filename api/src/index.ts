@@ -112,8 +112,22 @@ import {
   deleteStore,
   setStore,
 } from "./handlers/store";
-import { addOrder, deleteOrder, getOrder, getOrders, OrderBody, OrderPrams } from "./handlers/order";
-import { addPet, deletePet, getPet, getPets, PetBody, setPet } from "./handlers/pet";
+import {
+  addOrder,
+  deleteOrder,
+  getOrder,
+  getOrders,
+  OrderBody,
+  OrderPrams,
+} from "./handlers/order";
+import {
+  addPet,
+  deletePet,
+  getPet,
+  getPets,
+  PetBody,
+  setPet,
+} from "./handlers/pet";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -375,7 +389,7 @@ const main = async () => {
     "/api/store/services/random",
     validateQuery(ServiceRandomParams),
     catcher(getRandomServices)
-  )
+  );
   app.put(
     "/api/store/services",
     authRequired,

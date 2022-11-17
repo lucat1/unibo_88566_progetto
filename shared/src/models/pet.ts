@@ -5,7 +5,7 @@ export interface IPet extends Document {
   name: string;
   description: string;
   photos: string[];
-  price: number,
+  price: number;
 
   category: ICategory;
   subcategory?: ISubcategory;

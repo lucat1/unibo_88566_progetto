@@ -32,6 +32,6 @@ export default defineComponent({
   name: "Index",
   components: {
     Ads,
-  }
-})
+  },
+});
 </script>
