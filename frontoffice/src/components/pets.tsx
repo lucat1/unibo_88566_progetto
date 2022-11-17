@@ -1,28 +1,31 @@
 import * as React from 'react'
 import { useForm, Controller } from "react-hook-form";
-import type { IPet } from 'shared/models/pet'
+import type { IUserPet } from 'shared/models/user'
 
 import { useAuth } from "../auth";
 import SelectCategory from './select-category';
 
 export interface PetsProps {
-  pets: IPet[]
+  pets: IUserPet[]
   id: string
-  onAdd: (pet: IPet) => void
+  update: (pets: IUserPet[]) => void
   isLoading: boolean
 }
 
-const Pets: React.FC<PetsProps> = ({ pets, id, onAdd, isLoading }) => {
+const clear = (pet: IUserPet): IUserPet => ({ ...pet, category: pet.category._id } as any)
+
+const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
   const [{ authenticated, user }] = useAuth();
   const {
     register,
     control,
     handleSubmit,
     formState: { errors: formErrors },
-  } = useForm<IPet>();
+  } = useForm<IUserPet>();
 
-  const customOnAdd = (pet: IPet) => {
-    onAdd({ ...pet, category: pet.category._id as any })
+  const customOnAdd = (pet: IUserPet) => {
+    update([
+      ...pets.map(clear), { ...pet, category: pet.category._id as any }] as any)
   }
 
   return (
@@ -34,6 +37,7 @@ const Pets: React.FC<PetsProps> = ({ pets, id, onAdd, isLoading }) => {
             <div key={i} className="is-flex is-flex-direction-row is-justify-content-space-between">
               <h4 className='subtitle is-6'>{pet.name}</h4>
               <span className='subtitle is-6'>{pet.category.name}</span>
+              <button className="delete" onClick={_ => update(pets.filter((_, j) => j != i).map(clear))}></button>
             </div>
           ))}
         </>

@@ -156,7 +156,7 @@ const User: React.FC = () => {
         <Pets
           pets={data!.pets}
           id={data!._id}
-          onAdd={pet => patchUser({ pets: [...data!.pets.map(pet => ({ ...pet, category: pet.category._id })), pet] })}
+          update={pets => patchUser({ pets })}
           isLoading={isLoading}
         />
       </section>
