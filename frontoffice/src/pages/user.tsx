@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import fetch, { withOptions } from "shared/fetch";
 import type { IUser } from "shared/models/user";
+
 import { useAuth } from "../auth";
 import File from "../components/file";
+import Pets from '../components/pets'
 
 // TODO: for some reason the picture data is stale from react-query
 
@@ -65,7 +67,7 @@ const User: React.FC = () => {
               <File onUpload={handleUpload} />
             )}
             {isError && (
-              <span className="help is-danger">{error as string}</span>
+              <span className="help is-danger">{mutationError as string}</span>
             )}
           </div>
         </div>
@@ -151,6 +153,12 @@ const User: React.FC = () => {
             </div>
           )}
         </form>
+        <Pets
+          pets={data!.pets}
+          id={data!._id}
+          onAdd={pet => patchUser({ pets: [...data!.pets.map(pet => ({ ...pet, category: pet.category._id })), pet] })}
+          isLoading={isLoading}
+        />
       </section>
     </main>
   );

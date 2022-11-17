@@ -1,5 +1,5 @@
 import type { Document } from "mongoose";
-import type { IPet } from "./pet";
+import type { ICategory } from "./category";
 
 export enum UserLevel {
   BASIC,
@@ -15,5 +15,10 @@ export interface IUser extends Document {
   city?: string;
   avatar?: string;
 
-  pets: IPet[];
+  pets: IUserPet[];
+}
+
+export interface IUserPet extends Document {
+  name: string;
+  category: ICategory
 }
