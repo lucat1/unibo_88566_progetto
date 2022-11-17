@@ -40,12 +40,12 @@ export const shadow = ({
     typeof category == "undefined"
       ? undefined
       : typeof category == "number"
-        ? { _id: category }
-        : shadowCategory(category as ICategory),
+      ? { _id: category }
+      : shadowCategory(category as ICategory),
   subcategory:
     typeof subcategory == "undefined"
       ? undefined
       : typeof subcategory == "number"
-        ? { _id: subcategory }
-        : shadowSubcategory(subcategory as ISubcategory),
+      ? { _id: subcategory }
+      : shadowSubcategory(subcategory as ISubcategory),
 });

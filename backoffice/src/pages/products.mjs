@@ -40,18 +40,18 @@ const Products = () =>
             { className: "card" },
             prod.photos.length > 0
               ? h(
-                "div",
-                { className: "card-image" },
-                h(
-                  "figure",
-                  { className: "image is-square" },
-                  h("img", {
-                    style: { "object-fit": "cover" },
-                    src: prod.photos[0],
-                    alt: `${prod.name} main image`,
-                  })
+                  "div",
+                  { className: "card-image" },
+                  h(
+                    "figure",
+                    { className: "image is-square" },
+                    h("img", {
+                      style: { "object-fit": "cover" },
+                      src: prod.photos[0],
+                      alt: `${prod.name} main image`,
+                    })
+                  )
                 )
-              )
               : null,
             h(
               "div",
@@ -72,28 +72,28 @@ const Products = () =>
               )
             ),
             (prod.category || prod.subcategory) &&
-            h(
-              "footer",
-              { className: "card-footer" },
-              prod.category &&
               h(
-                Link,
-                {
-                  to: `/categories/${prod.category._id}`,
-                  className: "card-footer-item",
-                },
-                prod.category.name
-              ),
-              prod.subcategory &&
-              h(
-                Link,
-                {
-                  to: `/subcategories/${prod.subcategory._id}`,
-                  className: "card-footer-item",
-                },
-                prod.subcategory.name
+                "footer",
+                { className: "card-footer" },
+                prod.category &&
+                  h(
+                    Link,
+                    {
+                      to: `/categories/${prod.category._id}`,
+                      className: "card-footer-item",
+                    },
+                    prod.category.name
+                  ),
+                prod.subcategory &&
+                  h(
+                    Link,
+                    {
+                      to: `/subcategories/${prod.subcategory._id}`,
+                      className: "card-footer-item",
+                    },
+                    prod.subcategory.name
+                  )
               )
-            )
           )
         )
     )

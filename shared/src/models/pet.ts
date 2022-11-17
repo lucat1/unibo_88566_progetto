@@ -1,13 +1,12 @@
 import type { Document } from "mongoose";
 import type { ICategory, ISubcategory } from "./category";
-import type { IUser } from "./user";
 
-/* TODO: tags */
 export interface IPet extends Document {
   name: string;
+  description: string;
   photos: string[];
+  price: number,
 
   category: ICategory;
   subcategory?: ISubcategory;
-  owner?: IUser;
 }

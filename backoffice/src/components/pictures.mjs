@@ -21,17 +21,17 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
           { className: "image is-square" },
           pictures.length - 1 >= selected
             ? h("img", {
-              style: { "object-fit": "cover" },
-              src: pictures[selected],
-            })
+                style: { "object-fit": "cover" },
+                src: pictures[selected],
+              })
             : h(
-              "div",
-              {
-                className:
-                  "has-ratio is-flex is-flex-direction-column is-align-items-center is-justify-content-center",
-              },
-              extra
-            )
+                "div",
+                {
+                  className:
+                    "has-ratio is-flex is-flex-direction-column is-align-items-center is-justify-content-center",
+                },
+                extra
+              )
         )
       )
     ),
@@ -64,20 +64,20 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
         )
       ),
       extra &&
-      extraIcon &&
-      h(
-        "a",
-        { onClick: select(pictures.lenght + 1) },
+        extraIcon &&
         h(
-          "div",
-          {
-            className:
-              "card mx-4 is-flex is-align-items-center is-justify-content-center p-2",
-            style: { width: "6rem", height: "6rem" },
-          },
-          extraIcon
+          "a",
+          { onClick: select(pictures.lenght + 1) },
+          h(
+            "div",
+            {
+              className:
+                "card mx-4 is-flex is-align-items-center is-justify-content-center p-2",
+              style: { width: "6rem", height: "6rem" },
+            },
+            extraIcon
+          )
         )
-      )
     )
   );
 };

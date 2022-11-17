@@ -4,39 +4,44 @@ import { Link } from "../router";
 const pages = ["Categories", "Products", "Pets", "Stores"];
 
 const Index = () =>
-  h("div",
+  h(
+    "div",
     {
-      className: "container"
+      className: "container",
     },
-    h("aside",
+    h(
+      "aside",
       {
-        className: "menu"
+        className: "menu",
       },
-      h("p",
+      h(
+        "p",
         {
-          className: "menu-label"
+          className: "menu-label",
         },
         "Backoffice"
       ),
-      h("ul",
+      h(
+        "ul",
         {
-          className: "menu-list"
+          className: "menu-list",
         },
         pages.map((product, i) =>
-        h("li",
-          {},
-          h(Link,
-            {
-              key: i,
-              to: `/${product.toLowerCase()}`,
-            },
-            product
+          h(
+            "li",
+            {},
+            h(
+              Link,
+              {
+                key: i,
+                to: `/${product.toLowerCase()}`,
+              },
+              product
+            )
           )
         )
       )
     )
-  )
-);
-
+  );
 
 export default Index;
