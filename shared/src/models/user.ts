@@ -6,6 +6,11 @@ export enum UserLevel {
   MANAGER,
 }
 
+export interface IUserPet extends Document {
+  name: string;
+  type: string;
+}
+
 export interface IUser extends Document {
   username: string;
   password: string;
@@ -16,9 +21,4 @@ export interface IUser extends Document {
   avatar?: string;
 
   pets: IUserPet[];
-}
-
-export interface IUserPet extends Document {
-  name: string;
-  category: ICategory
 }

@@ -9,7 +9,7 @@ import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
 
-const POPULATE = ['pets', 'pets.category']
+const POPULATE = ['pets']
 
 export const register = async (
   data: IRegisterData
@@ -82,7 +82,7 @@ export const getMe: RequestHandler = async (req, res) => {
 
 export const UserPetBody = z.object({
   name: z.string(),
-  category: z.number(),
+  type: z.string()
 })
 
 export const UserBody = z.object({

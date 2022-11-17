@@ -4,6 +4,7 @@
       <p class="menu-label">Services</p>
       <ul class="menu-list">
         <li><router-link to="/trivia">Trivia</router-link></li>
+        <li><router-link to="/pets-trivia">Pets Trivia</router-link></li>
         <li><router-link to="/videos">Videos</router-link></li>
         <li><router-link to="/help">Help</router-link></li>
       </ul>

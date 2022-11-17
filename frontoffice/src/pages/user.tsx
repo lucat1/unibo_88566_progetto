@@ -48,9 +48,9 @@ const User: React.FC = () => {
           <div className="card">
             <div className="card-image">
               <figure className="image is-square">
-                {user?.avatar ? (
+                {data?.avatar ? (
                   <img
-                    src={user?.avatar}
+                    src={data?.avatar}
                     style={{ objectFit: "cover" }}
                     alt={`${data?.username}'s profile picture`}
                   />
@@ -63,7 +63,7 @@ const User: React.FC = () => {
             </div>
           </div>
           <div className="mt-5 is-flex">
-            {authenticated && data?._id == user?._id && (
+            {authenticated && user?._id == data?._id && (
               <File onUpload={handleUpload} />
             )}
             {isError && (

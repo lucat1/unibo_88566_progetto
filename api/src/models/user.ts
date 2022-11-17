@@ -6,7 +6,7 @@ import { IUser, IUserPet, UserLevel } from "shared/models/user";
 
 const UserPet = new Schema<IUserPet>({
   name: { type: String, required: true },
-  category: { type: Number, ref: "Category", required: true },
+  type: { type: String, required: true }
 })
 
 const UserSchema = new Schema<IUser>({

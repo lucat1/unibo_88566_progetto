@@ -12,8 +12,6 @@ export interface PetsProps {
   isLoading: boolean
 }
 
-const clear = (pet: IUserPet): IUserPet => ({ ...pet, category: pet.category._id } as any)
-
 const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
   const [{ authenticated, user }] = useAuth();
   const {
@@ -24,8 +22,7 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
   } = useForm<IUserPet>();
 
   const customOnAdd = (pet: IUserPet) => {
-    update([
-      ...pets.map(clear), { ...pet, category: pet.category._id as any }] as any)
+    update([...pets, pet] as any)
   }
 
   return (
@@ -36,8 +33,8 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
           {pets.map((pet, i) => (
             <div key={i} className="is-flex is-flex-direction-row is-justify-content-space-between">
               <h4 className='subtitle is-6'>{pet.name}</h4>
-              <span className='subtitle is-6'>{pet.category.name}</span>
-              <button className="delete" onClick={_ => update(pets.filter((_, j) => j != i).map(clear))}></button>
+              <span className='subtitle is-6'>{pet.type}</span>
+              <button className="delete" onClick={_ => update(pets.filter((_, j) => j != i))}></button>
             </div>
           ))}
         </>
@@ -61,14 +58,20 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
                   <span className="help is-danger">A pet name is required</span>
                 )}
               </div>
-              <Controller
-                render={
-                  ({ field: { onChange, value } }) => <SelectCategory category={value} onSelect={onChange} />
-                }
-                control={control}
-                name="category"
-                defaultValue={undefined}
-              />
+              <div className='mt-4'>
+                <input
+                  className="input"
+                  placeholder="Animal type"
+                  aria-label="Animal type"
+                  type="text"
+                  id="type"
+                  disabled={isLoading}
+                  {...register("type", { required: true })}
+                />
+                {formErrors.type && (
+                  <span className="help is-danger">An animal type like chip, dog, etc is required</span>
+                )}
+              </div>
 
               <div className="mt-4 is-flex is-justify-content-end" style={{ width: '100%' }}>
                 <button className="button is-success" disabled={isLoading}>
