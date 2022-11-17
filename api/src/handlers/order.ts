@@ -11,7 +11,7 @@ const POPULATE = ["items.product", "user"];
 
 export const ItemBody = z.object({
   product: z.string(),
-  amount: z.number().min(1)
+  amount: z.number().min(1),
 });
 export type IItemBody = z.infer<typeof ItemBody>;
 export const ShippingBody = z.object({
@@ -23,7 +23,7 @@ export const ShippingBody = z.object({
 export type IShippingBody = z.infer<typeof ShippingBody>;
 export const OrderBody = z.object({
   items: z.array(ItemBody),
-  shipping: ShippingBody
+  shipping: ShippingBody,
 });
 export type IOrderBody = z.infer<typeof OrderBody>;
 
@@ -67,7 +67,7 @@ export const getOrder: RequestHandler = async (req, res) => {
     json(res, 404, {
       message: "Invalid order id",
     });
-    return
+    return;
   }
   if (user.level != UserLevel.MANAGER && order.user._id != user._id)
     throw new Error("You don't own this order");

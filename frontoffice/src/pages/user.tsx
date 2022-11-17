@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import fetch, { withOptions } from "shared/fetch";
 import type { IUser } from "shared/models/user";
+
 import { useAuth } from "../auth";
 import File from "../components/file";
+import Pets from "../components/pets";
 
 // TODO: for some reason the picture data is stale from react-query
 
@@ -46,9 +48,9 @@ const User: React.FC = () => {
           <div className="card">
             <div className="card-image">
               <figure className="image is-square">
-                {user?.avatar ? (
+                {data?.avatar ? (
                   <img
-                    src={user?.avatar}
+                    src={data?.avatar}
                     style={{ objectFit: "cover" }}
                     alt={`${data?.username}'s profile picture`}
                   />
@@ -61,11 +63,11 @@ const User: React.FC = () => {
             </div>
           </div>
           <div className="mt-5 is-flex">
-            {authenticated && data?._id == user?._id && (
+            {authenticated && user?._id == data?._id && (
               <File onUpload={handleUpload} />
             )}
             {isError && (
-              <span className="help is-danger">{error as string}</span>
+              <span className="help is-danger">{mutationError as string}</span>
             )}
           </div>
         </div>
@@ -151,6 +153,12 @@ const User: React.FC = () => {
             </div>
           )}
         </form>
+        <Pets
+          pets={data!.pets}
+          id={data!._id}
+          update={(pets) => patchUser({ pets })}
+          isLoading={isLoading}
+        />
       </section>
     </main>
   );

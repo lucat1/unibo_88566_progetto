@@ -78,11 +78,7 @@ const Login: React.FC = () => {
             <span className="help is-danger">Password is required</span>
           )}
         </div>
-        {error && (
-          <span className="help is-danger">
-            {error}
-          </span>
-        )}
+        {error && <span className="help is-danger">{error}</span>}
         <div className="field">
           <div className="control">
             <button className="button is-link" disabled={loading}>

@@ -2,7 +2,12 @@ import { Schema, model } from "mongoose";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
-import { IUser, UserLevel } from "shared/models/user";
+import { IUser, IUserPet, UserLevel } from "shared/models/user";
+
+const UserPet = new Schema<IUserPet>({
+  name: { type: String, required: true },
+  type: { type: String, required: true },
+});
 
 const UserSchema = new Schema<IUser>({
   _id: { type: String, default: v4 },
@@ -18,7 +23,7 @@ const UserSchema = new Schema<IUser>({
   city: String,
   avatar: String,
 
-  pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
+  pets: [{ type: UserPet }],
 });
 UserSchema.pre("save", async function () {
   let password = "";
@@ -39,4 +44,14 @@ export const shadow = ({
   firstName,
   lastName,
   city,
-}: IUser) => ({ _id, username, avatar, level, firstName, lastName, city });
+  pets,
+}: IUser) => ({
+  _id,
+  username,
+  avatar,
+  level,
+  firstName,
+  lastName,
+  city,
+  pets,
+});

@@ -16,7 +16,7 @@ const Product: React.FC = () => {
       suspense: true,
     }
   );
-  const [_, addToCart] = useCart()
+  const [_, addToCart] = useCart();
   return (
     <>
       <main className="columns">
@@ -49,7 +49,12 @@ const Product: React.FC = () => {
             )}
           </div>
           <div className="my-3 is-flex is-justify-content-end">
-            <button className="button is-primary" onClick={_ => addToCart(product!, 1)}>Buy</button>
+            <button
+              className="button is-primary"
+              onClick={(_) => addToCart(product!, 1)}
+            >
+              Buy
+            </button>
           </div>
         </section>
       </main>

@@ -35,14 +35,12 @@ export default defineComponent({
     <div class="card-content">
       <div class="content">
         <div class="block" v-for="trivia in trivias">
-          {{trivia}}
+          {{ trivia }}
         </div>
       </div>
     </div>
     <footer class="card-footer">
-      <a @click="next()" class="card-footer-item">
-        More trivias
-      </a>
+      <a @click="next()" class="card-footer-item"> More trivias </a>
     </footer>
   </div>
 </template>
