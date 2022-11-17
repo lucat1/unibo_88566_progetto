@@ -29,7 +29,7 @@ const StoreWrapper = () => {
 const Store = ({ id, data }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState(data.location);
+  let [location, setLocation] = useState(data.location);
 
   const patch = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const Store = ({ id, data }) => {
         })
       );
       data.name = newName;
-      if (newLocation != location) location = location;
+      if (newLocation != location) location = newLocation;
     } catch (err) {
       setError(err.message || "An error occourred while updating the store");
     }
