@@ -354,32 +354,6 @@ const main = async () => {
     catcher(deleteOrder)
   );
 
-  // app.get("/api/store/services", catcher(getServices));
-  // app.put(
-  //   "/api/store/services",
-  //   authRequired,
-  //   priviledged(UserLevel.MANAGER),
-  //   validateBody(ServiceBody),
-  //   catcher(addService)
-  // );
-  // app.get(
-  //   "/api/store/services/:id",
-  //   validateParams(ServiceParams),
-  //   catcher(getService)
-  // );
-  // app.delete(
-  //   "/api/store/services/:id",
-  //   validateParams(ServiceParams),
-  //   catcher(deleteService)
-  // );
-  // app.patch(
-  //   "/api/store/services/:id",
-  //   authRequired,
-  //   priviledged(UserLevel.MANAGER),
-  //   validateParams(ServiceParams),
-  //   validateBody(ServiceBody.partial()),
-  //   catcher(setService)
-  // );
   app.get(
     "/api/store/services",
     validateQuery(PaginationQuery.and(SortingQuery)),
