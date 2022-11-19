@@ -38,7 +38,7 @@ export const getServices: RequestHandler = async (req, res) => {
 };
 
 export const ServiceRandomParams = z.object({
-  length: z.number(),
+  length: z.number().int().positive().default(4),
 });
 export type IServiceRandomParams = z.infer<typeof ServiceRandomParams>;
 

@@ -1,29 +1,27 @@
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
+import { defineComponent } from "vue";
+import { API_ENDPOINT, FRONTOFFICE_ENDPOINT } from "shared/endpoints";
+
+const PRODUCTS_ENDPOINT = API_ENDPOINT + "random-products",
+  SERVICES_ENDPOINT = API_ENDPOINT + "store/random-services";
 
 export default defineComponent({
-  setup() {
+  async setup() {
     return {
-      length: 3,
+      products: await (await fetch(PRODUCTS_ENDPOINT)).json(),
+      productsLink: FRONTOFFICE_ENDPOINT + "products",
+      services: await (await fetch(SERVICES_ENDPOINT)).json(),
+      servicesLink: FRONTOFFICE_ENDPOINT + "services",
     };
   },
-  data() {
-    return {
-      length: 3,
-      products_url: FRONTOFFICE_ENDPOINT + "products",
-      services_url: FRONTOFFICE_ENDPOINT + "services",
-    };
-  },
-  methods: {},
 });
 </script>
 
 <template>
   <div class="block">
-    <h1 v-if="length > 0" class="title is-3">Products from you</h1>
+    <h1 v-if="products.length > 0" class="title is-3">Products from you</h1>
     <div class="columns">
-      <div v-for="(product, i) in [0, 1, 2, 3, 4]" :key="i" class="column">
+      <div v-for="(product, i) in products" :key="i" class="column">
         <div class="card">
           <div class="card-image">
             <figure class="image is-4by3">
@@ -34,17 +32,17 @@ export default defineComponent({
             </figure>
           </div>
           <div class="card-content">
-            <div class="content">Product {{ product }}</div>
+            <div class="content">{{ product.name }}</div>
           </div>
         </div>
       </div>
     </div>
-    <a :href="products_url" class="button is-primary">More</a>
+    <a :href="productsLink" class="button is-primary">More</a>
   </div>
   <div class="block">
-    <h1 v-if="length > 0" class="title is-3">Services for you</h1>
+    <h1 v-if="services.length > 0" class="title is-3">Services for you</h1>
     <div class="columns">
-      <div v-for="(service, i) in [0, 1, 2, 3, 4]" :key="i" class="column">
+      <div v-for="(service, i) in services" :key="i" class="column">
         <div class="card">
           <div class="card-image">
             <figure class="image is-4by3">
@@ -55,11 +53,11 @@ export default defineComponent({
             </figure>
           </div>
           <div class="card-content">
-            <div class="content">Service {{ service }}</div>
+            <div class="content">{{ service.name }}</div>
           </div>
         </div>
       </div>
     </div>
-    <a :href="services_url" class="button is-primary">More</a>
+    <a :href="servicesLink" class="button is-primary">More</a>
   </div>
 </template>

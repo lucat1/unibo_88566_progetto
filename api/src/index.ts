@@ -86,8 +86,10 @@ import {
 import {
   ProductBody,
   ProductParams,
+  ProductRandomParams,
   addProduct,
   getProducts,
+  getRandomProducts,
   getProduct,
   deleteProduct,
   setProduct,
@@ -279,6 +281,11 @@ const main = async () => {
     catcher(addProduct)
   );
   app.get(
+    "/api/store/random-products",
+    validateQuery(ProductRandomParams),
+    catcher(getRandomProducts)
+  );
+  app.get(
     "/api/store/products/:id",
     validateParams(ProductParams),
     catcher(getProduct)
@@ -360,9 +367,9 @@ const main = async () => {
     catcher(getServices)
   );
   app.get(
-    "/api/store/services/random",
+    "/api/store/random-services",
     validateQuery(ServiceRandomParams),
-    catcher(getRandomServices)
+    catcher(getRandomProducts)
   );
   app.put(
     "/api/store/services",
