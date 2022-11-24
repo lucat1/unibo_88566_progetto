@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import { API_ENDPOINT, FRONTOFFICE_ENDPOINT } from "shared/endpoints";
 
-const PRODUCTS_ENDPOINT = API_ENDPOINT + "random-products",
+const PRODUCTS_ENDPOINT = API_ENDPOINT + "store/random-products",
   SERVICES_ENDPOINT = API_ENDPOINT + "store/random-services";
 
 export default defineComponent({
@@ -18,16 +18,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="block">
-    <h1 v-if="products.length > 0" class="title is-3">Products from you</h1>
+  <div v-if="products.length > 0" class="block">
+    <h1 class="title is-3">Products from you</h1>
     <div class="columns">
-      <div v-for="(product, i) in products" :key="i" class="column">
+      <div
+        v-for="(product, i) in products"
+        :key="i"
+        class="column is-one-fifth"
+      >
         <div class="card">
           <div class="card-image">
             <figure class="image is-4by3">
               <img
-                src="https://bulma.io/images/placeholders/1280x960.png"
-                alt="Placeholder image"
+                v-if="product.photos.length > 0"
+                :src="product.photos[0]"
+                :alt="product.name"
               />
             </figure>
           </div>
@@ -39,16 +44,21 @@ export default defineComponent({
     </div>
     <a :href="productsLink" class="button is-primary">More</a>
   </div>
-  <div class="block">
-    <h1 v-if="services.length > 0" class="title is-3">Services for you</h1>
+  <div v-if="services.length > 0" class="block">
+    <h1 class="title is-3">Services for you</h1>
     <div class="columns">
-      <div v-for="(service, i) in services" :key="i" class="column">
+      <div
+        v-for="(service, i) in services"
+        :key="i"
+        class="column is-one-fifth"
+      >
         <div class="card">
           <div class="card-image">
             <figure class="image is-4by3">
               <img
-                src="https://bulma.io/images/placeholders/1280x960.png"
-                alt="Placeholder image"
+                v-if="service.photos.length > 0"
+                :src="service.photos[0]"
+                :alt="service.name"
               />
             </figure>
           </div>

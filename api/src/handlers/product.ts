@@ -56,7 +56,7 @@ export const getRandomProducts: RequestHandler = async (req, res) => {
   let { length } = req.query as unknown as IProductRandomParams;
   length = Math.min(length, products.length);
   for (let i = 0; i < length; ++i) {
-    const j = i + Math.floor(Math.random() * length - i),
+    const j = i + Math.floor(Math.random() * products.length - i),
       t = products[i];
     products[i] = products[j];
     products[j] = t;

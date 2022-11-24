@@ -369,7 +369,7 @@ const main = async () => {
   app.get(
     "/api/store/random-services",
     validateQuery(ServiceRandomParams),
-    catcher(getRandomProducts)
+    catcher(getRandomServices)
   );
   app.put(
     "/api/store/services",
