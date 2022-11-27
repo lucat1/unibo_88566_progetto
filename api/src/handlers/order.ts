@@ -7,7 +7,7 @@ import { User } from "../models/user";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 import { UserLevel } from "shared/models/user";
-const POPULATE = ["items.product", "user"];
+const POPULATE = ["items.product", "items.pet", "user"];
 
 export const ItemBody = z.object({
   product: z.string().nullable(),

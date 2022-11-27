@@ -72,7 +72,7 @@ export const render = (vnode, root) => {
   /* TODO: diff event handlers just like hooks */
   vlist.forEach((child, i) => {
     forceRender = () => render(vlist, root);
-    while (typeof child.tag == "function") {
+    while (child && typeof child.tag == "function") {
       const key =
         (child.props && child.props.key) ||
         "" + child.tag + (ids[child.tag] = (ids[child.tag] || 0) + 1);
@@ -85,6 +85,9 @@ export const render = (vnode, root) => {
           "You lickely forgot to return from one of you components"
         );
     }
+    // NOTE: along with the about while(child && ...) these were later
+    // additions in an attempt to fix a bug. May not  be correct.
+    if (child == undefined) return;
     let node = root.childNodes[i];
     if (
       !node ||
