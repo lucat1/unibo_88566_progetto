@@ -3,24 +3,26 @@ import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
 import type { IOrder, IItem, IShipping } from "shared/models/order";
 import { shadow as shadowProduct } from "./product";
+import { shadow as shadowPet } from "./pet";
 
 const ItemSchema = new Schema<IItem>({
   product: { type: String, ref: "Product" },
-  amount: { type: Number },
-});
+  pet: { type: String, ref: "Pet" },
+  amount: { type: Number, required: true }
+})
 
 const ShippingSchema = new Schema<IShipping>({
-  firstName: { type: String },
-  lastName: { type: String },
-  address: { type: String },
-  phone: { type: Number },
-});
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  address: { type: String, required: true },
+  phone: { type: Number, required: true },
+})
 
 const OrderSchema = new Schema<IOrder>({
   _id: { type: String, default: v4 },
   items: [{ type: ItemSchema }],
-  user: { type: String, ref: "User" },
-  shipping: { type: ShippingSchema },
+  user: { type: String, ref: "User", required: true },
+  shipping: { type: ShippingSchema, required: true }
 });
 OrderSchema.plugin(paginate);
 
@@ -29,11 +31,16 @@ export const Order: PaginateModel<IOrder> = model<IOrder>(
   OrderSchema
 ) as PaginateModel<IOrder>;
 
-export const shadow = ({ _id, items, user }: IOrder) => ({
+export const shadow = ({
   _id,
-  items: items.map(({ amount, product }) => ({
-    product: shadowProduct(product),
-    amount,
+  items,
+  user
+}: IOrder) => ({
+  _id,
+  items: items.map(({ amount, product, pet }) => ({
+    product: product ? shadowProduct(product) : null,
+    pet: pet ? shadowPet(pet) : null,
+    amount
   })),
   user,
 });

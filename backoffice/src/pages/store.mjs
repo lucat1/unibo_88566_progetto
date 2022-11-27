@@ -21,8 +21,8 @@ const StoreWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Store, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Store, { id, data })
   );
 };
 
@@ -45,7 +45,8 @@ const Store = ({ id, data }) => {
         })
       );
       data.name = newName;
-      if (newLocation != location) location = newLocation;
+      if (newLocation != location) setLocation(newLocation);
+      // location = newLocation
     } catch (err) {
       setError(err.message || "An error occourred while updating the store");
     }

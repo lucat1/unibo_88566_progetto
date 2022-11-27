@@ -1,4 +1,5 @@
 import type { Document } from "mongoose";
+import type { IPet } from "./pet";
 import type { IProduct } from "./product";
 import type { IUser } from "./user";
 
@@ -9,8 +10,9 @@ export interface IOrder extends Document {
 }
 
 export interface IItem {
-  product: IProduct;
-  amount: number;
+  product: IProduct | null
+  pet: IPet | null
+  amount: number
 }
 
 export interface IShipping {

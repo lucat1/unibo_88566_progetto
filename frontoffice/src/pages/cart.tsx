@@ -17,11 +17,7 @@ const Cart: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IShipping>();
-  const total = React.useMemo(
-    () =>
-      items.reduce((prev, item) => prev + item.product.price * item.amount, 0),
-    [items]
-  );
+  const total = React.useMemo(() => items.reduce((prev, item) => prev + ((item.pet || item.product)!.price * item.amount), 0), [items])
   const checkout = async (shipping: any) => {
     setLoading(true);
     setError(null);
@@ -30,10 +26,11 @@ const Cart: React.FC = () => {
         "store/orders",
         withOptions("PUT", {
           shipping,
-          items: items.map(({ product, amount }) => ({
+          items: items.map(({ product, pet, amount }) => ({
             amount,
-            product: product._id,
-          })),
+            product: product ? product?._id : null,
+            pet: pet ? pet?._id : null,
+          }))
         })
       );
 
@@ -78,34 +75,19 @@ const Cart: React.FC = () => {
           {items.map((item, i) => (
             <tr key={i}>
               <th>{i + 1}</th>
-              <td>
-                <img
-                  style={{ width: "1.5rem", height: "1.5rem" }}
-                  alt={`${item.product.name}'s product image`}
-                  src={item.product.photos[0]}
-                />
-              </td>
-              <td>{item.product.name}</td>
-              <td>{item.product.price.toFixed(2)}</td>
+              <td><img style={{ width: '1.5rem', height: '1.5rem' }} alt={`${(item.pet || item.product)!.name}'s ${item.pet ? 'pet' : 'product'} image`} src={(item.product || item.pet)!.photos[0]} /></td>
+              <td>{(item.product || item.pet)!.name}</td>
+              <td>{(item.product || item.pet)!.price.toFixed(2)}</td>
               <td>${item.amount}</td>
-              <td>
-                <button
-                  className="delete"
-                  onClick={(_) => del(item.product)}
-                ></button>
-              </td>
+              <td><button className="delete" onClick={_ => del(item.pet ? 'pet' : 'product', (item.pet || item.product)!)}></button></td>
             </tr>
           ))}
         </tbody>
       </table>
-      <h2 className="has-text-weight-bold is-size-4 my-2">
-        Total: ${total.toFixed(2)}
-      </h2>
+      <h2 className="has-text-weight-bold is-size-4 my-2">Total: ${total.toFixed(2)}</h2>
       {total > 0 && (
         <>
-          <h3 className="has-text-weight-bold is-size-5 my-2">
-            Shipping information
-          </h3>
+          <h3 className="has-text-weight-bold is-size-5 my-2">Shipping information</h3>
           <form onSubmit={handleSubmit(checkout)}>
             <section className="columns">
               <div className="column">
@@ -122,9 +104,7 @@ const Cart: React.FC = () => {
                   />
                 </div>
                 {errors.firstName && (
-                  <span className="help is-danger">
-                    A first name is required
-                  </span>
+                  <span className="help is-danger">A first name is required</span>
                 )}
               </div>
               <div className="column">
@@ -208,8 +188,9 @@ const Cart: React.FC = () => {
             </section>
           </form>
         </>
-      )}
-    </main>
+      )
+      }
+    </main >
   );
 };
 
