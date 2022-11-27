@@ -27,7 +27,7 @@ const JSON_MIME = "application/json";
 
 export const withOptions = (
   method: "POST" | "PATCH" | "PUT" | "DELETE",
-  obj: Object
+  obj?: Object
 ): RequestInit => ({
   method,
   headers: {

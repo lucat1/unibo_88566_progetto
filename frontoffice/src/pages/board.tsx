@@ -25,7 +25,7 @@ const BoardAdd: React.FC = () => {
 
   const queryClient = useQueryClient();
   const { data: board } = useQuery(
-    ["board", id],
+    ["boards", id],
     () => fetch<IBoard>(`community/boards/${id}`),
     { suspense: true }
   );
@@ -36,15 +36,15 @@ const BoardAdd: React.FC = () => {
         `community/boards/${id}`,
         withOptions("PUT", { ...post, photos })
       ),
-    onSettled: (_) => queryClient.invalidateQueries(["board", id]),
+    onSettled: (_) => queryClient.invalidateQueries(["boards", id]),
   });
   const postDeletion = useMutation({
     mutationFn: (post: IPost) =>
       fetch<IPost>(
         `community/boards/${id}/${post._id}`,
-        withOptions("DELETE", null)
+        withOptions("DELETE")
       ),
-    onSettled: (_) => queryClient.invalidateQueries(["board", id]),
+    onSettled: (_) => queryClient.invalidateQueries(["boards", id]),
   });
 
   const del = async () => {
@@ -64,7 +64,7 @@ const BoardAdd: React.FC = () => {
           {board?.name}
         </h1>
         {auth.authenticated && auth.user?._id == board?.author._id && (
-          <button className="button is-danger" onClick={del}>
+          <button className="button is-danger" onClick={del} aria-label="Delete board">
             Delete
           </button>
         )}
@@ -91,7 +91,20 @@ const BoardAdd: React.FC = () => {
             </div>
             <div className="column">
               <article className="message" style={{ width: "100%" }}>
-                <div className="message-body">{post.message}</div>
+                <div className="is-flex is-flex-direction-row">
+                  <div className="message-body" style={{ width: '100%' }}>{post.message}
+
+                    {auth.authenticated && auth.user?._id == post?.author._id && (
+                      <button
+                        style={{ float: 'right' }}
+                        className="delete"
+                        onClick={_ => postDeletion.mutate(post)}
+                        aria-label="Delete post"
+                      />
+                    )}
+
+                  </div>
+                </div>
                 {post.photos.length > 0 && (
                   <div className="p-4">
                     <ImageGroup>
@@ -174,11 +187,8 @@ const BoardAdd: React.FC = () => {
               <PicturesList
                 pictures={photos}
                 editable={true}
-                select={(_) => {}}
-                remove={(i) => {
-                  console.log("del", i);
-                  setPhotos(photos.filter((_, j) => i != j));
-                }}
+                select={(_) => { }}
+                remove={(i) => setPhotos(photos.filter((_, j) => i != j))}
                 add={(url) => setPhotos((pics) => [...pics, url])}
               />
               <div className="field">
