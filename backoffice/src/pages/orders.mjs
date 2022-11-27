@@ -47,18 +47,31 @@ const Orders = () =>
           h(
             "td",
             null,
-            order?.items?.map((i, j) =>
-              [
+            order?.items
+              ?.map((i, j) => [
                 h(
                   Link,
-                  { to: `/${i.pet ? 'pets' : 'products'}/${(i.product || i.pet)._id}` },
-                  (i.product || i.pet).name),
-                j < order?.items?.length - 1 ? ',' : undefined
-              ]
-            ).flat()
+                  {
+                    to: `/${i.pet ? "pets" : "products"}/${
+                      (i.product || i.pet)._id
+                    }`,
+                  },
+                  (i.product || i.pet).name
+                ),
+                j < order?.items?.length - 1 ? "," : undefined,
+              ])
+              .flat()
           ),
-          h("td", null, '$', order?.items?.reduce((prev, item) => prev + (item.product || item.pet).price, 0)),
-          h("td", null, new Date(order?.date).toLocaleDateString('en-US')),
+          h(
+            "td",
+            null,
+            "$",
+            order?.items?.reduce(
+              (prev, item) => prev + (item.product || item.pet).price,
+              0
+            )
+          ),
+          h("td", null, new Date(order?.date).toLocaleDateString("en-US")),
           h(
             "td",
             null,

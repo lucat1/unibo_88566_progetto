@@ -42,5 +42,5 @@ export const shadow = ({ _id, items, user, shipping, date }: IOrder) => ({
   })),
   user: shadowUser(user),
   date,
-  shipping
+  shipping,
 });
