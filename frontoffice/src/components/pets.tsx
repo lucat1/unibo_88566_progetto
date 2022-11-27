@@ -513,6 +513,7 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
             >
               <h4 className="subtitle is-6">{pet.name}</h4>
               <span className="subtitle is-6">{pet.type}</span>
+              <span className="subtitle is-6">{pet.sex} - {pet.age} years old</span>
               <button
                 className="delete"
                 onClick={(_) => update(pets.filter((_, j) => j != i))}
@@ -557,7 +558,45 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
                 </select>
                 {formErrors.type && (
                   <span className="help is-danger">
-                    An animal type like chip, dog, etc is required
+                    An animal type like chimp, dog, etc is required
+                  </span>
+                )}
+              </div>
+              <div className="select mt-4">
+                <select
+                  className="input"
+                  placeholder="Animal sex"
+                  aria-label="Animal sex"
+                  id="sex"
+                  disabled={isLoading}
+                  {...register("sex", { required: true })}
+                >
+                  <option value="male">not given</option>
+                  <option value="male">male</option>
+                  <option value="fema">female</option>
+                </select>
+
+                {formErrors.sex && (
+                  <span className="help is-danger">
+                    The animal sex must be described
+                  </span>
+                )}
+              </div>
+              <div className="mt-4">
+                <input
+                  type="number"
+                  increment="1"
+                  className="input"
+                  placeholder="Animal age (in years)"
+                  aria-label="Animal age (in years)"
+                  id="age"
+                  disabled={isLoading}
+                  {...register("age", { required: true, valueAsNumber: true, min: 0})}
+                />
+
+                {formErrors.sex && (
+                  <span className="help is-danger">
+                    The animal age must be provided
                   </span>
                 )}
               </div>

@@ -12,22 +12,22 @@ const BoardAdd: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [auth] = useAuth();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IPost>();
+
   const queryClient = useQueryClient();
   const { data: board } = useQuery(
     ["board", id],
     () => fetch<IBoard>(`community/boards/${id}`),
-    {
-      suspense: true,
-    }
+    { suspense: true }
   );
-  const mutation = useMutation({
-    mutationFn: (post: IPost) =>
-      fetch(`community/boards/${id}`, withOptions("PUT", post)),
-    onMutate: (post: IPost) =>
-      queryClient.setQueryData(["board", id], (old) => ({
-        ...old,
-        docs: [...old.docs, post],
-      })),
+  const postMutation = useMutation({
+    mutationFn: (post: IPost) => fetch<IPost>(`community/boards/${id}`, withOptions("PUT", post)),
+    onSettled: _ => queryClient.invalidateQueries(["board", id]),
   });
 
   const del = async () => {
@@ -35,11 +35,6 @@ const BoardAdd: React.FC = () => {
     navigate("/boards");
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IPost>();
   return (
     <>
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center mb-4">
@@ -96,7 +91,10 @@ const BoardAdd: React.FC = () => {
             </figure>
           </div>
           <div className="column">
-            <form onSubmit={handleSubmit((post) => mutation.mutate(post))}>
+            <form onSubmit={handleSubmit((post) => {
+              postMutation.mutate(post);
+              reset()
+            })}>
               <div className="field">
                 <label htmlFor="post" className="label">
                   New post
@@ -105,25 +103,25 @@ const BoardAdd: React.FC = () => {
                   <textarea
                     className="input"
                     type="text"
-                    disabled={mutation.isLoading}
+                    disabled={postMutation.isLoading}
                     style={{ minHeight: "8rem" }}
                     {...register("message", { required: true })}
                   />
                 </div>
-                {errors.text && (
+                {errors.message && (
                   <span className="help is-danger">
-                    A first post is required
+                    A post message is required
                   </span>
                 )}
               </div>
-              {mutation.error && (
-                <span className="help is-danger">{mutation.error.message}</span>
+              {postMutation.error && (
+                <span className="help is-danger">Unexpected error while posting: {postMutation.error}</span>
               )}
               <div className="field">
                 <div className="control">
                   <button
                     className="button is-link"
-                    disabled={mutation.isLoading}
+                    disabled={postMutation.isLoading}
                   >
                     Post
                   </button>

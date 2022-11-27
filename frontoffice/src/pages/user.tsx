@@ -15,14 +15,12 @@ const User: React.FC = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { data } = useQuery(["user", id], () => fetch<IUser>(`user/${id}`), {
-    suspense: true,
+    suspense: true
   });
-  const patchUser = async (user: Partial<IUser>) =>
-    await fetch<IUser>("auth/me", withOptions("PATCH", user));
+  const patchUser = (user: Partial<IUser>) => fetch<IUser>("auth/me", withOptions("PATCH", user));
   const [editing, setEditing] = React.useState(false);
   const { isLoading, isError, mutationError, mutate } = useMutation(patchUser, {
-    onSettled: (data: IUser) =>
-      queryClient.invalidateQueries(["user", data._id]),
+    onSettled: _ => queryClient.invalidateQueries(["user", data!._id]),
   });
   const [{ authenticated, user }] = useAuth();
   const handleUpload = (url: string) => {
@@ -156,9 +154,10 @@ const User: React.FC = () => {
         <Pets
           pets={data!.pets}
           id={data!._id}
-          update={(pets) => patchUser({ pets })}
+          update={(pets) => mutate({ pets })}
           isLoading={isLoading}
         />
+        {mutationError && <span className="help is-danger">Unexpected error while updating: {mutationError}</span>}
       </section>
     </main>
   );

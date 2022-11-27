@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps<any>> = ({
           {data.docs.map((doc, i) => children(doc, i))}
         </div>
       )}
-      <div className="mt-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center">
+      <div className="my-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center">
         {pages.map((index) => (
           <button
             key={index}
