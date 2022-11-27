@@ -25,7 +25,8 @@ const OrderWrapper = () => {
 };
 
 const Order = ({ id, data }) => {
-  console.log(data)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const del = async (e) => {
     e.preventDefault();
@@ -43,7 +44,19 @@ const Order = ({ id, data }) => {
   return h(
     "main",
     { className: 'is-flex is-flex-direction-column' },
-    h("h1", { className: "is-size-2 my-4" }, "Order #", data._id),
+    h('div', { className: 'is-flex is-flex-direction-row is-align-items-center is-justify-content-space-between' },
+      h("h1", { className: "is-size-2 my-4" }, "Order #", data._id),
+      h(
+        "button",
+        {
+          className: "button is-danger",
+          action: "none",
+          onClick: del,
+          disabled: loading,
+        },
+        "Delete"
+      )),
+    error && h("div", { className: "notification is-danger" }, error),
     h('table', { className: 'table' },
       h('thead', null,
         h('tr', null,
