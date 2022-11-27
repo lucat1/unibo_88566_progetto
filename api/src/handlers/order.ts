@@ -40,7 +40,7 @@ export const addOrder: RequestHandler = async (req, res) => {
     )
   )
     throw new Error("All items must one and only one product/pet");
-  const order = new Order({ ...data, user: user._id });
+  const order = new Order({ ...data, date: new Date(), user: user._id });
   await order.save();
   json(res, 200, shadow(order));
 };

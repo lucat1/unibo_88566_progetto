@@ -1,13 +1,8 @@
 import { h, useState, useEffect } from "../h";
 
-import { navigate } from "../router";
+import { Link, navigate } from "../router";
 import fetch, { withOptions } from "shared/fetch";
 import req from "../async";
-
-import SelectCategory from "../components/select-category";
-import SelectSubcategory from "../components/select-subcategory";
-import Pictures from "../components/pictures";
-import File from "../components/file";
 
 const OrderWrapper = () => {
   const id = window.location.pathname.match(
@@ -17,68 +12,28 @@ const OrderWrapper = () => {
     data,
     loading: fetching,
     err: fetchErr,
-  } = req(`store/products/${id}`, fetch);
+  } = req(`store/orders/${id}`, fetch);
   return h(
     "main",
     {},
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Order, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Order, { id, data })
   );
 };
 
 const Order = ({ id, data }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [category, setCategory] = useState(data.category);
-  const [subcategory, setSubcategory] = useState(data.subcategory);
-  const [photos, setPhotos] = useState(data.photos || []);
+  console.log(data)
 
-  const patch = async (e) => {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    const description = document.getElementById("description").value;
-    const price = parseFloat(document.getElementById("price").value);
-    setLoading(true);
-    setError(null);
-    try {
-      const {
-        name: newName,
-        description: newDescription,
-        price: newPrice,
-        category: newCategory,
-        subcategory: newSubcategory,
-      } = await fetch(
-        `store/products/${id}`,
-        withOptions("PATCH", {
-          name,
-          description,
-          price,
-          photos,
-          category: category?._id,
-          subcategory: subcategory?._id,
-        })
-      );
-      data.name = newName;
-      data.description = newDescription;
-      data.price = newPrice;
-      if (newCategory != category) setCategory(newCategory);
-
-      if (newSubcategory != subcategory) setSubcategory(newSubcategory);
-    } catch (err) {
-      setError(err.message || "An error occourred while updating the product");
-    }
-    setLoading(false);
-  };
   const del = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      await fetch(`store/products/${id}`, withOptions("DELETE"));
-      navigate("/products");
+      await fetch(`store/orders/${id}`, withOptions("DELETE"));
+      navigate("/orders");
     } catch (err) {
       setError("Error while deleting: " + (err.message || "Unknown error"));
     }
@@ -87,116 +42,55 @@ const Order = ({ id, data }) => {
 
   return h(
     "main",
-    { className: "columns" },
-    h(
-      "section",
-      { className: "column is-one-third" },
-      h(Pictures, {
-        pictures: photos,
-        extra: h(File, { onUpload: (url) => setPhotos(photos.concat(url)) }),
-        extraIcon: h("i", { className: "fas fa-upload" }),
-      })
-    ),
-    h(
-      "section",
-      { className: "column" },
-      h("h1", { className: "is-size-3" }, "Product #", data._id),
-      h(
-        "form",
-        { onSubmit: patch },
-        h(
-          "div",
-          { className: "field my-2" },
-          h("label", { for: "name", className: "label" }, "Name"),
-          h(
-            "div",
-            { className: "control" },
-            h("input", {
-              id: "name",
-              type: "text",
-              className: "input",
-              value: data.name,
-              disabled: loading,
-            })
-          )
+    { className: 'is-flex is-flex-direction-column' },
+    h("h1", { className: "is-size-2 my-4" }, "Order #", data._id),
+    h('table', { className: 'table' },
+      h('thead', null,
+        h('tr', null,
+          h('th', null, h('abbr', { title: 'Position' }, 'Pos')),
+          h('th', null, h('abbr', { title: 'Product image' }, 'Image')),
+          h('th', null, h('abbr', { title: 'Product name' }, 'Name')),
+          h('th', null, h('abbr', { title: 'Product unitary price' }, 'Price')),
+          h('th', null, 'Amount'),
         ),
-        h(
-          "div",
-          { className: "field my-2" },
-          h("label", { for: "description", className: "label" }, "Description"),
-          h(
-            "div",
-            { className: "control" },
-            h(
-              "textarea",
-              {
-                id: "description",
-                type: "text",
-                className: "textarea",
-                placeholder: "Type in a description...",
-                disabled: loading,
-              },
-              data.description
-            )
-          )
-        ),
-        h(
-          "div",
-          { className: "field my-2" },
-          h("label", { for: "price", className: "label" }, "Price"),
-          h(
-            "div",
-            { className: "control" },
-            h("input", {
-              id: "price",
-              type: "number",
-              step: "0.01",
-              className: "input",
-              value: data.price,
-              disabled: loading,
-            })
-          )
-        ),
-        h(SelectCategory, {
-          selected: category,
-          onSelect: (c) => setCategory(c),
-        }),
-        category != undefined
-          ? h(SelectSubcategory, {
-              selected: subcategory,
-              category,
-              onSelect: (c) => setSubcategory(c),
-            })
-          : null,
-        h(
-          "div",
-          {
-            className:
-              "is-flex is-flex-direction-row is-justify-content-space-between py-2",
-          },
-          h(
-            "button",
-            {
-              className: "button is-danger",
-              action: "none",
-              onClick: del,
-              disabled: loading,
-            },
-            "Delete"
-          ),
-          h(
-            "button",
-            {
-              action: "submit",
-              className: "button is-primary",
-              disabled: loading,
-            },
-            "Update"
-          )
-        ),
-        error && h("div", { className: "notification is-danger" }, error)
+      ),
+      h('tbody', null,
+        data.items.map((item, i) => h(
+          'tr', { key: i },
+          h('th', null, i + 1),
+          h('td', null, h('img', {
+            style: { width: "1.5rem", height: "1.5rem" }, alt: `${(item.pet || item.product).name}'s ${item.pet ? "pet" : "product"
+              } image`, src: (item.product || item.pet).photos[0]
+          })),
+          h('td', null, h(Link,
+            { to: `/${item.pet ? 'pets' : 'products'}/${(item.product || item.pet)._id}` },
+            (item.product || item.pet).name)),
+          h('td', null, '$', (item.product || item.pet).price.toFixed(2)),
+          h('td', null, item.amount),
+        ))
       )
-    )
+    ),
+    h("h2", { className: "is-size-3 my-3" }, "Shipping info"),
+    h("section", { className: "columns" },
+      h('div', { className: 'column' },
+        h('h4', { className: 'is-size-5 my-1' }, 'First name'),
+        h('span', null, data.shipping.firstName)
+      ),
+      h('div', { className: 'column' },
+        h('h4', { className: 'is-size-5 my-1' }, 'Last name'),
+        h('span', null, data.shipping.lastName)
+      ),
+      h('div', { className: 'column' },
+        h('h4', { className: 'is-size-5 my-1' }, 'Address'),
+        h('span', null, data.shipping.address)
+      ),
+      h('div', { className: 'column' },
+        h('h4', { className: 'is-size-5 my-1' }, 'Phone number'),
+        h('span', null, data.shipping.phone)
+      ),
+    ),
+    h("h3", { className: "is-size-3 my-3" }, "Date: ", new Date(data?.date).toLocaleString('en-US')),
+    h("h3", { className: "is-size-3 my-3" }, "Buyer: ", h(Link, { to: `/users/${data.user._id}` }, data.user.username)),
   );
 };
 

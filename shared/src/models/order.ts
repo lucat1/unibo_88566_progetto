@@ -7,6 +7,7 @@ export interface IOrder extends Document {
   items: IItem[];
   user: IUser;
   shipping: IShipping;
+  date: Date
 }
 
 export interface IItem {
