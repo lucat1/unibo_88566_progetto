@@ -49,7 +49,12 @@ const Product: React.FC = () => {
             )}
           </div>
           <div className="my-3 is-flex is-justify-content-end">
-            <button className="button is-primary" onClick={_ => addToCart('product', product!, 1)}>Add to cart</button>
+            <button
+              className="button is-primary"
+              onClick={(_) => addToCart("product", product!, 1)}
+            >
+              Add to cart
+            </button>
           </div>
         </section>
       </main>

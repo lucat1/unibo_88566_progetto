@@ -12,7 +12,7 @@ const POPULATE = ["items.product", "user"];
 export const ItemBody = z.object({
   product: z.string().nullable(),
   pet: z.string().nullable(),
-  amount: z.number().min(1)
+  amount: z.number().min(1),
 });
 export type IItemBody = z.infer<typeof ItemBody>;
 export const ShippingBody = z.object({
@@ -32,7 +32,13 @@ export const addOrder: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const data = req.body as IOrderBody;
-  if (data.items.some(i => (i.product == null && i.pet == null) || (i.product != null && i.pet != null)))
+  if (
+    data.items.some(
+      (i) =>
+        (i.product == null && i.pet == null) ||
+        (i.product != null && i.pet != null)
+    )
+  )
     throw new Error("All items must one and only one product/pet");
   const order = new Order({ ...data, user: user._id });
   await order.save();

@@ -10,9 +10,9 @@ export interface IOrder extends Document {
 }
 
 export interface IItem {
-  product: IProduct | null
-  pet: IPet | null
-  amount: number
+  product: IProduct | null;
+  pet: IPet | null;
+  amount: number;
 }
 
 export interface IShipping {
