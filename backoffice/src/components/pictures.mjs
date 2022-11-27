@@ -44,11 +44,10 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
       pictures.map((picture, i) =>
         h(
           "a",
-          { onClick: select(i) },
+          { key: i, onClick: select(i) },
           h(
             "div",
             {
-              key: i,
               className: "card mx-4",
               style: { width: "6rem", height: "6rem" },
             },

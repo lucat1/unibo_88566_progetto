@@ -8,8 +8,8 @@ export enum UserLevel {
 export interface IUserPet extends Document {
   name: string;
   type: string;
-  sex: 'not given' | 'male' | 'female'
-  age: number
+  sex: "not given" | "male" | "female";
+  age: number;
 }
 
 export interface IUser extends Document {

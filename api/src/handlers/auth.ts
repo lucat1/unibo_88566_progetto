@@ -85,7 +85,7 @@ export const getMe: RequestHandler = async (req, res) => {
 export const UserPetBody = z.object({
   name: z.string(),
   type: z.string(),
-  sex: z.enum(['not given', 'male', 'female']),
+  sex: z.enum(["not given", "male", "female"]),
   age: z.number(),
 });
 

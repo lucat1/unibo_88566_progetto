@@ -513,7 +513,9 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
             >
               <h4 className="subtitle is-6">{pet.name}</h4>
               <span className="subtitle is-6">{pet.type}</span>
-              <span className="subtitle is-6">{pet.sex} - {pet.age} years old</span>
+              <span className="subtitle is-6">
+                {pet.sex} - {pet.age} years old
+              </span>
               <button
                 className="delete"
                 onClick={(_) => update(pets.filter((_, j) => j != i))}
@@ -591,7 +593,11 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
                   aria-label="Animal age (in years)"
                   id="age"
                   disabled={isLoading}
-                  {...register("age", { required: true, valueAsNumber: true, min: 0})}
+                  {...register("age", {
+                    required: true,
+                    valueAsNumber: true,
+                    min: 0,
+                  })}
                 />
 
                 {formErrors.sex && (

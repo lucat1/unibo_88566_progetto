@@ -4402,6 +4402,11 @@ react-dom@^18.0.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-fullscreen-image@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-fullscreen-image/-/react-fullscreen-image-0.0.3.tgz#c3986e1da0453616afa4d7ba50456b68fd6539c5"
+  integrity sha512-A4zXvDox4WConU/qUpOKUCoRmV2mGi2DPTXNhG9I1x+W8WWwpKQMmrbWjLAe/UudhtpJRlebkIC3sPU6IHR3Nw==
+
 react-hook-form@^7.34.2:
   version "7.39.1"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.1.tgz#ded87d4b3f6692d1f9219515f78ca282b6e1ebf7"

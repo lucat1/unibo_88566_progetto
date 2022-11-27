@@ -2,7 +2,7 @@ import * as React from "react";
 import fetch, { Error } from "shared/fetch";
 import { API_ENDPOINT } from "shared/endpoints";
 
-const File: React.FC<{ onUpload: (id: string) => void }> = ({ onUpload }) => {
+const File: React.FC<{ onUpload: (url: string) => void }> = ({ onUpload }) => {
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const handleChange: React.ChangeEventHandler<HTMLInputElement> =
