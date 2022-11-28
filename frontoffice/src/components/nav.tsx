@@ -9,8 +9,11 @@ import { pages } from "../pages/index";
 const Nav: React.FC = () => {
   const [opened, setOpened] = React.useState(false);
   const [auth, setAuth] = useAuth();
-  const [cart] = useCart()
-  const productsInCart = React.useMemo(() => cart.reduce((prev, item) => prev + item.amount, 0), [cart])
+  const [cart] = useCart();
+  const productsInCart = React.useMemo(
+    () => cart.reduce((prev, item) => prev + item.amount, 0),
+    [cart]
+  );
   const logout = React.useCallback(() => {
     removeAuthToken();
     setAuth(false);
@@ -53,7 +56,10 @@ const Nav: React.FC = () => {
         <div className="navbar-end">
           <Link to="/cart" className="navbar-item">
             <span className="file-icon">
-              <i className="fa-solid fa-cart-shopping" style={{ color: "white" }}></i>
+              <i
+                className="fa-solid fa-cart-shopping"
+                style={{ color: "white" }}
+              ></i>
             </span>
             <span>{productsInCart}</span>
           </Link>

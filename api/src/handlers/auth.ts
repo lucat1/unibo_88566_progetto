@@ -3,11 +3,13 @@ import { z } from "zod";
 import { v4 } from "node-uuid";
 import { compare } from "bcrypt";
 
-import json from "../res";
 import { UserLevel } from "shared/models/user";
+import json from "../res";
 import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
+
+const POPULATE = ["pets"];
 
 export const register = async (
   data: IRegisterData
@@ -73,23 +75,37 @@ export const id: RequestHandler = (_, res) => {
 };
 
 export const getMe: RequestHandler = async (req, res) => {
-  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  const user = await User.findOne((req as AuthenticatedRequest).user)
+    .populate(POPULATE)
+    .exec();
   if (user == null) throw new Error("User not found");
   json(res, 200, shadow(user));
 };
 
-export const UserData = z.object({
+export const UserPetBody = z.object({
+  name: z.string(),
+  type: z.string(),
+  sex: z.enum(["not given", "male", "female"]),
+  age: z.number(),
+});
+
+export const UserBody = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   city: z.string().optional(),
   avatar: z.string().optional(),
+
+  pets: z.array(UserPetBody),
 });
-export type IUserData = z.infer<typeof UserData>;
+export type IUserData = z.infer<typeof UserBody>;
+
 export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const patch = req.body as unknown as IUserData;
-  const updated = await User.findOneAndUpdate({ _id: user._id }, patch, { new: true }).exec();
+  const updated = await User.findOneAndUpdate({ _id: user._id }, patch, {
+    new: true,
+  }).exec();
   if (updated == null)
     json(res, 404, {
       message: "Unkown error",
@@ -110,7 +126,7 @@ export type IUserParams = z.infer<typeof UserParams>;
 
 export const get: RequestHandler = async (req, res) => {
   const { id } = req.params as IUserParams;
-  const user = await User.findOne({ _id: id }).exec();
+  const user = await User.findOne({ _id: id }).populate(POPULATE).exec();
   if (user == null) throw new Error("User not found");
   json(res, 200, shadow(user));
 };

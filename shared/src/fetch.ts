@@ -26,8 +26,8 @@ const fetch = async <T = Object>(
 const JSON_MIME = "application/json";
 
 export const withOptions = (
-  method: "POST" | "PATCH" | "PUT",
-  obj: Object
+  method: "POST" | "PATCH" | "PUT" | "DELETE",
+  obj?: Object
 ): RequestInit => ({
   method,
   headers: {

@@ -26,7 +26,7 @@ const Boards = () =>
           h(
             "div",
             { className: "card" },
-            prod.photos.length > 0
+            prod.photos?.length > 0
               ? h(
                   "div",
                   { className: "card-image" },
@@ -35,7 +35,7 @@ const Boards = () =>
                     { className: "image is-square" },
                     h("img", {
                       style: { "object-fit": "cover" },
-                      src: prod.photos[0],
+                      src: prod.photos ? prod.photos[0] : undefined,
                       alt: `${prod.name} main image`,
                     })
                   )

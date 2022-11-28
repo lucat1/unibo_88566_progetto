@@ -8,7 +8,7 @@ const swr = <T = Object, E = void>(resource: string, opts?: RequestInit) => {
 
   return originalSwr<T, Error<E>, [string, RequestInit | undefined]>(
     [resource, opts],
-    fetcher<T>,
+    fetcher,
     {
       suspense: true,
     }

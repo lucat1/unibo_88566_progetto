@@ -5,6 +5,10 @@ import Index from "./pages/Index.vue";
 import NotFound from "./pages/NotFound.vue";
 import Register from "./pages/Register.vue";
 import Login from "./pages/Login.vue";
+import Trivia from "./pages/Trivia.vue";
+import PetsTrivia from "./pages/PetsTrivia.vue";
+import Videos from "./pages/Videos.vue";
+import Help from "./pages/Help.vue";
 import Quiz from "./pages/Quiz.vue";
 import Memory from "./pages/Memory.vue";
 import Hangman from "./pages/Hangman.vue";
@@ -15,6 +19,26 @@ export const routes = [
     path: "/",
     name: "Index",
     component: Index,
+  },
+  {
+    path: "/trivia",
+    name: "Trivia",
+    component: Trivia,
+  },
+  {
+    path: "/pets-trivia",
+    name: "Pets Trivia",
+    component: PetsTrivia,
+  },
+  {
+    path: "/videos",
+    name: "Videos",
+    component: Videos,
+  },
+  {
+    path: "/help",
+    name: "Help",
+    component: Help,
   },
   {
     path: "/quiz",
@@ -36,7 +60,6 @@ export const routes = [
     name: "Leaderboard",
     component: Leaderboard,
   },
-  /* TODO: add more games */
   {
     path: "/register",
     name: "Register",

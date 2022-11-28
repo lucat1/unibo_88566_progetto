@@ -23,6 +23,9 @@ import Product from "./pages/product";
 import Stores from "./pages/stores";
 import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
+import Orders from "./pages/orders";
+import Order from "./pages/order";
+
 import Boards from "./pages/boards";
 
 let user = await me();
@@ -103,6 +106,14 @@ render(
         h(Route, {
           path: /^\/stores\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
           element: h(Store, {}),
+        }),
+        h(Route, {
+          path: /^\/orders$/,
+          element: h(Orders, {}),
+        }),
+        h(Route, {
+          path: /^\/orders\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Order, {}),
         }),
         h(Route, {
           path: /^\/boards/,

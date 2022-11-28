@@ -38,7 +38,7 @@ const Pets = () =>
           h(
             "div",
             { className: "card" },
-            pet.photos.length > 0
+            pet.photos?.length > 0
               ? h(
                   "div",
                   { className: "card-image" },
@@ -47,7 +47,7 @@ const Pets = () =>
                     { className: "image is-square" },
                     h("img", {
                       style: { "object-fit": "cover" },
-                      src: pet.photos[0],
+                      src: pet.photos ? pet.photos[0] : undefined,
                       alt: `${pet.name} main image`,
                     })
                   )

@@ -10,6 +10,7 @@ const POPULATE = ["category", "subcategory"];
 export const PetBody = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
+  price: z.number().optional(),
 
   category: z.number(),
   subcategory: z.number().optional(),

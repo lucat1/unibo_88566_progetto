@@ -65,7 +65,7 @@ export const getScore: RequestHandler = async (req, res) => {
   let user: (IUser & { _id: ObjectId }) | null = null;
   try {
     user = await User.findOne({ _id: result.user }).exec();
-  } catch (_) { }
+  } catch (_) {}
 
   json(
     res,
@@ -89,7 +89,7 @@ export const getLeaderboard: RequestHandler = async (req, res) => {
       let user: (IUser & { _id: ObjectId }) | null = null;
       try {
         user = await User.findOne({ _id: score.user }).exec();
-      } catch (_) { }
+      } catch (_) {}
       return { ...score.toObject(), username: user?.username } as IGameScore;
     })
   );

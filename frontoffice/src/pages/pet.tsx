@@ -16,7 +16,7 @@ const Pet: React.FC = () => {
       suspense: true,
     }
   );
-  const [cart, addToCart] = useCart()
+  const [cart, addToCart] = useCart();
   return (
     <>
       <main className="columns">
@@ -24,12 +24,10 @@ const Pet: React.FC = () => {
           <Pictures pictures={pet?.photos || []} />
         </section>
         <section className="column">
-          <h1 className="has-text-weight-bold is-size-2 my-4">
-            {pet?.name}
-          </h1>
+          <h1 className="has-text-weight-bold is-size-2 my-4">{pet?.name}</h1>
           <span className="is-size-5">{pet?.description}</span>
           <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
-          {pet?.price.toFixed(2)}
+          {pet?.price ? pet.price.toFixed(2) : "No price"}
           <div className="is-flex">
             {pet?.category && (
               <div className="mr-6">
@@ -49,7 +47,15 @@ const Pet: React.FC = () => {
             )}
           </div>
           <div className="my-3 is-flex is-justify-content-end">
-            <button disabled={cart.some(i => i.product._id == pet._id)} className="button is-primary" onClick={_ => addToCart(pet!, 1)}>Buy</button>
+            <button
+              disabled={
+                !!pet?.price && cart.some((i) => i.pet?._id == pet!._id)
+              }
+              className="button is-primary"
+              onClick={(_) => addToCart("pet", pet!, 1)}
+            >
+              Add to cart
+            </button>
           </div>
         </section>
       </main>

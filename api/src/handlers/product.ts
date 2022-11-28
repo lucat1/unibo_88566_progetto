@@ -46,6 +46,24 @@ export const ProductParams = z.object({
 });
 export type IProductParams = z.infer<typeof ProductParams>;
 
+export const ProductRandomParams = z.object({
+  length: z.number().int().positive().default(4),
+});
+export type IProductRandomParams = z.infer<typeof ProductRandomParams>;
+
+export const getRandomProducts: RequestHandler = async (req, res) => {
+  const products = await Product.find().exec();
+  let { length } = req.query as unknown as IProductRandomParams;
+  length = Math.min(length, products.length);
+  for (let i = 0; i < length; ++i) {
+    const j = i + Math.floor(Math.random() * products.length - i),
+      t = products[i];
+    products[i] = products[j];
+    products[j] = t;
+  }
+  json(res, 200, products.slice(0, length).map(shadow));
+};
+
 export const getProduct: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IProductParams;
   const product = await Product.findOne({ _id: id }).populate(POPULATE).exec();

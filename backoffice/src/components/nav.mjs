@@ -4,7 +4,7 @@ import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
 
-const links = ["Categories", "Products", "Pets", "Stores", "Boards"];
+const links = ["Categories", "Products", "Pets", "Stores", "Orders", "Boards"];
 
 const Nav = () => {
   const [user, setUser] = useContext(userContext);
@@ -51,28 +51,28 @@ const Nav = () => {
           { className: "navbar-item" },
           !user
             ? h(
-              "div",
-              { className: "buttons mr-4" },
-              h(Link, { to: "/login", className: "button is-light" }, "Login")
-            )
-            : h(
-              "span",
-              {},
-              "Signed in as ",
-              user.username,
-              ", ",
-              h(
-                "a",
-                {
-                  onClick: () => {
-                    removeAuthToken();
-                    setUser(null);
-                    navigate("/login");
-                  },
-                },
-                "Sign out"
+                "div",
+                { className: "buttons mr-4" },
+                h(Link, { to: "/login", className: "button is-light" }, "Login")
               )
-            )
+            : h(
+                "span",
+                {},
+                "Signed in as ",
+                user.username,
+                ", ",
+                h(
+                  "a",
+                  {
+                    onClick: () => {
+                      removeAuthToken();
+                      setUser(null);
+                      navigate("/login");
+                    },
+                  },
+                  "Sign out"
+                )
+              )
         )
       )
     )

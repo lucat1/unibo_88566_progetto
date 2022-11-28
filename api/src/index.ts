@@ -37,12 +37,13 @@ import {
   login,
   password,
   upgrade,
+  get,
   getMe,
   deleteMe,
   patchMe,
   id,
   PasswordData,
-  UserData,
+  UserBody,
   UserParams,
 } from "./handlers/auth";
 import {
@@ -85,12 +86,25 @@ import {
 import {
   ProductBody,
   ProductParams,
+  ProductRandomParams,
   addProduct,
   getProducts,
+  getRandomProducts,
   getProduct,
   deleteProduct,
   setProduct,
 } from "./handlers/product";
+import {
+  ServiceBody,
+  ServiceParams,
+  ServiceRandomParams,
+  addService,
+  getServices,
+  getRandomServices,
+  getService,
+  deleteService,
+  setService,
+} from "./handlers/service";
 import {
   StoreBody,
   StoreParams,
@@ -100,8 +114,22 @@ import {
   deleteStore,
   setStore,
 } from "./handlers/store";
-import { addOrder, deleteOrder, getOrder, getOrders, OrderBody, OrderPrams } from "./handlers/order";
-import { addPet, deletePet, getPet, getPets, PetBody, setPet } from "./handlers/pet";
+import {
+  addOrder,
+  deleteOrder,
+  getOrder,
+  getOrders,
+  OrderBody,
+  OrderPrams,
+} from "./handlers/order";
+import {
+  addPet,
+  deletePet,
+  getPet,
+  getPets,
+  PetBody,
+  setPet,
+} from "./handlers/pet";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -154,12 +182,12 @@ const main = async () => {
   app.patch(
     "/api/auth/me",
     authRequired,
-    validateBody(UserData),
+    validateBody(UserBody.partial()),
     catcher(patchMe)
   );
   app.post("/api/auth/upgrade", authRequired, catcher(upgrade));
 
-  app.get("/api/user/:id", validateParams(UserParams), catcher(upgrade));
+  app.get("/api/user/:id", validateParams(UserParams), catcher(get));
 
   app.get("/api/images/:id", validateParams(ImageParams), catcher(serveImage));
   app.put(
@@ -173,7 +201,7 @@ const main = async () => {
     "/api/game/score/:game",
     validateParams(GameParams),
     validateQuery(GameScoreQuery),
-    validateBody(GameBody),
+    validateBody(GameBody.partial()),
     catcher(setScore)
   );
   app.get(
@@ -210,7 +238,7 @@ const main = async () => {
     "/api/community/boards/:id/",
     authRequired,
     validateParams(BoardParams),
-    validateBody(BoardBody),
+    validateBody(BoardBody.partial()),
     catcher(setBoard)
   );
   app.put(
@@ -236,7 +264,7 @@ const main = async () => {
     "/api/community/posts/:id/",
     authRequired,
     validateParams(PostParams),
-    validateBody(PostBody),
+    validateBody(PostBody.partial()),
     catcher(setPost)
   );
 
@@ -253,6 +281,11 @@ const main = async () => {
     catcher(addProduct)
   );
   app.get(
+    "/api/store/random-products",
+    validateQuery(ProductRandomParams),
+    catcher(getRandomProducts)
+  );
+  app.get(
     "/api/store/products/:id",
     validateParams(ProductParams),
     catcher(getProduct)
@@ -267,7 +300,7 @@ const main = async () => {
     authRequired,
     priviledged(UserLevel.MANAGER),
     validateParams(ProductParams),
-    validateBody(ProductBody),
+    validateBody(ProductBody.partial()),
     catcher(setProduct)
   );
 
@@ -298,7 +331,7 @@ const main = async () => {
     authRequired,
     priviledged(UserLevel.MANAGER),
     validateParams(ProductParams),
-    validateBody(ProductBody),
+    validateBody(ProductBody.partial()),
     catcher(setPet)
   );
 
@@ -328,32 +361,41 @@ const main = async () => {
     catcher(deleteOrder)
   );
 
-  // app.get("/api/store/services", catcher(getServices));
-  // app.put(
-  //   "/api/store/services",
-  //   authRequired,
-  //   priviledged(UserLevel.MANAGER),
-  //   validateBody(ServiceBody),
-  //   catcher(addService)
-  // );
-  // app.get(
-  //   "/api/store/services/:id",
-  //   validateParams(ServiceParams),
-  //   catcher(getService)
-  // );
-  // app.delete(
-  //   "/api/store/services/:id",
-  //   validateParams(ServiceParams),
-  //   catcher(deleteService)
-  // );
-  // app.patch(
-  //   "/api/store/services/:id",
-  //   authRequired,
-  //   priviledged(UserLevel.MANAGER),
-  //   validateParams(ServiceParams),
-  //   validateBody(ServiceBody),
-  //   catcher(setService)
-  // );
+  app.get(
+    "/api/store/services",
+    validateQuery(PaginationQuery.and(SortingQuery)),
+    catcher(getServices)
+  );
+  app.get(
+    "/api/store/random-services",
+    validateQuery(ServiceRandomParams),
+    catcher(getRandomServices)
+  );
+  app.put(
+    "/api/store/services",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateBody(ServiceBody),
+    catcher(addService)
+  );
+  app.get(
+    "/api/store/services/:id",
+    validateParams(ServiceParams),
+    catcher(getService)
+  );
+  app.delete(
+    "/api/store/services/:id",
+    validateParams(ServiceParams),
+    catcher(deleteService)
+  );
+  app.patch(
+    "/api/store/services/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(ProductParams),
+    validateBody(ServiceBody.partial()),
+    catcher(setService)
+  );
 
   app.get(
     "/api/store/stores",
@@ -382,7 +424,7 @@ const main = async () => {
     authRequired,
     priviledged(UserLevel.MANAGER),
     validateParams(StoreParams),
-    validateBody(StoreBody),
+    validateBody(StoreBody.partial()),
     catcher(setStore)
   );
 
@@ -409,7 +451,7 @@ const main = async () => {
     authRequired,
     priviledged(UserLevel.MANAGER),
     validateParams(CategoryParams),
-    validateBody(CategoryBody),
+    validateBody(CategoryBody.partial()),
     catcher(setCategory)
   );
 
@@ -441,7 +483,7 @@ const main = async () => {
     authRequired,
     priviledged(UserLevel.MANAGER),
     validateParams(CategoryParams),
-    validateBody(CategoryBody),
+    validateBody(CategoryBody.partial()),
     catcher(setSubcategory)
   );
 

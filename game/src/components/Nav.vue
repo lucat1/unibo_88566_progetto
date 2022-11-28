@@ -12,8 +12,7 @@ export default defineComponent({
     return {
       auth,
       routes: routes.filter(
-        (route) =>
-          !/Register|Login|NotFound|Index|Leaderboard/.test(route.name || "")
+        (route) => !/Register|Login|NotFound|Index/.test(route.name || "")
       ),
       opened: false,
     };
