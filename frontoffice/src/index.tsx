@@ -15,6 +15,8 @@ import Product from "./pages/product";
 import Pets from "./pages/pets";
 import Pet from "./pages/pet";
 import Cart from "./pages/cart";
+import Orders from "./pages/orders";
+import Order from "./pages/order";
 import Boards from "./pages/boards";
 import BoardAdd from "./pages/board-add";
 import Board from "./pages/board";
@@ -37,6 +39,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/pets" element={<Pets />} />
             <Route path="/pets/:id" element={<Pet />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/:id" element={<Order />} />
             <Route path="/boards" element={<Boards />} />
             <Route path="/boards/add" element={<BoardAdd />} />
             <Route path="/boards/:id" element={<Board />} />

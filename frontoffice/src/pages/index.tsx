@@ -18,6 +18,14 @@ export const pages = [
     name: "Boards",
     url: "/boards",
   },
+  {
+    name: "Cart",
+    url: "/cart",
+  },
+  {
+    name: "Orders",
+    url: "/orders",
+  },
 ];
 
 const Index: React.FC = () => {

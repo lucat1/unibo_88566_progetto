@@ -71,7 +71,7 @@ const Orders = () =>
               0
             )
           ),
-          h("td", null, new Date(order?.date).toLocaleDateString("en-US")),
+          h("td", null, new Date(order?.date).toLocaleDateString("en-UK")),
           h(
             "td",
             null,
