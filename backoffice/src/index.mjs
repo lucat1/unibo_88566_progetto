@@ -25,8 +25,8 @@ import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
 import Orders from "./pages/orders";
 import Order from "./pages/order";
-
 import Boards from "./pages/boards";
+import Board from "./pages/board";
 
 let user = await me();
 if (user) userContext.set(user);
@@ -118,6 +118,10 @@ render(
         h(Route, {
           path: /^\/boards/,
           element: h(Boards, {}),
+        }),
+        h(Route, {
+          path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Board, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )
