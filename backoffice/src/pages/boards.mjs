@@ -9,6 +9,11 @@ const Boards = () =>
     { className: "menu" },
     h("p", { className: "menu-label" }, "Boards"),
     h(
+      Link,
+      { to: "/boards/add" },
+      h("button", { className: "button is-primary" }, "Add")
+    ),
+    h(
       Pagination,
       {
         url: (page) => `community/boards?page=${page}&limit=20`,

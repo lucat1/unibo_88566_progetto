@@ -25,6 +25,7 @@ import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
 import Orders from "./pages/orders";
 import Order from "./pages/order";
+import BoardAdd from "./pages/board-add";
 import Boards from "./pages/boards";
 import Board from "./pages/board";
 
@@ -116,7 +117,11 @@ render(
           element: h(Order, {}),
         }),
         h(Route, {
-          path: /^\/boards/,
+          path: /^\/boards\/add$/,
+          element: h(BoardAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/boards$/,
           element: h(Boards, {}),
         }),
         h(Route, {
