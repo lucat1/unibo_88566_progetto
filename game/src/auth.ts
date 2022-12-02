@@ -1,14 +1,10 @@
 import { defineStore } from "pinia";
 
 import type { IUser } from "shared/models/user";
-import type { IGameScore } from "shared/models/game-score";
-import fetch, { withOptions } from "shared/fetch";
-import { isAuthenticated } from "shared/auth";
+import fetch from "shared/fetch";
+import { isAuthenticated, getUUID, setUUID, hasUUID } from "shared/auth";
 
-import router from "./router";
-
-const ANONYMOUS = "anonymous",
-  UUIDKEY = "authuuid";
+const ANONYMOUS = "anonymous";
 
 enum AuthKind {
   USER,
@@ -51,7 +47,7 @@ export const useAuth = defineStore("user", {
       if (isAuthenticated()) {
         try {
           this.authenticateAsUser(await fetch<IUser>("auth/me"));
-        } catch (_) {}
+        } catch (_) { }
       } else {
         this.tryUUID();
       }
@@ -61,7 +57,7 @@ export const useAuth = defineStore("user", {
       if (hasUUID()) uuid = getUUID();
       else {
         uuid = (await fetch<{ id: string }>("auth/id")).id;
-        localStorage.setItem(UUIDKEY, uuid);
+        setUUID(uuid);
       }
       this.authenticateAsUUID(uuid);
     },
@@ -75,15 +71,3 @@ export const useAuth = defineStore("user", {
     },
   },
 });
-
-export const hasUUID = () => {
-  return localStorage.getItem(UUIDKEY) != null;
-};
-
-export const getUUID = (): string => {
-  return localStorage.getItem(UUIDKEY)!;
-};
-
-export const removeUUID = () => {
-  return localStorage.removeItem(UUIDKEY);
-};

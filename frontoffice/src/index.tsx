@@ -8,6 +8,7 @@ import App from "./components/app";
 
 import Index from "./pages/index";
 import Login from "./pages/login";
+import Register from "./pages/register";
 import User from "./pages/user";
 import Products from "./pages/products";
 import Product from "./pages/product";
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route index element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/users/:id" element={<User />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />

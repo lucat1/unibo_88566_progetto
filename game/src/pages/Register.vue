@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { setAuthToken } from "shared/auth";
+import { setAuthToken, removeUUID, getUUID } from "shared/auth";
 import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
 import type { IUser } from "shared/models/user";
 
 import router from "../router";
-import { useAuth, hasUUID, removeUUID, getUUID } from "../auth";
+import { useAuth } from "../auth";
 
 export default defineComponent({
   async setup() {

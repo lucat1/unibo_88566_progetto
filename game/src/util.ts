@@ -1,7 +1,8 @@
 import fetch, { withOptions } from "shared/fetch";
+import { getUUID } from "shared/auth";
 
 import router from "./router";
-import { useAuth, getUUID } from "./auth";
+import { useAuth } from "./auth";
 
 export const setScore = async (game: string, score: number) => {
   await fetch(
