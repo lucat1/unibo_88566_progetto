@@ -28,6 +28,8 @@ const Pet: React.FC = () => {
           <span className="is-size-5">{pet?.description}</span>
           <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
           {pet?.price ? pet.price.toFixed(2) : "No price"}
+          <h2 className="has-text-weight-bold is-size-4 mt-4">In store</h2>
+          {(pet?.stock || 0) > 0 ? pet?.stock : "Out of stock"}
           <div className="is-flex">
             {pet?.category && (
               <div className="mr-6">
@@ -48,9 +50,7 @@ const Pet: React.FC = () => {
           </div>
           <div className="my-3 is-flex is-justify-content-end">
             <button
-              disabled={
-                !!pet?.price && cart.some((i) => i.pet?._id == pet!._id)
-              }
+              disabled={!pet?.price}
               className="button is-primary"
               onClick={(_) => addToCart("pet", pet!, 1)}
             >

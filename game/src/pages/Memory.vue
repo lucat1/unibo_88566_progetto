@@ -98,7 +98,6 @@ export default defineComponent({
         this.resetActive();
         ++this.turn;
       }
-      // TODO: not ideal
       if (this.rows.every((row) => row.every((card) => card.matched)))
         this.completed();
     },

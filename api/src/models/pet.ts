@@ -9,8 +9,9 @@ const PetSchema = new Schema<IPet>({
   _id: { type: String, default: v4 },
   name: { type: String, required: true },
   description: { type: String, required: true },
+  price: { type: Number, required: true },
+  stock: { type: Number, required: true, min: 0 },
   photos: [String],
-  price: { type: Number },
 
   category: { type: Number, ref: "Category", required: true },
   subcategory: { type: Number, ref: "Subcategory" },
@@ -26,16 +27,18 @@ export const shadow = ({
   _id,
   name,
   description,
-  photos,
   price,
+  stock,
+  photos,
   category,
   subcategory,
 }: IPet) => ({
   _id,
   name,
   description,
-  photos,
   price,
+  stock,
+  photos,
   category:
     typeof category == "undefined"
       ? undefined

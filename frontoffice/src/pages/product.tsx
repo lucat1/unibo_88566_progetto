@@ -30,6 +30,8 @@ const Product: React.FC = () => {
           <span className="is-size-5">{product?.description}</span>
           <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
           {product?.price.toFixed(2)}
+          <h2 className="has-text-weight-bold is-size-4 mt-4">In store</h2>
+          {(product?.stock || 0) > 0 ? product?.stock : "Out of stock"}
           <div className="is-flex">
             {product?.category && (
               <div className="mr-6">

@@ -4,8 +4,9 @@ import type { ICategory, ISubcategory } from "./category";
 export interface IPet extends Document {
   name: string;
   description: string;
-  photos: string[];
   price: number;
+  stock: number;
+  photos: string[];
 
   category: ICategory;
   subcategory?: ISubcategory;

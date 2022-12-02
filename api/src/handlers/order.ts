@@ -4,9 +4,12 @@ import { z } from "zod";
 import json from "../res";
 import { Order, shadow } from "../models/order";
 import { User } from "../models/user";
+import { Product } from "../models/product";
+import { Pet } from "../models/pet";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 import { UserLevel } from "shared/models/user";
+import type { Document } from "mongoose";
 const POPULATE = ["items.product", "items.pet", "user"];
 
 export const ItemBody = z.object({
@@ -40,6 +43,30 @@ export const addOrder: RequestHandler = async (req, res) => {
     )
   )
     throw new Error("All items must one and only one product/pet");
+
+  // check enough stock is available
+  for (const item of data.items) {
+    let i: ({ name: number; stock: number } & Document) | null;
+    if (item.product) {
+      // product
+      i = (await Product.findOne({ _id: item.product }).exec()) as any;
+    } else {
+      // pet
+      i = (await Pet.findOne({ _id: item.pet }).exec()) as any;
+    }
+
+    if (!i || i.stock < item.amount) {
+      json(res, 400, {
+        message: i ? "Not enough stock of: " + i.name : "Unkown pet/product",
+        error: null,
+      });
+      return;
+    } else {
+      i.stock -= item.amount;
+      await i.save();
+    }
+  }
+
   const order = new Order({ ...data, date: new Date(), user: user._id });
   await order.save();
   json(res, 200, shadow(order));
@@ -94,6 +121,24 @@ export const deleteOrder: RequestHandler = async (req, res) => {
     });
     return;
   }
+  for (const item of order.items) {
+    let i: ({ name: number; stock: number } & Document) | null;
+    if (item.product) {
+      // product
+      i = (await Product.findOne({ _id: item.product }).exec()) as any;
+    } else {
+      // pet
+      i = (await Pet.findOne({ _id: item.pet }).exec()) as any;
+    }
+
+    if (i == null)
+      // The order had a deleted item
+      continue;
+
+    i.stock += item.amount;
+    await i.save();
+  }
+
   if (user.level != UserLevel.MANAGER && order.user._id != user._id)
     throw new Error("You don't own this order");
   await order.delete();

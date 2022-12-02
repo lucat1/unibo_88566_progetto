@@ -15,6 +15,7 @@ const PetAdd = () => {
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const price = parseFloat(document.getElementById("price").value);
+    const stock = parseFloat(document.getElementById("stock").value);
     setLoading(true);
     setError(null);
     try {
@@ -23,6 +24,7 @@ const PetAdd = () => {
         withOptions("PUT", {
           name,
           description,
+          stock,
           price,
           category: category?._id,
           subcategory: subcategory?._id,
@@ -30,7 +32,10 @@ const PetAdd = () => {
       );
       navigate(`/pets/${_id}`);
     } catch (err) {
-      setError(err.message || "An error occourred while adding a new pet");
+      setError(
+        err.message + " (A category is required)" ||
+        "An error occourred while adding a new pet"
+      );
     }
     setLoading(false);
   };
@@ -81,6 +86,23 @@ const PetAdd = () => {
           id: "price",
           type: "number",
           step: "0.01",
+          className: "input",
+          disabled: loading,
+        })
+      )
+    ),
+    h(
+      "div",
+      { className: "field my-2" },
+      h("label", { for: "stock", className: "label" }, "Stock"),
+      h(
+        "div",
+        { className: "control" },
+        h("input", {
+          id: "stock",
+          type: "number",
+          step: "1",
+          value: "1",
           className: "input",
           disabled: loading,
         })

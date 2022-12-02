@@ -24,8 +24,8 @@ const PetWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Pet, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Pet, { id, data })
   );
 };
 
@@ -41,6 +41,7 @@ const Pet = ({ id, data }) => {
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const price = parseFloat(document.getElementById("price").value);
+    const stock = parseFloat(document.getElementById("stock").value);
     setLoading(true);
     setError(null);
     try {
@@ -48,6 +49,7 @@ const Pet = ({ id, data }) => {
         name: newName,
         description: newDescription,
         price: newPrice,
+        stock: newStock,
         category: newCategory,
         subcategory: newSubcategory,
       } = await fetch(
@@ -56,6 +58,7 @@ const Pet = ({ id, data }) => {
           name,
           description,
           price,
+          stock,
           photos,
           category: category?._id,
           subcategory: subcategory?._id,
@@ -64,6 +67,7 @@ const Pet = ({ id, data }) => {
       data.name = newName;
       data.description = newDescription;
       data.price = newPrice;
+      data.stock = newStock;
       if (newCategory != category) setCategory(newCategory);
 
       if (newSubcategory != subcategory) setSubcategory(newSubcategory);
@@ -157,16 +161,33 @@ const Pet = ({ id, data }) => {
             })
           )
         ),
+        h(
+          "div",
+          { className: "field my-2" },
+          h("label", { for: "stock", className: "label" }, "Stock"),
+          h(
+            "div",
+            { className: "control" },
+            h("input", {
+              id: "stock",
+              type: "number",
+              step: "1",
+              className: "input",
+              value: data.stock,
+              disabled: loading,
+            })
+          )
+        ),
         h(SelectCategory, {
           selected: category,
           onSelect: (c) => setCategory(c),
         }),
         category != undefined
           ? h(SelectSubcategory, {
-              selected: subcategory,
-              category,
-              onSelect: (c) => setSubcategory(c),
-            })
+            selected: subcategory,
+            category,
+            onSelect: (c) => setSubcategory(c),
+          })
           : null,
         h(
           "div",

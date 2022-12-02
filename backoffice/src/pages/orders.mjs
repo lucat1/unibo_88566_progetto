@@ -52,9 +52,8 @@ const Orders = () =>
                 h(
                   Link,
                   {
-                    to: `/${i.pet ? "pets" : "products"}/${
-                      (i.product || i.pet)._id
-                    }`,
+                    to: `/${i.pet ? "pets" : "products"}/${(i.product || i.pet)._id
+                      }`,
                   },
                   (i.product || i.pet).name
                 ),
@@ -67,7 +66,8 @@ const Orders = () =>
             null,
             "$",
             order?.items?.reduce(
-              (prev, item) => prev + (item.product || item.pet).price,
+              (prev, item) =>
+                prev + (item.product || item.pet).price * item.amount,
               0
             )
           ),

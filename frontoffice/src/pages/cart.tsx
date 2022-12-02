@@ -74,6 +74,9 @@ const Cart: React.FC = () => {
             </th>
             <th>Amount</th>
             <th>
+              <abbr title="Local total">L. Tot</abbr>
+            </th>
+            <th>
               <abbr title="Delete">Del</abbr>
             </th>
           </tr>
@@ -92,8 +95,11 @@ const Cart: React.FC = () => {
                 />
               </td>
               <td>{(item.product || item.pet)!.name}</td>
-              <td>{(item.product || item.pet)!.price.toFixed(2)}</td>
-              <td>${item.amount}</td>
+              <td>${(item.product || item.pet)!.price.toFixed(2)}</td>
+              <td>{item.amount}</td>
+              <td>
+                ${(item.amount * (item.product || item.pet)!.price).toFixed(2)}
+              </td>
               <td>
                 <button
                   className="delete"

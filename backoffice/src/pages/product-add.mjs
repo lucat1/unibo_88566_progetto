@@ -15,6 +15,7 @@ const ProductAdd = () => {
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
     const price = parseFloat(document.getElementById("price").value);
+    const stock = parseFloat(document.getElementById("stock").value);
     setLoading(true);
     setError(null);
     try {
@@ -24,6 +25,7 @@ const ProductAdd = () => {
           name,
           description,
           price,
+          stock,
           category: category?._id,
           subcategory: subcategory?._id,
         })
@@ -81,6 +83,23 @@ const ProductAdd = () => {
           id: "price",
           type: "number",
           step: "0.01",
+          className: "input",
+          disabled: loading,
+        })
+      )
+    ),
+    h(
+      "div",
+      { className: "field my-2" },
+      h("label", { for: "stock", className: "label" }, "Stock"),
+      h(
+        "div",
+        { className: "control" },
+        h("input", {
+          id: "stock",
+          type: "number",
+          step: "1",
+          value: "1",
           className: "input",
           disabled: loading,
         })

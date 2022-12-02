@@ -10,6 +10,7 @@ const ProductSchema = new Schema<IProduct>({
   name: { type: String, required: true },
   description: String,
   price: { type: Number, required: true },
+  stock: { type: Number, required: true, min: 0 },
   photos: [String],
 
   category: { type: Number, ref: "Category" },
@@ -27,6 +28,7 @@ export const shadow = ({
   name,
   description,
   price,
+  stock,
   photos,
   category,
   subcategory,
@@ -35,6 +37,7 @@ export const shadow = ({
   name,
   description,
   price,
+  stock,
   photos,
   category:
     typeof category == "undefined"

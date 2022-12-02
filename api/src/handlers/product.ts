@@ -11,6 +11,7 @@ export const ProductBody = z.object({
   name: z.string().min(1),
   description: z.string().optional().default(""),
   price: z.number(),
+  stock: z.number(),
   photos: z.array(z.string()).optional().default([]),
   category: z.number().optional(),
   subcategory: z.number().optional(),
