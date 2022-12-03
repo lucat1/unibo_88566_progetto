@@ -7,7 +7,9 @@ import req from "../async";
 import Posts from "./posts";
 
 const Board = () => {
-  const id = parseInt(window.location.pathname.match(/\/boards\/(\d+)\/?$/)[1]);
+  const id = window.location.pathname.match(
+    /\/boards\/([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})$/
+  )[1];
   const {
     data,
     loading: fetching,
@@ -51,11 +53,19 @@ const Board = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(
           "main",
           {},
-          h("h1", { className: "is-size-3" }, "Board #", data._id),
+          h(
+            "h1",
+            { className: "is-size-3" },
+            '"',
+            data.name,
+            '" (board #',
+            data._id,
+            ")"
+          ),
           h(
             "form",
             { onSubmit: rename },
@@ -103,7 +113,7 @@ const Board = () => {
             ),
             err && h("div", { className: "notification is-danger" }, err)
           ),
-          h(Posts, { category: id })
+          h(Posts, { board: id })
         )
   );
 };

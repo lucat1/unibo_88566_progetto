@@ -13,7 +13,7 @@ const CategoryAdd = () => {
     setMessage(null);
     try {
       const { _id, name: n } = await fetch(
-        "store/boards",
+        "community/boards",
         withOptions("PUT", { name: name.value })
       );
       name.value = "";
