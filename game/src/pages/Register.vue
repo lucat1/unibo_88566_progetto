@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import { setAuthToken, removeUUID, getUUID } from "shared/auth";
+import { getPets, removePets } from "shared/pets";
 import fetch, { withOptions } from "shared/fetch";
 import type { Error } from "shared/fetch";
 import type { IUser } from "shared/models/user";
@@ -37,14 +38,17 @@ export default defineComponent({
             firstName,
             lastName,
             fromuuid: getUUID(),
+            frompets: getPets(),
           })
         );
         setAuthToken(token);
         removeUUID();
+        removePets();
         await this.auth.try();
         router.push("/");
-      } catch (err: Error<never>) {
-        this.error = err.message || "Invalid username or password";
+      } catch (err) {
+        this.error =
+          (err as Error<never>).message || "Invalid username or password";
       }
       this.loading = false;
     },

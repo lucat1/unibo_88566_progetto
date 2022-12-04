@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import fetch, { withOptions } from "shared/fetch";
+import fetch, { Error, withOptions } from "shared/fetch";
 import { setAuthToken } from "shared/auth";
 
 import { useAuth } from "../auth";
@@ -34,8 +34,10 @@ const Login: React.FC = () => {
       setAuthToken(token);
       setAuth(true);
       navigate("/");
-    } catch (err: any) {
-      setError(err.message || "Invalid username/password combination");
+    } catch (err) {
+      setError(
+        (err as Error<any>).message || "Invalid username/password combination"
+      );
     }
     setLoading(false);
   };

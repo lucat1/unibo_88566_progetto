@@ -35,8 +35,10 @@ export default defineComponent({
         setAuthToken(token);
         await this.auth.try();
         router.push("/");
-      } catch (err: Error<never>) {
-        this.error = err.message || "Invalid username/password combination";
+      } catch (err) {
+        this.error =
+          (err as Error<never>).message ||
+          "Invalid username/password combination";
       }
       this.loading = false;
     },

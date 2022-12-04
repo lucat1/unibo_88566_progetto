@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import fetch, { withOptions } from "shared/fetch";
-import { setAuthToken, getUUID } from "shared/auth";
+import fetch, { Error, withOptions } from "shared/fetch";
+import { setAuthToken, getUUID, removeUUID } from "shared/auth";
+import { getPets, removePets } from "shared/pets";
 
 import { useAuth } from "../auth";
 
@@ -44,13 +45,16 @@ const Register: React.FC = () => {
           firstName,
           lastName,
           fromuuid: getUUID(),
+          frompets: getPets(),
         })
       );
+      removeUUID();
+      removePets();
       setAuthToken(token);
       setAuth(true);
       navigate("/");
-    } catch (err: any) {
-      setError(err.message || "Unkown error while registering");
+    } catch (err) {
+      setError((err as Error<any>).message || "Unkown error while registering");
     }
     setLoading(false);
   };

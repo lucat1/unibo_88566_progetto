@@ -31,8 +31,8 @@ export default defineComponent({
       this.pets = this.pets.filter((_: unknown, j) => j != i);
       setPets(this.pets);
     },
-    add(pet: IUser) {
-      this.pets = [...getPets(), pet];
+    add({ age, ...pet }: IUserPet) {
+      this.pets = [...getPets(), { age: new Number(age), ...pet } as IUserPet];
       setPets(this.pets);
     },
   },
@@ -46,13 +46,6 @@ export default defineComponent({
     <template v-if="auth.authenticated">
       You can do so on <a :href="userProfile">your profile page</a>.
     </template>
-  </div>
-  <div
-    v-if="pets.length != 0 && auth.authenticated"
-    class="column my-6"
-    style="text-align: center"
-  >
-    You can more pets on <a :href="userProfile">your profile page</a>.
   </div>
   <div class="is-flex is-flex-direction-column">
     <div
@@ -72,10 +65,17 @@ export default defineComponent({
       ></button>
     </div>
   </div>
+  <div
+    v-if="pets.length != 0 && auth.authenticated"
+    class="column my-6"
+    style="text-align: center"
+  >
+    You can add more pets on <a :href="userProfile">your profile page</a>.
+  </div>
   <FormKit
     type="form"
     @submit="add"
-    :disabled="auth.authenticated"
+    v-if="!auth.authenticated"
     :actions="false"
   >
     <h2 class="title is-size-4">Add a new pet</h2>
@@ -135,9 +135,7 @@ export default defineComponent({
     />
     <div class="field">
       <div class="control">
-        <button :disabled="auth.authenticated" class="button is-link">
-          Add
-        </button>
+        <button class="button is-link">Add</button>
       </div>
     </div>
   </FormKit>
