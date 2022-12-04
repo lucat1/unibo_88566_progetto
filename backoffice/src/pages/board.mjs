@@ -53,8 +53,8 @@ const Board = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(
           "main",
           {},
           h(
@@ -113,7 +113,7 @@ const Board = () => {
             ),
             err && h("div", { className: "notification is-danger" }, err)
           ),
-          h(Posts, { board: id })
+          h(Posts, { board: data })
         )
   );
 };

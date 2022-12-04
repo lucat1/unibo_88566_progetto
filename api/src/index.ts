@@ -64,8 +64,6 @@ import {
   getBoard,
   deleteBoard,
   setBoard,
-  getPost,
-  getPosts,
   addPost,
   deletePost,
   setPost,
@@ -255,16 +253,6 @@ const main = async () => {
     authRequired,
     validateParams(BoardParams),
     catcher(deleteBoard)
-  );
-  app.get(
-    "/api/community/boards/:id/posts",
-    validateParams(BoardParams),
-    catcher(getPosts)
-  );
-  app.get(
-    "/api/community/boards/:id/:post",
-    validateParams(PostParams),
-    catcher(getPost)
   );
   app.delete(
     "/api/community/boards/:id/:post",

@@ -1,47 +1,68 @@
 import { h } from "../h";
-import { Link } from "../router";
-import req from "../async";
-import fetch from "shared/fetch";
+import Pagination from "../components/pagination";
 
 const Posts = ({ board }) => {
-  const { data, loading, err } = req(`community/boards/${board}/posts`, fetch);
   return h(
     "main",
     {},
-    loading
-      ? h("progress", { className: "progress is-primary" })
-      : err
-      ? h("div", { className: "notification is-danger" }, "Error: ", err)
-      : h(
-          "div",
-          { className: "menu my-4" },
+    h(
+      "div",
+      { className: "menu my-4" },
+      h(
+        "div",
+        {
+          className:
+            "is-flex is-flex-direction-row is-justify-content-space-between py-2",
+        },
+        h("p", { className: "menu-label" }, "Posts")
+      ),
+      h(
+        Pagination,
+        {
+          url: (page) => `community/boards/${board._id}?page=${page}&limit=20`,
+          className: "is-flex is-flex-direction-row is-flex-wrap-wrap",
+        },
+        (post, _) =>
           h(
             "div",
-            {
-              className:
-                "is-flex is-flex-direction-row is-justify-content-space-between py-2",
-            },
-            h("p", { className: "menu-label" }, "Posts")
-          ),
-          h(
-            "ul",
-            { className: "menu-list" },
-            ...data.map((ele, i) =>
-              h(
-                "li",
-                { key: i },
+            { className: "card" },
+            post.photos?.length > 0
+              ? h(
+                "div",
+                { className: "card-image" },
                 h(
-                  Link,
-                  { to: `/boards/${board}/posts/${ele._id}` },
-                  ele._id,
-                  ' "',
-                  ele.message,
-                  '"'
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: post.photos ? post.photos[0] : undefined,
+                    alt: `${post.name} main image`,
+                  })
+                )
+              )
+              : null,
+            h(
+              "div",
+              { className: "card-content" },
+              h(
+                "div",
+                { className: "content" },
+                h("p", {}, post.message || "No description provided"),
+                h(
+                  "button",
+                  {
+                    className: "button is-danger",
+                    action: "none",
+                    // onClick: del,
+                    // disabled: loading,
+                  },
+                  "Delete"
                 )
               )
             )
           )
-        )
+      )
+    )
   );
 };
 
