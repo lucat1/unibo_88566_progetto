@@ -6,13 +6,13 @@ import { isAuthenticated, getUUID, setUUID, hasUUID } from "shared/auth";
 
 const ANONYMOUS = "anonymous";
 
-enum AuthKind {
+export enum AuthKind {
   USER,
   UUID,
   NONE,
 }
 
-interface State {
+export interface State {
   kind: AuthKind;
   user: IUser | string | undefined;
 }

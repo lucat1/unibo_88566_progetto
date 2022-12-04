@@ -19,7 +19,7 @@ export default defineComponent({
 
 <template>
   <div v-if="products.length > 0" class="block">
-    <h1 class="title is-3">Products from you</h1>
+    <h1 class="title is-3">Products for you</h1>
     <div class="columns">
       <div
         v-for="(product, i) in products"

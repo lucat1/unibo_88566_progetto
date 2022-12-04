@@ -26,6 +26,11 @@
       "types": "./es/shared/src/auth.d.ts",
       "node": "./cjs/shared/src/auth.js"
     },
+    "./pets": {
+      "import": "./es/shared/src/pets.js",
+      "types": "./es/shared/src/pets.d.ts",
+      "node": "./cjs/shared/src/pets.js"
+    },
     "./fetch": {
       "import": "./es/shared/src/fetch.js",
       "types": "./es/shared/src/fetch.d.ts",

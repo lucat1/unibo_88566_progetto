@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound.vue";
 import Register from "./pages/Register.vue";
 import Login from "./pages/Login.vue";
 import Trivia from "./pages/Trivia.vue";
+import Pets from "./pages/Pets.vue";
 import PetsTrivia from "./pages/PetsTrivia.vue";
 import Videos from "./pages/Videos.vue";
 import Help from "./pages/Help.vue";
@@ -24,6 +25,11 @@ export const routes = [
     path: "/trivia",
     name: "Trivia",
     component: Trivia,
+  },
+  {
+    path: "/pets",
+    name: "Pets",
+    component: Pets,
   },
   {
     path: "/pets-trivia",

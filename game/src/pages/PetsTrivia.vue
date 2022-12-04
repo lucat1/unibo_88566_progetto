@@ -2,6 +2,7 @@
 import { defineComponent, reactive } from "vue";
 import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
 import fetch from "shared/fetch";
+import { getPets } from "shared/pets";
 import type { IUser, IUserPet } from "shared/models/user";
 
 import PetTriviaTrivias from "../components/PetTriviaTrivias.vue";
@@ -14,12 +15,15 @@ export default defineComponent({
   },
   async setup() {
     const auth = useAuth();
-    const { pets } = await fetch<IUser>("auth/me");
+    let pets: IUserPet[];
+    if (auth.authenticated) pets = (await fetch<IUser>("auth/me")).pets;
+    else pets = getPets();
+
     return reactive({
       auth,
       pets,
-      selected: 0,
-    }) as State;
+      selected: 0 as number,
+    });
   },
   computed: {
     userProfile() {
@@ -40,7 +44,11 @@ export default defineComponent({
   <div>
     <div v-if="pets.length == 0" class="column my-6" style="text-align: center">
       You haven't yet provided any owned pets. <br />
-      You can do so in <a :href="userProfile">your profile page</a>
+      You can do so in
+      <a v-if="auth.authenticated" :href="userProfile">your profile page</a>
+      <router-link v-if="!auth.authenticated" to="/pets"
+        >your pets page</router-link
+      >
     </div>
     <div class="is-flex is-flex-direction-row" style="overflow-x: auto">
       <div
