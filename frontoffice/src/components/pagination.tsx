@@ -26,7 +26,7 @@ const Pagination: React.FC<
   const min = Math.max(1, page - 5);
   const pages = Array.from({ length: max - min + 1 }).map((_, i) => min + i);
   const Ele = (ele || "div") as any;
-  const Child = (child || "div") as any;
+  const Child = (child || React.Fragment) as any;
   return (
     <>
       <Ele className={className} style={style as any}>
