@@ -1,7 +1,29 @@
-import { h } from "../h";
+import { h, useState } from "../h";
+
+import fetch, { withOptions } from "shared/fetch";
+import { navigate } from "../router";
+
 import Pagination from "../components/pagination";
 
 const Posts = ({ board }) => {
+  const [loading, setLoading] = useState(false),
+    [err, setErr] = useState(null),
+    del = (post_id) => async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      setErr(null);
+      try {
+        await fetch(
+          `community/boards/${board._id}/${post_id}`,
+          withOptions("DELETE")
+        );
+        navigate(`/boards/${board._id}`);
+      } catch (err) {
+        setErr("Error while deleting: " + (err.message || "Unknown error"));
+      }
+      setLoading(false);
+    };
+
   return h(
     "main",
     {},
@@ -16,6 +38,7 @@ const Posts = ({ board }) => {
         },
         h("p", { className: "menu-label" }, "Posts")
       ),
+      err && h("div", { className: "notification is-danger" }, err),
       h(
         Pagination,
         {
@@ -53,8 +76,8 @@ const Posts = ({ board }) => {
                   {
                     className: "button is-danger",
                     action: "none",
-                    // onClick: del,
-                    // disabled: loading,
+                    onClick: del(post._id),
+                    disabled: loading,
                   },
                   "Delete"
                 )
