@@ -10,6 +10,7 @@ const Board = () => {
   const id = window.location.pathname.match(
     /\/boards\/([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})$/
   )[1];
+  console.log(id);
   const {
     data,
     loading: fetching,
@@ -53,8 +54,8 @@ const Board = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(
           "main",
           {},
           h(
