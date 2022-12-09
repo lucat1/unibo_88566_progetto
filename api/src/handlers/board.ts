@@ -118,6 +118,22 @@ export const PostBody = z.object({
 });
 export type IPostBody = z.infer<typeof PostBody>;
 
+export const getPosts: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as IBoardParams;
+  const subcategories = await Post.find({ parent: { _id: id } }).exec();
+  json(res, 200, subcategories.map(shadowPost));
+};
+
+export const getPost: RequestHandler = async (req, res) => {
+  const { post: post_id } = req.params as unknown as IPostParams;
+  const post = await Post.findOne({ _id: post_id }).exec();
+  if (post == null)
+    json(res, 404, {
+      message: "Invalid post id",
+    });
+  else json(res, 200, shadowPost(post));
+};
+
 export const addPost: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IBoardParams;
   const { message, photos } = req.body as IPostBody;

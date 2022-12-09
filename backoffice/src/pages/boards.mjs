@@ -9,6 +9,11 @@ const Boards = () =>
     { className: "menu" },
     h("p", { className: "menu-label" }, "Boards"),
     h(
+      Link,
+      { to: "/boards/add" },
+      h("button", { className: "button is-primary" }, "Add")
+    ),
+    h(
       Pagination,
       {
         url: (page) => `community/boards?page=${page}&limit=20`,
@@ -18,7 +23,7 @@ const Boards = () =>
         h(
           Link,
           {
-            to: `/products/${prod._id}`,
+            to: `/boards/${prod._id}`,
             key: i,
             className: "m-4",
             style: { width: "100%", "max-width": "24rem" },
@@ -52,36 +57,8 @@ const Boards = () =>
                   { className: "media-content" },
                   h("p", { className: "title is-4" }, prod.name)
                 )
-              ),
-              h(
-                "div",
-                { className: "content" },
-                h("p", {}, prod.description || "No description provided")
               )
-            ),
-            (prod.category || prod.subcategory) &&
-              h(
-                "footer",
-                { className: "card-footer" },
-                prod.category &&
-                  h(
-                    Link,
-                    {
-                      to: `/categories/${prod.category._id}`,
-                      className: "card-footer-item",
-                    },
-                    prod.category.name
-                  ),
-                prod.subcategory &&
-                  h(
-                    Link,
-                    {
-                      to: `/subcategories/${prod.subcategory._id}`,
-                      className: "card-footer-item",
-                    },
-                    prod.subcategory.name
-                  )
-              )
+            )
           )
         )
     )

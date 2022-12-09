@@ -17,7 +17,6 @@ const Boards: React.FC = () => {
         style={{ width: "100%" }}
       >
         <span className="is-size-5 has-text-weight-bold">Title</span>
-        <span className="is-size-5 has-text-weight-bold">Author</span>
       </div>
       <Pagination
         url={(page) => `community/boards?limit=30&page=${page}`}
@@ -31,9 +30,6 @@ const Boards: React.FC = () => {
             style={{ width: "100%" }}
           >
             <Link to={`/boards/${board._id}`}>{board.name}</Link>
-            <Link to={`/users/${board.author._id}`}>
-              {board.author.username}
-            </Link>
           </div>
         )}
       </Pagination>

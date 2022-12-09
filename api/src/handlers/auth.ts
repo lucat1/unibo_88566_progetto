@@ -56,7 +56,10 @@ export type IPasswordData = z.infer<typeof PasswordData>;
 
 export const password: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
-  if (user == null) throw new Error("User not found");
+  if (user == null) {
+    json(res, 200, null);
+    return;
+  }
   const { password } = req.body as unknown as IPasswordData;
   user.password = password;
   await user.save();
@@ -65,7 +68,10 @@ export const password: RequestHandler = async (req, res) => {
 
 export const upgrade: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
-  if (user == null) throw new Error("User not found");
+  if (user == null) {
+    json(res, 200, null);
+    return;
+  }
 
   user.level = UserLevel.MANAGER;
   await user.save();
@@ -80,8 +86,7 @@ export const getMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user)
     .populate(POPULATE)
     .exec();
-  if (user == null) throw new Error("User not found");
-  json(res, 200, shadow(user));
+  json(res, 200, user != null ? shadow(user) : null);
 };
 
 export const UserPetBody = z.object({
@@ -103,7 +108,10 @@ export type IUserData = z.infer<typeof UserBody>;
 
 export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
-  if (user == null) throw new Error("User not found");
+  if (user == null) {
+    json(res, 200, null);
+    return;
+  }
   const patch = req.body as unknown as IUserData;
   const updated = await User.findOneAndUpdate({ _id: user._id }, patch, {
     new: true,
@@ -117,7 +125,6 @@ export const patchMe: RequestHandler = async (req, res) => {
 
 export const deleteMe: RequestHandler = async (req, res) => {
   const user = await User.deleteOne((req as AuthenticatedRequest).user).exec();
-  if (user == null) throw new Error("User not found");
   json(res, 200, null);
 };
 
@@ -129,6 +136,5 @@ export type IUserParams = z.infer<typeof UserParams>;
 export const get: RequestHandler = async (req, res) => {
   const { id } = req.params as IUserParams;
   const user = await User.findOne({ _id: id }).populate(POPULATE).exec();
-  if (user == null) throw new Error("User not found");
-  json(res, 200, shadow(user));
+  json(res, 200, user != null ? shadow(user) : null);
 };

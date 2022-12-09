@@ -31,7 +31,12 @@ export const resolveURL = (url) => (url.startsWith("/") ? baseURL + url : url);
  */
 export const navigate = (url) => {
   const rurl = resolveURL(url);
-  window.history.pushState("", null, rurl);
+  try {
+    window.history.pushState("", null, rurl);
+  } catch {
+    window.open(rurl, "_blank");
+    return;
+  }
   urlContext.set(rurl);
 };
 

@@ -25,8 +25,10 @@ import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
 import Orders from "./pages/orders";
 import Order from "./pages/order";
-
+import BoardAdd from "./pages/board-add";
 import Boards from "./pages/boards";
+import Board from "./pages/board";
+import Post from "./pages/post";
 
 let user = await me();
 if (user) userContext.set(user);
@@ -116,8 +118,20 @@ render(
           element: h(Order, {}),
         }),
         h(Route, {
-          path: /^\/boards/,
+          path: /^\/boards\/add$/,
+          element: h(BoardAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/boards$/,
           element: h(Boards, {}),
+        }),
+        h(Route, {
+          path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Board, {}),
+        }),
+        h(Route, {
+          path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\/posts\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Post, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )
