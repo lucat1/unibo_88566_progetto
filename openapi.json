@@ -20,6 +20,10 @@
       "description": "Endpoints for authentication across all sites"
     },
     {
+      "name": "user",
+      "description": "Endpoints for user management"
+    },
+    {
       "name": "image",
       "description": "Endpoints for image upload and retrieval"
     },
@@ -416,6 +420,157 @@
           },
           "401": {
             "description": "Authentication required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get all registered users",
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "docs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication with high priviledges is required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get a registered user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication with high priviledges is required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update a registered user's informations",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication with high priviledges is required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete a registered user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled"
+          },
+          "401": {
+            "description": "Authentication with high priviledges is required"
           },
           "500": {
             "description": "Internal server error"
