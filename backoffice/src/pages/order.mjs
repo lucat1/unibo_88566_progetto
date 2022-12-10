@@ -19,8 +19,8 @@ const OrderWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(Order, { id, data })
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(Order, { id, data })
   );
 };
 
@@ -91,8 +91,9 @@ const Order = ({ id, data }) => {
               null,
               h("img", {
                 style: { width: "1.5rem", height: "1.5rem" },
-                alt: `${(item.pet || item.product).name}'s ${item.pet ? "pet" : "product"
-                  } image`,
+                alt: `${(item.pet || item.product).name}'s ${
+                  item.pet ? "pet" : "product"
+                } image`,
                 src: (item.product || item.pet).photos[0],
               })
             ),
@@ -102,8 +103,9 @@ const Order = ({ id, data }) => {
               h(
                 Link,
                 {
-                  to: `/${item.pet ? "pets" : "products"}/${(item.product || item.pet)._id
-                    }`,
+                  to: `/${item.pet ? "pets" : "products"}/${
+                    (item.product || item.pet)._id
+                  }`,
                 },
                 (item.product || item.pet).name
               )

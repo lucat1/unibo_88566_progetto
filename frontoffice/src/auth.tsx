@@ -29,7 +29,7 @@ const AuthContextFetcher: React.FC<React.PropsWithChildren<{}>> = ({
     (logged: boolean) => {
       if (logged) {
         fetch<IUser>("auth/me").then(
-          (user) => setValue({ authenticated: true, user }),
+          (user) => setValue({ authenticated: user != null, user }),
           (_) => setValue({ authenticated: false, user: null })
         );
       } else {

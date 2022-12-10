@@ -14,13 +14,13 @@ export enum AuthKind {
 
 export interface State {
   kind: AuthKind;
-  user: IUser | string | undefined;
+  user: IUser | string | null;
 }
 
 export const useAuth = defineStore("user", {
   state: (): State => ({
     kind: AuthKind.NONE,
-    user: undefined,
+    user: null,
   }),
   getters: {
     authenticated(state) {
@@ -47,7 +47,9 @@ export const useAuth = defineStore("user", {
       if (isAuthenticated()) {
         try {
           this.authenticateAsUser(await fetch<IUser>("auth/me"));
-        } catch (_) { }
+        } catch (_) {
+          this.tryUUID();
+        }
       } else {
         this.tryUUID();
       }
@@ -62,6 +64,8 @@ export const useAuth = defineStore("user", {
       this.authenticateAsUUID(uuid);
     },
     authenticateAsUser(user: IUser) {
+      if (!user) throw new Error("Invalid user");
+
       this.kind = AuthKind.USER;
       this.user = user;
     },

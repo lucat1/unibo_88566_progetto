@@ -52,8 +52,9 @@ const Orders = () =>
                 h(
                   Link,
                   {
-                    to: `/${i.pet ? "pets" : "products"}/${(i.product || i.pet)._id
-                      }`,
+                    to: `/${i.pet ? "pets" : "products"}/${
+                      (i.product || i.pet)._id
+                    }`,
                   },
                   (i.product || i.pet).name
                 ),

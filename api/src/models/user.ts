@@ -26,6 +26,7 @@ const UserSchema = new Schema<IUser>({
   avatar: String,
 
   pets: [{ type: UserPet }],
+  favourites: [{ type: String, required: true }],
 });
 UserSchema.pre("save", async function () {
   let password = "";
@@ -47,6 +48,7 @@ export const shadow = ({
   lastName,
   city,
   pets,
+  favourites,
 }: IUser) => ({
   _id,
   username,
@@ -56,4 +58,5 @@ export const shadow = ({
   lastName,
   city,
   pets,
+  favourites,
 });

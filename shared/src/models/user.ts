@@ -22,4 +22,5 @@ export interface IUser extends Document {
   avatar?: string;
 
   pets: IUserPet[];
+  favourites?: string[];
 }

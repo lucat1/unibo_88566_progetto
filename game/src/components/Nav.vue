@@ -45,7 +45,7 @@ export default defineComponent({
         v-bind:class="{ 'is-active': opened }"
         v-on:click="opened = !opened"
         aria-label="menu"
-        aria-expanded="false"
+        v-bind:aria-expanded="opened"
         data-target="nav"
       >
         <span aria-hidden="true"></span>
@@ -66,11 +66,13 @@ export default defineComponent({
       </div>
 
       <div class="navbar-end">
+        <a v-if="auth.authenticated" class="navbar-item" :href="userProfile">
+          {{ auth.username }}
+        </a>
         <div v-if="auth.authenticated" class="navbar-item">
-          <a class="mr-4 has-text-white" :href="userProfile">{{
-            auth.username
-          }}</a>
-          <button @click="logout" class="button is-light">Log out</button>
+          <div class="buttons">
+            <button @click="logout" class="button is-light">Log out</button>
+          </div>
         </div>
         <div v-else class="navbar-item">
           <div class="buttons">
