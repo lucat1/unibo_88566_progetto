@@ -17,7 +17,7 @@ export const RegisterData = z.object({
   lastName: z.string().optional().default(""),
   city: z.string().optional().default("World"),
   fromuuid: z.string().uuid().nullable().optional().default(null),
-  frompets: z.array(UserPetBody).optional(),
+  frompets: z.array(UserPetBody).nullable().optional().default(null),
 });
 export type IRegisterData = z.infer<typeof RegisterData>;
 

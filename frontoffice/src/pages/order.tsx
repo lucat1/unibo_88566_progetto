@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import fetch, { withOptions, Error } from "shared/fetch";

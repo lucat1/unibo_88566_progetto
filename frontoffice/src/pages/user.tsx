@@ -9,8 +9,8 @@ import { useAuth } from "../auth";
 import File from "../components/file";
 import Pets from "../components/pets";
 import Favourites from "../components/favourites";
-
-// TODO: for some reason the picture data is stale from react-query
+import Password from "../components/password";
+import Delete from "../components/delete";
 
 const User: React.FC = () => {
   const { id } = useParams();
@@ -21,7 +21,12 @@ const User: React.FC = () => {
   const patchUser = (user: Partial<IUser>) =>
     fetch<IUser>("auth/me", withOptions("PATCH", user));
   const [editing, setEditing] = React.useState(false);
-  const { isLoading, isError, mutationError, mutate } = useMutation(patchUser, {
+  const {
+    isLoading,
+    isError,
+    error: mutationError,
+    mutate,
+  } = useMutation(patchUser, {
     onSettled: (_) => queryClient.invalidateQueries(["user", data!._id]),
   });
   const [{ authenticated, user }] = useAuth();
@@ -165,11 +170,13 @@ const User: React.FC = () => {
           update={(favourites) => mutate({ favourites })}
           isLoading={isLoading}
         />
-        {mutationError && (
+        {isError && (
           <span className="help is-danger">
             Unexpected error while updating: {mutationError}
           </span>
         )}
+        <Password id={data!._id} />
+        <Delete id={data!._id} />
       </section>
     </main>
   );
