@@ -20,6 +20,9 @@ import Pet from "./pages/pet";
 import Products from "./pages/products";
 import ProductAdd from "./pages/product-add";
 import Product from "./pages/product";
+import Services from "./pages/services";
+import ServiceAdd from "./pages/service-add";
+import Service from "./pages/service";
 import Stores from "./pages/stores";
 import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
@@ -98,6 +101,18 @@ render(
         h(Route, {
           path: /^\/products\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
           element: h(Product, {}),
+        }),
+        h(Route, {
+          path: /^\/services$/,
+          element: h(Services, {}),
+        }),
+        h(Route, {
+          path: /^\/services\/add$/,
+          element: h(ServiceAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/services\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Service, {}),
         }),
         h(Route, {
           path: /^\/stores$/,

@@ -8,6 +8,7 @@ import { BACKOFFICE_ENDPOINT } from "shared/endpoints";
 const links = [
   "Categories",
   "Products",
+  "Services",
   "Pets",
   "Stores",
   "Orders",
@@ -79,28 +80,28 @@ const Nav = () => {
           { className: "navbar-item" },
           !user
             ? h(
-                "div",
-                { className: "buttons mr-4" },
-                h(Link, { to: "/login", className: "button is-light" }, "Login")
-              )
+              "div",
+              { className: "buttons mr-4" },
+              h(Link, { to: "/login", className: "button is-light" }, "Login")
+            )
             : h(
-                "span",
-                {},
-                "Signed in as ",
-                user.username,
-                ", ",
-                h(
-                  "a",
-                  {
-                    onClick: () => {
-                      removeAuthToken();
-                      setUser(null);
-                      navigate("/login");
-                    },
+              "span",
+              {},
+              "Signed in as ",
+              user.username,
+              ", ",
+              h(
+                "a",
+                {
+                  onClick: () => {
+                    removeAuthToken();
+                    setUser(null);
+                    navigate("/login");
                   },
-                  "Sign out"
-                )
+                },
+                "Sign out"
               )
+            )
         )
       )
     )
