@@ -1,7 +1,15 @@
 import { h } from "../h";
 import { Link } from "../router";
 
-const pages = ["Categories", "Products", "Pets", "Stores", "Boards"];
+const pages = [
+  "Categories",
+  "Products",
+  "Services",
+  "Pets",
+  "Stores",
+  "Orders",
+  "Boards",
+];
 
 const Index = () =>
   h(
