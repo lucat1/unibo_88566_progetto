@@ -28,11 +28,11 @@ const UserSchema = new Schema<IUser>({
   pets: [{ type: UserPet }],
   favourites: [{ type: String, required: true }],
 });
-UserSchema.pre("save", async function() {
+UserSchema.pre("save", async function () {
   let password = "";
   try {
     password = (await User.findOne({ _id: this._id }))?.password || "";
-  } catch (_) { }
+  } catch (_) {}
   if (password != this.password)
     this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
 });
@@ -48,7 +48,7 @@ export const shadow = ({
   lastName,
   city,
   pets,
-  favourites
+  favourites,
 }: IUser) => ({
   _id,
   username,
@@ -58,5 +58,5 @@ export const shadow = ({
   lastName,
   city,
   pets,
-  favourites
+  favourites,
 });

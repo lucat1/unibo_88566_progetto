@@ -32,17 +32,17 @@ const Pagination = (
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-        ? h("div", { className: "notification is-danger" }, "Error: ", err)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", err)
+      : h(
           subele || "div",
           { className, style },
           pre,
           around
             ? h(
-              around,
-              null,
-              data.docs.map((doc, i) => children[0](doc, i))
-            )
+                around,
+                null,
+                data.docs.map((doc, i) => children[0](doc, i))
+              )
             : data.docs.map((doc, i) => children[0](doc, i))
         ),
     h(

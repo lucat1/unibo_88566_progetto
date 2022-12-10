@@ -4,13 +4,13 @@ import type { IUser } from "shared/models/user";
 
 export type AuthValue =
   | {
-    authenticated: true;
-    user: IUser;
-  }
+      authenticated: true;
+      user: IUser;
+    }
   | {
-    authenticated: false;
-    user: null;
-  };
+      authenticated: false;
+      user: null;
+    };
 
 export type AuthContext = [AuthValue, (logged: boolean) => void];
 

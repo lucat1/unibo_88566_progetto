@@ -26,7 +26,7 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
 
   return (
     <div className="is-flex is-flex-direction-column my-6">
-      {(authenticated && user!._id == id || pets.length > 0) && (
+      {((authenticated && user!._id == id) || pets.length > 0) && (
         <h2 className="title my-3">
           {authenticated && user!._id == id ? "My" : "Their"} pets
         </h2>

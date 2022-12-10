@@ -11,7 +11,12 @@ export interface PetsProps {
   isLoading: boolean;
 }
 
-const Favourites: React.FC<PetsProps> = ({ favourites, id, update, isLoading }) => {
+const Favourites: React.FC<PetsProps> = ({
+  favourites,
+  id,
+  update,
+  isLoading,
+}) => {
   const [{ authenticated, user }] = useAuth();
   const {
     register,
@@ -25,7 +30,7 @@ const Favourites: React.FC<PetsProps> = ({ favourites, id, update, isLoading }) 
 
   return (
     <div className="is-flex is-flex-direction-column my-6">
-      {(authenticated && user!._id == id || favourites.length > 0) && (
+      {((authenticated && user!._id == id) || favourites.length > 0) && (
         <h2 className="title my-3">
           {authenticated && user!._id == id ? "My" : "Their"} favorite animals
         </h2>

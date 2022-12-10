@@ -1,4 +1,4 @@
-import { h } from "../h";
+import { h, useState } from "../h";
 import { Link, navigate } from "../router";
 import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
@@ -8,6 +8,7 @@ const links = ["Categories", "Products", "Pets", "Stores", "Orders", "Boards"];
 
 const Nav = () => {
   const [user, setUser] = useContext(userContext);
+  const [open, setOpen] = useState(false);
   return h(
     "nav",
     {
@@ -23,11 +24,25 @@ const Nav = () => {
         { to: "/", className: "navbar-item" },
         h("img", { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" }),
         "Animal House Backoffice"
+      ),
+      h(
+        "a",
+        {
+          role: "button",
+          className: `navbar-burger ${open ? "is-active" : ""}`,
+          onClick: (_) => setOpen(!open),
+          "aria-label": "menu",
+          "aria-expand": open ? "true" : "false",
+          "data-target": "nav",
+        },
+        h("span", { "aria-hidden": "true" }),
+        h("span", { "aria-hidden": "true" }),
+        h("span", { "aria-hidden": "true" })
       )
     ),
     h(
       "div",
-      { className: "navbar-menu" },
+      { className: `navbar-menu ${open ? "is-active" : ""}` },
       h(
         "div",
         { className: "navbar-start" },

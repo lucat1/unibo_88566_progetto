@@ -35,7 +35,7 @@ const Nav: React.FC = () => {
           className={`navbar-burger ${opened ? "is-active" : ""}`}
           onClick={() => setOpened(!opened)}
           aria-label="menu"
-          aria-expanded="false"
+          aria-expanded={opened ? "true" : "false"}
           data-target="nav"
         >
           <span aria-hidden="true"></span>
@@ -56,25 +56,23 @@ const Nav: React.FC = () => {
         <div className="navbar-end">
           <Link to="/cart" className="navbar-item">
             <span className="file-icon">
-              <i
-                className="fa-solid fa-cart-shopping"
-                style={{ color: "white" }}
-              ></i>
+              <i className="fa-solid fa-cart-shopping"></i>
+              <span style={{ marginLeft: ".5rem" }}>{productsInCart}</span>
             </span>
-            <span>{productsInCart}</span>
           </Link>
           {auth.authenticated ? (
-            <div className="navbar-item">
-              <Link
-                className="mr-4 has-text-white"
-                to={`/users/${auth.user?._id}`}
-              >
+            <>
+              <Link className="navbar-item" to={`/users/${auth.user?._id}`}>
                 {auth.user?.username}
               </Link>
-              <button onClick={logout} className="button is-light">
-                Log out
-              </button>
-            </div>
+              <div className="navbar-item">
+                <div className="buttons">
+                  <button onClick={logout} className="button is-light">
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </>
           ) : (
             <div className="navbar-item">
               <div className="buttons">
