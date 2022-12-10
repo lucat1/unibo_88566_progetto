@@ -4,13 +4,13 @@ import type { IUser } from "shared/models/user";
 
 export type AuthValue =
   | {
-      authenticated: true;
-      user: IUser;
-    }
+    authenticated: true;
+    user: IUser;
+  }
   | {
-      authenticated: false;
-      user: null;
-    };
+    authenticated: false;
+    user: null;
+  };
 
 export type AuthContext = [AuthValue, (logged: boolean) => void];
 
@@ -29,7 +29,7 @@ const AuthContextFetcher: React.FC<React.PropsWithChildren<{}>> = ({
     (logged: boolean) => {
       if (logged) {
         fetch<IUser>("auth/me").then(
-          (user) => setValue({ authenticated: true, user }),
+          (user) => setValue({ authenticated: user != null, user }),
           (_) => setValue({ authenticated: false, user: null })
         );
       } else {

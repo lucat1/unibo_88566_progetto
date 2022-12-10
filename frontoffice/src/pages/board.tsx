@@ -49,7 +49,6 @@ const BoardAdd: React.FC = () => {
     navigate("/boards");
   };
 
-  console.log(photos);
   return (
     <>
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center mb-4">

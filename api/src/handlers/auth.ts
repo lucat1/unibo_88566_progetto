@@ -103,6 +103,7 @@ export const UserBody = z.object({
   avatar: z.string().optional(),
 
   pets: z.array(UserPetBody),
+  favourites: z.array(z.string()).optional(),
 });
 export type IUserData = z.infer<typeof UserBody>;
 
@@ -124,7 +125,7 @@ export const patchMe: RequestHandler = async (req, res) => {
 };
 
 export const deleteMe: RequestHandler = async (req, res) => {
-  const user = await User.deleteOne((req as AuthenticatedRequest).user).exec();
+  await User.deleteOne((req as AuthenticatedRequest).user).exec();
   json(res, 200, null);
 };
 

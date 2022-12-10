@@ -67,9 +67,9 @@ const Nav: React.FC = () => {
             <div className="navbar-item">
               <Link
                 className="mr-4 has-text-white"
-                to={`/users/${auth.user._id}`}
+                to={`/users/${auth.user?._id}`}
               >
-                {auth.user.username}
+                {auth.user?.username}
               </Link>
               <button onClick={logout} className="button is-light">
                 Log out

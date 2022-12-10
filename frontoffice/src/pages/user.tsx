@@ -8,6 +8,7 @@ import type { IUser } from "shared/models/user";
 import { useAuth } from "../auth";
 import File from "../components/file";
 import Pets from "../components/pets";
+import Favourites from "../components/favourites";
 
 // TODO: for some reason the picture data is stale from react-query
 
@@ -156,6 +157,12 @@ const User: React.FC = () => {
           pets={data!.pets}
           id={data!._id}
           update={(pets) => mutate({ pets })}
+          isLoading={isLoading}
+        />
+        <Favourites
+          favourites={data!.favourites || []}
+          id={data!._id}
+          update={(favourites) => mutate({ favourites })}
           isLoading={isLoading}
         />
         {mutationError && (
