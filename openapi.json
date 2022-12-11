@@ -2796,9 +2796,8 @@
           "service": {
             "$ref": "#/components/schemas/Service"
           },
-          "store_id": {
-            "type": "string",
-            "format": "uuid"
+          "calendar_name": {
+            "type": "string"
           },
           "duration": {
             "$ref": "#/components/schemas/Interval"
@@ -2823,11 +2822,10 @@
       "Calendar": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
+          "name": {
+            "type": "string"
           },
-          "openingHours": {
+          "intervals": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Interval"
@@ -2889,13 +2887,20 @@
       "Interval": {
         "type": "object",
         "properties": {
+          "dayOfWeek": {
+            "type": "number"
+          },
           "from": {
-            "type": "string",
-            "format": "date-time"
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           },
           "to": {
-            "type": "string",
-            "format": "date-time"
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           }
         }
       },
@@ -3083,11 +3088,13 @@
               "format": "binary"
             }
           },
+          "store": {
+            "$ref": "#/components/schemas/Store"
+          },
           "disponibilities": {
-            "type": "object",
-            "format": "uuid",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Store"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Calendar"
             }
           }
         }

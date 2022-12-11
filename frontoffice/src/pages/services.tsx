@@ -4,20 +4,25 @@ import type { IService } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 import Pagination from "../components/pagination";
 import SelectStore from "../components/select-store";
+import SelectInterval from "../components/select-interval";
 
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
   const [store, setStore] = React.useState<IStore | undefined>(undefined);
+  const [dateTimeRange, setDateTimeRange] = React.useState([new Date()]);
   return (
     <>
-      <h1 className="title">Services</h1>
-      <SelectStore
-        selected={store}
-        onSelect={(s) => {
-          setStore(s);
-          setId(id + 1);
-        }}
-      />
+      <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center my-2">
+        <h1 className="title m-0">Services</h1>
+        <SelectStore
+          selected={store}
+          onSelect={(s) => {
+            setStore(s);
+            setId(id + 1);
+          }}
+        />
+        <SelectInterval selected={dateTimeRange} onSelect={setDateTimeRange} />
+      </div>
       <Pagination
         url={(page) =>
           `store/services?page=${page}&location=${store ? store._id : ""}`
