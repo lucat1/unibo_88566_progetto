@@ -42,14 +42,28 @@ const Service: React.FC = () => {
           <h2 className="has-text-weight-bold is-size-4 mt-4">Store</h2>
           {store?.name}
           <Map lat={store?.location[0]} lng={store?.location[1]} />
-          <div className="my-3 is-flex is-justify-content-end">
-            <button
-              className="button is-primary"
-              // onClick={(_) => addToCart("service", service!, 1)}
-            >
-              Reserve
-            </button>
-          </div>
+          <h2 className="has-text-weight-bold is-size-4 mt-4">
+            Disponibilities
+          </h2>
+          {service?.disponibilities.length > 0 ? (
+            <div className="menu my-4">
+              {service.disponibilities?.map((disponibility, i) => (
+                <div class="card my-4">
+                  <div class="card-content">
+                    {disponibility.name ? disponibility.name : ""}
+                    <div>
+                      <button className="button is-primary my-2">
+                        Reserve
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No disponibilities at the moment.</p>
+          )}
+          <div className="my-3 is-flex is-justify-content-end"></div>
         </section>
       </main>
     </>
