@@ -10,7 +10,8 @@ export const ServiceBody = z.object({
   description: z.string().optional().default(""),
   price: z.number(),
   photos: z.array(z.string()).optional().default([]),
-  // TODO: disponibilities
+  store: z.string(),
+  disponibilities: z.array(z.string()).optional().default([]),
 });
 export type IServiceBody = z.infer<typeof ServiceBody>;
 
