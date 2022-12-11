@@ -35,9 +35,15 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                 "div",
                 { className: "control" },
                 h("input", {
-                  id: "disponibility-name",
+                  id: "disponibility-name-" + i,
                   className: "input",
                   value: disponibility.name ? disponibility.name : "",
+                  onchange: () => {
+                    disponibility.name = document.getElementById(
+                      "disponibility-name-" + i
+                    ).value;
+                    setDisponibilities[0](disponibilities);
+                  },
                 }),
                 h(
                   "button",

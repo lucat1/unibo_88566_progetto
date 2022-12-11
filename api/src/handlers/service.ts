@@ -11,7 +11,7 @@ export const ServiceBody = z.object({
   price: z.number(),
   photos: z.array(z.string()).optional().default([]),
   store: z.string(),
-  disponibilities: z.array(z.string()).optional().default([]),
+  disponibilities: z.array(z.any()).optional().default([]),
 });
 export type IServiceBody = z.infer<typeof ServiceBody>;
 
