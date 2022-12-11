@@ -13,6 +13,7 @@ import User from "./pages/user";
 import Products from "./pages/products";
 import Product from "./pages/product";
 import Services from "./pages/services";
+import Service from "./pages/service";
 import Pets from "./pages/pets";
 import Pet from "./pages/pet";
 import Cart from "./pages/cart";
@@ -38,6 +39,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/services/:id" element={<Service />} />
             <Route path="/pets" element={<Pets />} />
             <Route path="/pets/:id" element={<Pet />} />
             <Route path="/cart" element={<Cart />} />
