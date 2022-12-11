@@ -16,7 +16,7 @@ const SelectStore: React.FC<SelectStoreProps> = ({ selected, onSelect }) => {
   );
   React.useEffect(() => {
     if (!selected || !data) return;
-    data.forEach((d, i) => {
+    data.docs.forEach((d, i) => {
       if (d._id == selected._id && ref.current != null)
         ref.current.selectedIndex = i + 1;
     });
@@ -36,14 +36,16 @@ const SelectStore: React.FC<SelectStoreProps> = ({ selected, onSelect }) => {
           disabled={isLoading}
           onChange={() => {
             const i = ref.current!.selectedIndex;
-            onSelect(i == 0 ? undefined : data![i - 1]);
+            onSelect(i == 0 ? undefined : data!.docs![i - 1]);
           }}
         >
           <option onSelect={(_) => onSelect(undefined)}>
             {isLoading ? "Loading" : "Select a store"}
           </option>
           {!isLoading &&
-            data.map((store) => <option key={store._id}>{store.name}</option>)}
+            data.docs.map((store) => (
+              <option key={store._id}>{store.name}</option>
+            ))}
         </select>
       </div>
     </div>

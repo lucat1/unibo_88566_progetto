@@ -1,16 +1,30 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import type { IService } from "shared/models/service";
+import type { IStore } from "shared/models/store";
 import Pagination from "../components/pagination";
+import SelectStore from "../components/select-store";
 
 const Services: React.FC = () => {
+  const [id, setId] = React.useState(0);
+  const [store, setStore] = React.useState<IStore | undefined>(undefined);
   return (
     <>
       <h1 className="title">Services</h1>
+      <SelectStore
+        selected={store}
+        onSelect={(s) => {
+          setStore(s);
+          setId(id + 1);
+        }}
+      />
       <Pagination
-        url={(page) => `store/services?page=${page}`}
+        url={(page) =>
+          `store/services?page=${page}&location=${store ? store._id : ""}`
+        }
         resource={(page) => ["services", page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
+        id={id}
       >
         {(serv: IService, i) => (
           <div
