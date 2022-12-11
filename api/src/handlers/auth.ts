@@ -7,9 +7,12 @@ import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
 
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 import json from "../res";
-import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
+import { User, shadow } from "../models/user";
+import { Order } from "../models/order";
+import { Board, Post } from "../models/board";
+import { GameScore } from "../models/game-score";
 
 const POPULATE = ["pets"];
 
@@ -128,7 +131,7 @@ export const patchMe: RequestHandler = async (req, res) => {
 };
 
 export const deleteMe: RequestHandler = async (req, res) => {
-  await User.deleteOne((req as AuthenticatedRequest).user).exec();
+  await delUsr((req as AuthenticatedRequest).user!._id)
   json(res, 200, null);
 };
 
@@ -154,6 +157,15 @@ export const getUsers: RequestHandler = async (req, res) => {
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };
 
+const delUsr = async (id: string) => {
+  await Order.deleteMany({ user: id }).exec()
+  await Board.deleteMany({ author: id }).exec()
+  await Post.deleteMany({ author: id }).exec()
+  await GameScore.deleteMany({ user: id }).exec()
+  // TODO: delete all appointments by the user
+  await User.deleteOne({ _id: id }).exec();
+}
+
 export const getUser: RequestHandler = async (req, res) => {
   const { id } = req.params as IUserParams;
   const user = await User.findOne({ _id: id }).populate(POPULATE).exec();
@@ -161,8 +173,7 @@ export const getUser: RequestHandler = async (req, res) => {
 };
 
 export const deleteUser: RequestHandler = async (req, res) => {
-  const { id } = req.params as unknown as IUserParams;
-  await User.deleteOne({ _id: id }).exec();
+  await delUsr((req.params as unknown as IUserParams).id)
   json(res, 200, null);
 };
 
