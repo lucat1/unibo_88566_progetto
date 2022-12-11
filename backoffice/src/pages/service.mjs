@@ -34,6 +34,7 @@ const Service = ({ id, data }) => {
   const [error, setError] = useState(null);
   const [photos, setPhotos] = useState(data.photos || []);
   const [store, setStore] = useState(data.store);
+  const [disponibilities, setDisponibilities] = useState(data.disponibilities);
 
   const patch = async (e) => {
     e.preventDefault();
@@ -156,9 +157,7 @@ const Service = ({ id, data }) => {
             })
           )
         ),
-        h(Disponibilities, {
-          disponibilities: data.disponibilities,
-        }),
+        h(Disponibilities, disponibilities, setDisponibilities),
         h(
           "div",
           {
