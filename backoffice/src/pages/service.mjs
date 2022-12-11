@@ -57,6 +57,7 @@ const Service = ({ id, data }) => {
           price,
           photos,
           store: store?._id,
+          disponibilities,
         })
       );
       data.name = newName;
