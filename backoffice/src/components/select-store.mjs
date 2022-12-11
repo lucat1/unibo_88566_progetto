@@ -8,11 +8,7 @@ const SelectStore = ({ selected, onSelect }) => {
     fetch
   );
   useEffect(() => {
-    if (!selected || !data) {
-      console.log(selected);
-      console.log(data);
-      return;
-    }
+    if (!selected || !data) return;
     data.docs.forEach((d, i) => {
       if (d._id == selected._id)
         document.getElementById("store").selectedIndex = i + 1;
@@ -21,37 +17,37 @@ const SelectStore = ({ selected, onSelect }) => {
   return err
     ? h("div", { className: "notification is-danger" }, "Error: ", err)
     : h(
+      "div",
+      { className: "field my-2" },
+      h("label", { for: "store", className: "label" }, "Select a store"),
+      h(
         "div",
-        { className: "field my-2" },
-        h("label", { for: "store", className: "label" }, "Select a store"),
+        { className: "select" },
         h(
-          "div",
-          { className: "select" },
-          h(
-            "select",
-            {
-              id: "store",
-              disabled: loading,
-              onChange: () => {
-                const i = document.getElementById("store").selectedIndex;
-                onSelect(i == 0 ? undefined : data.docs[i - 1]);
-              },
+          "select",
+          {
+            id: "store",
+            disabled: loading,
+            onChange: () => {
+              const i = document.getElementById("store").selectedIndex;
+              onSelect(i == 0 ? undefined : data.docs[i - 1]);
             },
-            h(
-              "option",
-              {
-                onSelect: () => onSelect("some"),
-              },
-              loading ? "Loading" : "Select a store"
-            ),
-            loading
-              ? null
-              : data.docs.map((store) =>
-                  h("option", { key: store._id }, store.name)
-                )
-          )
+          },
+          h(
+            "option",
+            {
+              onSelect: () => onSelect("some"),
+            },
+            loading ? "Loading" : "Select a store"
+          ),
+          loading
+            ? null
+            : data.docs.map((store) =>
+              h("option", { key: store._id }, store.name)
+            )
         )
-      );
+      )
+    );
 };
 
 export default SelectStore;
