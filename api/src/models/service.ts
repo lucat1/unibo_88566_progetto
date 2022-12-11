@@ -1,7 +1,18 @@
 import { Schema, PaginateModel, model } from "mongoose";
 import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
-import type { IService } from "shared/models/service";
+import type { IInterval, ICalender, IService } from "shared/models/service";
+
+const IntervalSchema = new Schema<IInterval>({
+  dayOfWeek: { type: Number, required: true },
+  from: [Number],
+  to: [Number],
+});
+
+const CalendarSchema = new Schema<ICalendar>({
+  name: String,
+  intervals: [IntervalSchema],
+});
 
 const ServiceSchema = new Schema<IService>({
   _id: { type: String, default: v4 },
@@ -10,7 +21,7 @@ const ServiceSchema = new Schema<IService>({
   price: { type: Number, required: true },
   photos: [String],
   store: { type: String, ref: "Store" },
-  disponibilities: [String],
+  disponibilities: [CalendarSchema],
 });
 ServiceSchema.plugin(paginate);
 
