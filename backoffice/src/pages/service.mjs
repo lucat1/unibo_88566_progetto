@@ -5,6 +5,7 @@ import fetch, { withOptions } from "shared/fetch";
 import req from "../async";
 
 import Pictures from "../components/pictures";
+import SelectStore from "../components/select-store";
 import File from "../components/file";
 
 const ServiceWrapper = () => {
@@ -31,6 +32,7 @@ const Service = ({ id, data }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [photos, setPhotos] = useState(data.photos || []);
+  const [store, setStore] = useState(data.store);
 
   const patch = async (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ const Service = ({ id, data }) => {
         name: newName,
         description: newDescription,
         price: newPrice,
+        store: newStore,
       } = await fetch(
         `store/services/${id}`,
         withOptions("PATCH", {
@@ -51,11 +54,13 @@ const Service = ({ id, data }) => {
           description,
           price,
           photos,
+          store,
         })
       );
       data.name = newName;
       data.description = newDescription;
       data.price = newPrice;
+      data.store = newStore;
     } catch (err) {
       setError(err.message || "An error occourred while updating the service");
     }
@@ -129,6 +134,10 @@ const Service = ({ id, data }) => {
             )
           )
         ),
+        h(SelectStore, {
+          selected: store,
+          onSelect: (s) => setStore(s),
+        }),
         h(
           "div",
           { className: "field my-2" },

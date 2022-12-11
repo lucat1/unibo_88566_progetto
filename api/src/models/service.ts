@@ -9,7 +9,8 @@ const ServiceSchema = new Schema<IService>({
   description: String,
   price: { type: Number, required: true },
   photos: [String],
-  // TODO: disponibilities
+  store: { type: String, ref: "Store" },
+  disponibilities: [String],
 });
 ServiceSchema.plugin(paginate);
 
@@ -24,10 +25,14 @@ export const shadow = ({
   description,
   price,
   photos,
+  store,
+  disponibilities,
 }: IService) => ({
   _id,
   name,
   description,
   price,
   photos,
+  store,
+  disponibilities,
 });

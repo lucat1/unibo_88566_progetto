@@ -3,7 +3,7 @@ import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
 import type { IStore } from "shared/models/store";
 
-const StoreSchema = new Schema<IStore>({
+export const StoreSchema = new Schema<IStore>({
   _id: { type: String, default: v4 },
   name: { type: String, required: true },
   location: [

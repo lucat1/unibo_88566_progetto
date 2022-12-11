@@ -2,9 +2,12 @@ import { h, useState } from "../h";
 import { navigate } from "../router";
 import fetch, { withOptions } from "shared/fetch";
 
+import SelectStore from "../components/select-store";
+
 const ServiceAdd = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [store, setStore] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = document.getElementById("name").value;
@@ -19,6 +22,7 @@ const ServiceAdd = () => {
           name,
           description,
           price,
+          store: store?._id,
         })
       );
       navigate(`/services/${_id}`);
@@ -63,6 +67,7 @@ const ServiceAdd = () => {
         })
       )
     ),
+    h(SelectStore, { onSelect: (s) => setStore(s) }),
     h(
       "div",
       { className: "field my-2" },
