@@ -8,11 +8,11 @@ const Boards = () =>
     "main",
     { className: "menu" },
     h("p", { className: "menu-label" }, "Boards"),
-    h(
-      Link,
-      { to: "/boards/add" },
-      h("button", { className: "button is-primary" }, "Add")
-    ),
+    // h(
+    //   Link,
+    //   { to: "/boards/add" },
+    //   h("button", { className: "button is-primary" }, "Add")
+    // ),
     h(
       Pagination,
       {
@@ -33,18 +33,18 @@ const Boards = () =>
             { className: "card" },
             prod.photos?.length > 0
               ? h(
-                  "div",
-                  { className: "card-image" },
-                  h(
-                    "figure",
-                    { className: "image is-square" },
-                    h("img", {
-                      style: { "object-fit": "cover" },
-                      src: prod.photos ? prod.photos[0] : undefined,
-                      alt: `${prod.name} main image`,
-                    })
-                  )
+                "div",
+                { className: "card-image" },
+                h(
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: prod.photos ? prod.photos[0] : undefined,
+                    alt: `${prod.name} main image`,
+                  })
                 )
+              )
               : null,
             h(
               "div",

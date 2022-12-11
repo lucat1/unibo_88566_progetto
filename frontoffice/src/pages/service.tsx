@@ -45,9 +45,9 @@ const Service: React.FC = () => {
           <div className="my-3 is-flex is-justify-content-end">
             <button
               className="button is-primary"
-            // onClick={(_) => addToCart("service", service!, 1)}
+              // onClick={(_) => addToCart("service", service!, 1)}
             >
-              Add to cart
+              Reserve
             </button>
           </div>
         </section>
