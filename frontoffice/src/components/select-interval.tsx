@@ -1,9 +1,8 @@
 import * as React from "react";
-import DatePicker from "react-datepicker";
 
 export interface SelectIntervalProps {
-  selected?: Date;
-  onSelect: (n: Date | undefined) => void;
+  selected?: Date[];
+  onSelect: (n: Date[] | undefined) => void;
 }
 
 const SelectInterval: React.FC<SelectIntervalProps> = ({

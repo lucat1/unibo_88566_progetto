@@ -4,6 +4,7 @@ import { navigate } from "../router";
 import fetch, { withOptions } from "shared/fetch";
 import req from "../async";
 
+import Disponibilities from "../components/disponibilities";
 import Pictures from "../components/pictures";
 import SelectStore from "../components/select-store";
 import File from "../components/file";
@@ -155,6 +156,9 @@ const Service = ({ id, data }) => {
             })
           )
         ),
+        h(Disponibilities, {
+          disponibilities: data.disponibilities,
+        }),
         h(
           "div",
           {
