@@ -1,23 +1,79 @@
 import { h } from "../h";
 
-const Disponibilities = (data) => {
+const Disponibilities = (disponibilities, setDisponibilities) => {
   return h(
     "div",
     { className: "field my-2" },
-    h("label", { for: "price", className: "label" }, "Disponibilities"),
-    data?.disponibilities?.length == 0 ? "No disponibilities yet." : null,
+    h(
+      "label",
+      { for: "disponibilities", className: "label" },
+      "Disponibilities"
+    ),
+    disponibilities?.length == 0 ? "No disponibilities yet." : null,
     h(
       "div",
       {
-        className:
-          "mt-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center",
+        id: "disponibilities",
+        className: "menu my-4",
       },
-      data?.disponibilities?.map((disponibility) =>
+      disponibilities?.map((disponibility, i) =>
         h(
           "div",
-          { className: "card" },
-          h("div", { className: "card-content" }, disponibility.name)
+          { className: "card my-4" },
+          h(
+            "div",
+            { className: "card-content" },
+            h(
+              "div",
+              { className: "content" },
+              h(
+                "label",
+                { for: "disponibility-name", className: "label" },
+                "Name"
+              ),
+              h(
+                "div",
+                { className: "control" },
+                h("input", {
+                  id: "disponibility-name",
+                  className: "input",
+                  value: disponibility.name ? disponibility.name : "",
+                }),
+                h(
+                  "button",
+                  {
+                    className: "button is-danger my-2",
+                    action: "none",
+                    onClick: () => {
+                      disponibilities.splice(i);
+                      setDisponibilities[0](disponibilities);
+                    },
+                  },
+                  "Delete"
+                )
+              )
+            )
+          )
         )
+      )
+    ),
+    h(
+      "div",
+      {
+        className: "is-flex  is-justify-content-space-between py-2",
+      },
+      h(
+        "button",
+        {
+          action: "submit",
+          className: "button is-primary",
+          onClick: () =>
+            setDisponibilities[0]([
+              ...disponibilities,
+              { name: "???", intervals: [] },
+            ]),
+        },
+        "Add disponibility"
       )
     )
   );
