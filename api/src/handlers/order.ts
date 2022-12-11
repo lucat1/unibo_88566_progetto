@@ -75,9 +75,14 @@ export const addOrder: RequestHandler = async (req, res) => {
 export const getOrders: RequestHandler = async (req, res) => {
   const { limit, page, sort, order } =
     req.query as unknown as IPaginationQuery & ISortingQuery;
+  const { user } = req as AuthenticatedRequest;
+
+  let query = {}
+  if ((user!.level || 0) < 1)
+    query = { user: user!._id }
 
   const result = await Order.paginate(
-    {},
+    query,
     {
       limit,
       page,

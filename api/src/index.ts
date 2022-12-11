@@ -338,7 +338,6 @@ const main = async () => {
   app.get(
     "/api/store/orders/",
     authRequired,
-    priviledged(UserLevel.MANAGER),
     validateQuery(PaginationQuery.and(SortingQuery)),
     catcher(getOrders)
   );
