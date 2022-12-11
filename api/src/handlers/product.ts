@@ -77,7 +77,7 @@ export const getProduct: RequestHandler = async (req, res) => {
 
 export const deleteProduct: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IProductParams;
-  await Product.deleteOne({ _id: id });
+  await Product.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 

@@ -47,7 +47,7 @@ export const getCategory: RequestHandler = async (req, res) => {
 
 export const deleteCategory: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as ICategoryParams;
-  await Category.deleteOne({ _id: id });
+  await Category.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 
@@ -90,7 +90,7 @@ export const getSubcategory: RequestHandler = async (req, res) => {
 
 export const deleteSubcategory: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as ICategoryParams;
-  await Subcategory.deleteOne({ _id: id });
+  await Subcategory.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 

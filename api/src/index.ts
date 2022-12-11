@@ -37,7 +37,10 @@ import {
   login,
   password,
   upgrade,
-  get,
+  getUsers,
+  getUser,
+  setUser,
+  deleteUser,
   getMe,
   deleteMe,
   patchMe,
@@ -187,7 +190,28 @@ const main = async () => {
   );
   app.post("/api/auth/upgrade", authRequired, catcher(upgrade));
 
-  app.get("/api/user/:id", validateParams(UserParams), catcher(get));
+  app.get(
+    "/api/users",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(PaginationQuery),
+    catcher(getUsers)
+  );
+  app.get("/api/users/:id", validateParams(UserParams), catcher(getUser));
+  app.patch(
+    "/api/users/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(UserParams),
+    catcher(setUser)
+  );
+  app.delete(
+    "/api/users/:id",
+    authRequired,
+    priviledged(UserLevel.MANAGER),
+    validateParams(UserParams),
+    catcher(deleteUser)
+  );
 
   app.get("/api/images/:id", validateParams(ImageParams), catcher(serveImage));
   app.put(

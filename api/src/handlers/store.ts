@@ -51,7 +51,7 @@ export const getStore: RequestHandler = async (req, res) => {
 
 export const deleteStore: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IStoreParams;
-  await Store.deleteOne({ _id: id });
+  await Store.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 

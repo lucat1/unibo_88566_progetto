@@ -1,4 +1,5 @@
-import { Schema, model } from "mongoose";
+import { Schema, PaginateModel, model } from "mongoose";
+import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
 import { hash } from "bcrypt";
 import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
@@ -28,16 +29,21 @@ const UserSchema = new Schema<IUser>({
   pets: [{ type: UserPet }],
   favourites: [{ type: String, required: true }],
 });
+UserSchema.plugin(paginate);
 UserSchema.pre("save", async function () {
   let password = "";
   try {
     password = (await User.findOne({ _id: this._id }))?.password || "";
   } catch (_) {}
+
   if (password != this.password)
     this.password = await hash(this.password, PASSWORD_SALT_ROUNDS);
 });
 
-export const User = model<IUser>("User", UserSchema);
+export const User: PaginateModel<IUser> = model<IUser>(
+  "User",
+  UserSchema
+) as PaginateModel<IUser>;
 
 export const shadow = ({
   _id,

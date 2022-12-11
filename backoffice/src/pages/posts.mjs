@@ -45,7 +45,7 @@ const Posts = ({ board }) => {
         Pagination,
         {
           url: (page) => `community/boards/${board._id}?page=${page}&limit=20`,
-          className: "is-flex is-flex-direction-row is-flex-wrap-wrap",
+          className: "is-flex is-flex-direction-column",
           id: id,
         },
         (post, _) =>

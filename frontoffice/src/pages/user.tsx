@@ -15,7 +15,7 @@ import Delete from "../components/delete";
 const User: React.FC = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
-  const { data } = useQuery(["user", id], () => fetch<IUser>(`user/${id}`), {
+  const { data } = useQuery(["user", id], () => fetch<IUser>(`users/${id}`), {
     suspense: true,
   });
   const patchUser = (user: Partial<IUser>) =>

@@ -9,8 +9,6 @@ import { useAuth } from "../auth";
 const BoardAdd: React.FC = () => {
   const navigate = useNavigate();
   const [auth] = useAuth();
-  if (!auth.authenticated) navigate("/", { replace: true });
-
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<null | string>(null);
   const {
@@ -20,12 +18,13 @@ const BoardAdd: React.FC = () => {
   } = useForm<IBoard & { post: string }>();
   const newBoard = async ({ name, post }: IBoard & { post: string }) => {
     setLoading(true);
-    setError(false);
+    setError(null);
     try {
       const { _id } = await fetch<IBoard>(
         "community/boards",
         withOptions("PUT", { name })
       );
+
       await fetch<IBoard>(
         `community/boards/${_id}`,
         withOptions("PUT", { message: post })
@@ -36,6 +35,12 @@ const BoardAdd: React.FC = () => {
     }
     setLoading(false);
   };
+  React.useEffect(() => {
+    if (!auth.authenticated) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <h1 className="title">New Board</h1>

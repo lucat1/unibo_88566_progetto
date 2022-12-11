@@ -77,19 +77,15 @@ export const getOrders: RequestHandler = async (req, res) => {
     req.query as unknown as IPaginationQuery & ISortingQuery;
   const { user } = req as AuthenticatedRequest;
 
-  let query = {}
-  if ((user!.level || 0) < 1)
-    query = { user: user!._id }
+  let query = {};
+  if ((user!.level || 0) < 1) query = { user: user!._id };
 
-  const result = await Order.paginate(
-    query,
-    {
-      limit,
-      page,
-      sort: sort ? { [sort]: order } : {},
-      populate: POPULATE,
-    }
-  );
+  const result = await Order.paginate(query, {
+    limit,
+    page,
+    sort: sort ? { [sort]: order } : {},
+    populate: POPULATE,
+  });
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };

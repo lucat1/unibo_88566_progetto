@@ -17,7 +17,7 @@ const Boards = () =>
       Pagination,
       {
         url: (page) => `community/boards?page=${page}&limit=20`,
-        className: "is-flex is-flex-direction-row is-flex-wrap-wrap",
+        className: "is-flex is-flex-direction-column",
       },
       (prod, i) =>
         h(
@@ -26,7 +26,6 @@ const Boards = () =>
             to: `/boards/${prod._id}`,
             key: i,
             className: "m-4",
-            style: { width: "100%", "max-width": "24rem" },
           },
           h(
             "div",

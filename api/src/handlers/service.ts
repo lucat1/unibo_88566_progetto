@@ -72,7 +72,7 @@ export const getService: RequestHandler = async (req, res) => {
 
 export const deleteService: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IServiceParams;
-  await Service.deleteOne({ _id: id });
+  await Service.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 
