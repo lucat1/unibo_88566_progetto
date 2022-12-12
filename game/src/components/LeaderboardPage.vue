@@ -38,14 +38,14 @@ export default defineComponent({
     class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
   >
     <thead>
-      <tr>
+      <tr role="row">
         <th>#</th>
         <th>User</th>
         <th>Score</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(entry, i) in docs">
+      <tr v-for="(entry, i) in docs" role="row">
         <td>{{ limit * (page - 1) + i + 1 }}</td>
         <td>
           <a :href="entry.profileUrl">{{ entry.username || "anonymous" }}</a>

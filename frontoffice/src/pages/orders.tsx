@@ -16,7 +16,7 @@ const Ordes: React.FC = () => {
         resource={(page) => ["orders", page]}
         pre={
           <thead>
-            <tr>
+            <tr role="row">
               <th>Index</th>
               <th>
                 <abbr title="Number of items">N. items</abbr>
@@ -31,7 +31,7 @@ const Ordes: React.FC = () => {
         }
       >
         {(ord: IOrder, i) => (
-          <tr key={i}>
+          <tr key={i} role="row">
             <th>
               <Link to={`/orders/${ord._id}`}>{i + 1}</Link>
             </th>

@@ -59,7 +59,7 @@ const Cart: React.FC = () => {
     <main className="is-flex is-flex-direction-column">
       <table className="table">
         <thead>
-          <tr>
+          <tr role="row">
             <th>
               <abbr title="Position">Pos</abbr>
             </th>
@@ -83,7 +83,7 @@ const Cart: React.FC = () => {
         </thead>
         <tbody>
           {items.map((item, i) => (
-            <tr key={i}>
+            <tr key={i} role="row">
               <th>{i + 1}</th>
               <td>
                 <img

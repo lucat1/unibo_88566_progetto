@@ -1,16 +1,22 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import type { IBoard } from "shared/models/board";
+
 import Pagination from "../components/pagination";
+import { useAuth } from "../auth";
 
 const Boards: React.FC = () => {
+  const [auth] = useAuth();
+
   return (
     <>
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center my-2">
         <h1 className="title m-0">Boards</h1>
-        <Link to="/boards/add">
-          <button className="button is-primary">New Post</button>
-        </Link>
+        {auth.authenticated && (
+          <Link to="/boards/add">
+            <button className="button is-primary">New Post</button>
+          </Link>
+        )}
       </div>
       <div
         className="m-2 px-5 is-flex is-justify-content-space-between"

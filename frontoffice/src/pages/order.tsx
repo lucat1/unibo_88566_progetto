@@ -27,7 +27,7 @@ const Order: React.FC = () => {
     } catch (err) {
       setError(
         "Error while deleting: " +
-          ((err as Error<any>).message || "Unknown error")
+        ((err as Error<any>).message || "Unknown error")
       );
     }
     setLoading(false);
@@ -43,7 +43,7 @@ const Order: React.FC = () => {
       </div>
       <table className="table">
         <thead>
-          <tr>
+          <tr role="row">
             <th>
               <abbr title="Position">Pos</abbr>
             </th>
@@ -64,14 +64,13 @@ const Order: React.FC = () => {
         </thead>
         <tbody>
           {order?.items.map((item, i) => (
-            <tr key={i}>
+            <tr key={i} role="row">
               <th>{i + 1}</th>
               <td>
                 <img
                   style={{ width: "1.5rem", height: "1.5rem" }}
-                  alt={`${(item.pet || item.product)!.name}'s ${
-                    item.pet ? "pet" : "product"
-                  } image`}
+                  alt={`${(item.pet || item.product)!.name}'s ${item.pet ? "pet" : "product"
+                    } image`}
                   src={(item.product || item.pet)!.photos[0]}
                 />
               </td>
