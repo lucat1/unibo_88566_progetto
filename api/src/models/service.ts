@@ -12,6 +12,7 @@ const IntervalSchema = new Schema<IInterval>({
 const CalendarSchema = new Schema<ICalendar>({
   name: String,
   intervals: [IntervalSchema],
+  slotDuration: Number,
 });
 
 const ServiceSchema = new Schema<IService>({

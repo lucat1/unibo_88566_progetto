@@ -10,6 +10,7 @@ export interface IInterval extends Document {
 export interface ICalendar extends Document {
   name: string;
   intervals: IInterval[];
+  slotDuration: number;
 }
 
 export interface IService extends Document {
