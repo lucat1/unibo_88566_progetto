@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { removeAuthToken } from "shared/auth";
-import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
+import { GAME_ENDPOINT, FRONTOFFICE_ENDPOINT } from "shared/endpoints";
 
 import { routes } from "../router";
 import { useAuth } from "../auth";
@@ -21,6 +21,9 @@ export default defineComponent({
     userProfile() {
       return FRONTOFFICE_ENDPOINT + "users/" + this.auth.uuid;
     },
+    logo() {
+      return GAME_ENDPOINT + "logo.png";
+    },
   },
   methods: {
     async logout() {
@@ -35,7 +38,7 @@ export default defineComponent({
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img alt="Animal House Logo" src="/logo.png" class="mr-4" />
+        <img alt="Animal House Logo" :src="logo" class="mr-4" />
         Animal House Game
       </router-link>
 
