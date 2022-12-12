@@ -1,8 +1,8 @@
 {
-  "GAME_ENDPOINT": "http://site212206.tw.cs.unibo.it/game/",
-  "FRONTOFFICE_ENDPOINT": "http://site212206.tw.cs.unibo.it/frontoffice/",
-  "BACKOFFICE_ENDPOINT": "http://site212206.tw.cs.unibo.it/backoffice/",
-  "API_ENDPOINT": "http://site212206.tw.cs.unibo.it/api/",
+  "GAME_ENDPOINT": "https://site212206.tw.cs.unibo.it/game/",
+  "FRONTOFFICE_ENDPOINT": "https://site212206.tw.cs.unibo.it/frontoffice/",
+  "BACKOFFICE_ENDPOINT": "https://site212206.tw.cs.unibo.it/backoffice/",
+  "API_ENDPOINT": "https://site212206.tw.cs.unibo.it/api/",
   "API_PORT": 8000,
   "MONGO_URL": "mongodb://site212206:shei8Mi4@mongo_site212206:27017/",
   "PASSWORD_SALT_ROUNDS": 5,

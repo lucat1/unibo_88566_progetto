@@ -23,13 +23,16 @@ import Boards from "./pages/boards";
 import BoardAdd from "./pages/board-add";
 import Board from "./pages/board";
 import NotFound from "./pages/not-found";
+import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
 
 const queryClient = new QueryClient();
+
+const baseURL = FRONTOFFICE_ENDPOINT.includes("unibo.it") ? "/frontoffice" : "";
 
 createRoot(document.getElementById("root")!).render(
   <AuthContextProvider>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={baseURL}>
         <App>
           <Routes>
             <Route index element={<Index />} />

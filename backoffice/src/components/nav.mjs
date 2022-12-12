@@ -3,6 +3,7 @@ import { Link, navigate } from "../router";
 import { useContext } from "../ctx";
 import { user as userContext } from "../ctxs";
 import { removeAuthToken } from "shared/auth";
+import { BACKOFFICE_ENDPOINT } from "shared/endpoints";
 
 const links = [
   "Categories",
@@ -31,7 +32,11 @@ const Nav = () => {
       h(
         Link,
         { to: "/", className: "navbar-item" },
-        h("img", { alt: "Animal House Logo", src: "/logo.png", class: "mr-4" }),
+        h("img", {
+          alt: "Animal House Logo",
+          src: BACKOFFICE_ENDPOINT + "logo.png",
+          class: "mr-4",
+        }),
         "Animal House Backoffice"
       ),
       h(

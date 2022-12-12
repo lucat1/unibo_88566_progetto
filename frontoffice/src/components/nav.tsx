@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { removeAuthToken } from "shared/auth";
+import { FRONTOFFICE_ENDPOINT } from "shared/endpoints";
 
 import useCart from "../cart";
 import { useAuth } from "../auth";
@@ -26,7 +27,11 @@ const Nav: React.FC = () => {
     >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
-          <img alt="Animal House Logo" src="/logo.png" className="mr-4" />
+          <img
+            alt="Animal House Logo"
+            src={`${FRONTOFFICE_ENDPOINT}logo.png`}
+            className="mr-4"
+          />
           Animal House Frontoffice
         </Link>
 
