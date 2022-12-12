@@ -8,6 +8,7 @@ import Disponibilities from "../components/disponibilities";
 import Pictures from "../components/pictures";
 import SelectStore from "../components/select-store";
 import File from "../components/file";
+import Reservations from "../pages/reservations";
 
 const ServiceWrapper = () => {
   const id = window.location.pathname.match(
@@ -186,7 +187,10 @@ const Service = ({ id, data }) => {
           )
         ),
         error && h("div", { className: "notification is-danger" }, error)
-      )
+      ),
+      h("hr"),
+      h("h2", { className: "is-size-4" }, "Reservations"),
+      h(Reservations, { service_id: id })
     )
   );
 };
