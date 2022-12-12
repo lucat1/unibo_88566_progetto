@@ -9,6 +9,7 @@ import useCart from "../cart";
 import Pictures from "../components/pictures";
 import Map from "../components/map";
 
+// TODO: update pagination on filters update
 const Service: React.FC = () => {
   const { id } = useParams();
   const { data: service } = useQuery(

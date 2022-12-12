@@ -34,7 +34,7 @@ const SelectStore: React.FC<SelectStoreProps> = ({ selected, onSelect }) => {
           ref={ref as any}
           id="store"
           disabled={isLoading}
-          onChange={() => {
+          onInput={(_) => {
             const i = ref.current!.selectedIndex;
             onSelect(i == 0 ? undefined : data!.docs![i - 1]);
           }}
