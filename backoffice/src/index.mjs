@@ -31,6 +31,8 @@ import Order from "./pages/order";
 import BoardAdd from "./pages/board-add";
 import Boards from "./pages/boards";
 import Board from "./pages/board";
+import Users from "./pages/users";
+import User from "./pages/user";
 
 let user = await me();
 if (user) userContext.set(user);
@@ -142,6 +144,14 @@ render(
         h(Route, {
           path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
           element: h(Board, {}),
+        }),
+        h(Route, {
+          path: /^\/users$/,
+          element: h(Users, {}),
+        }),
+        h(Route, {
+          path: /^\/users\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(User, {}),
         }),
         h(Route, { path: /^.*$/, element: h(NotFound, {}) })
       )

@@ -19,7 +19,7 @@ export default defineComponent({
       context.emit("pagescount", pages);
       return docs.map((entry) => ({
         ...entry,
-        profileUrl: FRONTOFFICE_ENDPOINT + "user/" + entry.user,
+        profileUrl: FRONTOFFICE_ENDPOINT + "users/" + entry.user,
       }));
     };
     let docs = ref(await f(props.game!, props.page!, props.limit!));

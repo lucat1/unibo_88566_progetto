@@ -2,7 +2,13 @@ import { defineStore } from "pinia";
 
 import type { IUser } from "shared/models/user";
 import fetch from "shared/fetch";
-import { isAuthenticated, getUUID, setUUID, hasUUID } from "shared/auth";
+import {
+  isAuthenticated,
+  getUUID,
+  setUUID,
+  hasUUID,
+  removeAuthToken,
+} from "shared/auth";
 
 const ANONYMOUS = "anonymous";
 
@@ -48,6 +54,7 @@ export const useAuth = defineStore("user", {
         try {
           this.authenticateAsUser(await fetch<IUser>("auth/me"));
         } catch (_) {
+          removeAuthToken();
           this.tryUUID();
         }
       } else {

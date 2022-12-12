@@ -75,16 +75,17 @@ export const addOrder: RequestHandler = async (req, res) => {
 export const getOrders: RequestHandler = async (req, res) => {
   const { limit, page, sort, order } =
     req.query as unknown as IPaginationQuery & ISortingQuery;
+  const { user } = req as AuthenticatedRequest;
 
-  const result = await Order.paginate(
-    {},
-    {
-      limit,
-      page,
-      sort: sort ? { [sort]: order } : {},
-      populate: POPULATE,
-    }
-  );
+  let query = {};
+  if ((user!.level || 0) < 1) query = { user: user!._id };
+
+  const result = await Order.paginate(query, {
+    limit,
+    page,
+    sort: sort ? { [sort]: order } : {},
+    populate: POPULATE,
+  });
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };

@@ -60,7 +60,7 @@ export const getPet: RequestHandler = async (req, res) => {
 
 export const deletePet: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IPetParams;
-  await Pet.deleteOne({ _id: id });
+  await Pet.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
 

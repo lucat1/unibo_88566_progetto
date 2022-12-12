@@ -1,13 +1,18 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
 import { v4 } from "node-uuid";
-import { compare } from "bcrypt";
-
+import { hash, compare } from "bcrypt";
 import { UserLevel } from "shared/models/user";
+import { PASSWORD_SALT_ROUNDS } from "shared/endpoints";
+
+import type { IPaginationQuery, ISortingQuery } from "./pagination";
 import json from "../res";
-import { User, shadow } from "../models/user";
 import type { AuthenticatedRequest, AuthUser, AuthError } from "../auth";
 import type { IRegisterData } from "../auth";
+import { User, shadow } from "../models/user";
+import { Order } from "../models/order";
+import { Board, Post } from "../models/board";
+import { GameScore } from "../models/game-score";
 
 const POPULATE = ["pets"];
 
@@ -101,11 +106,12 @@ export const UserBody = z.object({
   lastName: z.string().optional(),
   city: z.string().optional(),
   avatar: z.string().optional(),
+  password: z.string().optional(),
 
   pets: z.array(UserPetBody),
   favourites: z.array(z.string()).optional(),
 });
-export type IUserData = z.infer<typeof UserBody>;
+export type IUserBody = z.infer<typeof UserBody>;
 
 export const patchMe: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
@@ -113,7 +119,7 @@ export const patchMe: RequestHandler = async (req, res) => {
     json(res, 200, null);
     return;
   }
-  const patch = req.body as unknown as IUserData;
+  const patch = req.body as unknown as IUserBody;
   const updated = await User.findOneAndUpdate({ _id: user._id }, patch, {
     new: true,
   }).exec();
@@ -125,7 +131,7 @@ export const patchMe: RequestHandler = async (req, res) => {
 };
 
 export const deleteMe: RequestHandler = async (req, res) => {
-  await User.deleteOne((req as AuthenticatedRequest).user).exec();
+  await delUsr((req as AuthenticatedRequest).user!._id)
   json(res, 200, null);
 };
 
@@ -134,8 +140,55 @@ export const UserParams = z.object({
 });
 export type IUserParams = z.infer<typeof UserParams>;
 
-export const get: RequestHandler = async (req, res) => {
+export const getUsers: RequestHandler = async (req, res) => {
+  const { limit, page, sort, order } =
+    req.query as unknown as IPaginationQuery & ISortingQuery;
+
+  const result = await User.paginate(
+    {},
+    {
+      limit,
+      page,
+      sort: sort ? { [sort]: order } : {},
+      populate: POPULATE,
+    }
+  );
+
+  json(res, 200, { ...result, docs: result.docs.map(shadow) });
+};
+
+const delUsr = async (id: string) => {
+  await Order.deleteMany({ user: id }).exec()
+  await Board.deleteMany({ author: id }).exec()
+  await Post.deleteMany({ author: id }).exec()
+  await GameScore.deleteMany({ user: id }).exec()
+  // TODO: delete all appointments by the user
+  await User.deleteOne({ _id: id }).exec();
+}
+
+export const getUser: RequestHandler = async (req, res) => {
   const { id } = req.params as IUserParams;
   const user = await User.findOne({ _id: id }).populate(POPULATE).exec();
   json(res, 200, user != null ? shadow(user) : null);
+};
+
+export const deleteUser: RequestHandler = async (req, res) => {
+  await delUsr((req.params as unknown as IUserParams).id)
+  json(res, 200, null);
+};
+
+export const setUser: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as IUserParams;
+  const patch = req.body as IUserBody;
+  if (patch.password)
+    patch.password = await hash(patch.password, PASSWORD_SALT_ROUNDS);
+
+  const updated = await User.findOneAndUpdate({ _id: id }, patch, {
+    new: true,
+  }).exec();
+  if (updated == null)
+    json(res, 404, {
+      message: "Invalid user id",
+    });
+  else json(res, 200, shadow(updated));
 };
