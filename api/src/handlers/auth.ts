@@ -131,7 +131,7 @@ export const patchMe: RequestHandler = async (req, res) => {
 };
 
 export const deleteMe: RequestHandler = async (req, res) => {
-  await delUsr((req as AuthenticatedRequest).user!._id)
+  await delUsr((req as AuthenticatedRequest).user!._id);
   json(res, 200, null);
 };
 
@@ -158,13 +158,13 @@ export const getUsers: RequestHandler = async (req, res) => {
 };
 
 const delUsr = async (id: string) => {
-  await Order.deleteMany({ user: id }).exec()
-  await Board.deleteMany({ author: id }).exec()
-  await Post.deleteMany({ author: id }).exec()
-  await GameScore.deleteMany({ user: id }).exec()
+  await Order.deleteMany({ user: id }).exec();
+  await Board.deleteMany({ author: id }).exec();
+  await Post.deleteMany({ author: id }).exec();
+  await GameScore.deleteMany({ user: id }).exec();
   // TODO: delete all appointments by the user
   await User.deleteOne({ _id: id }).exec();
-}
+};
 
 export const getUser: RequestHandler = async (req, res) => {
   const { id } = req.params as IUserParams;
@@ -173,7 +173,7 @@ export const getUser: RequestHandler = async (req, res) => {
 };
 
 export const deleteUser: RequestHandler = async (req, res) => {
-  await delUsr((req.params as unknown as IUserParams).id)
+  await delUsr((req.params as unknown as IUserParams).id);
   json(res, 200, null);
 };
 

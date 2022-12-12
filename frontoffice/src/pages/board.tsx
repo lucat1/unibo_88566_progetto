@@ -167,7 +167,7 @@ const BoardAdd: React.FC = () => {
               })}
             >
               <div className="field">
-                <label htmlFor="post" className="label">
+                <label htmlFor="message" className="label">
                   New post
                 </label>
                 <div className="control">

@@ -39,8 +39,8 @@ export const shadowPost = ({ _id, message, photos, author }: IPost) => ({
     typeof author == "undefined"
       ? undefined
       : typeof author == "string"
-        ? { _id: author }
-        : shadowUser(author as IUser),
+      ? { _id: author }
+      : shadowUser(author as IUser),
 });
 export const shadowBoard = ({ _id, name, author }: IBoard) => ({
   _id,
@@ -49,6 +49,6 @@ export const shadowBoard = ({ _id, name, author }: IBoard) => ({
     typeof author == "undefined"
       ? undefined
       : typeof author == "string"
-        ? { _id: author }
-        : shadowUser(author as IUser),
+      ? { _id: author }
+      : shadowUser(author as IUser),
 });

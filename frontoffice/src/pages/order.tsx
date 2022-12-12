@@ -27,7 +27,7 @@ const Order: React.FC = () => {
     } catch (err) {
       setError(
         "Error while deleting: " +
-        ((err as Error<any>).message || "Unknown error")
+          ((err as Error<any>).message || "Unknown error")
       );
     }
     setLoading(false);
@@ -69,8 +69,9 @@ const Order: React.FC = () => {
               <td>
                 <img
                   style={{ width: "1.5rem", height: "1.5rem" }}
-                  alt={`${(item.pet || item.product)!.name}'s ${item.pet ? "pet" : "product"
-                    } image`}
+                  alt={`${(item.pet || item.product)!.name}'s ${
+                    item.pet ? "pet" : "product"
+                  } image`}
                   src={(item.product || item.pet)!.photos[0]}
                 />
               </td>

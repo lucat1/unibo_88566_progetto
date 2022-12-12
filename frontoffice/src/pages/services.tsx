@@ -9,7 +9,10 @@ import SelectInterval from "../components/select-interval";
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
   const [store, setStore] = React.useState<IStore | undefined>(undefined);
-  const [dateTimeRange, setDateTimeRange] = React.useState([new Date(), new Date]);
+  const [dateTimeRange, setDateTimeRange] = React.useState([
+    new Date(),
+    new Date(),
+  ]);
   return (
     <>
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center my-2">
