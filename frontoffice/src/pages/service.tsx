@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { AppointmentPicker } from "react-appointment-picker";
 import fetch from "shared/fetch";
 import type { IService } from "shared/models/service";
 import type { IStore } from "shared/models/store";
@@ -52,6 +53,12 @@ const Service: React.FC = () => {
                 <div key={i} className="card my-4">
                   <div className="card-content">
                     {disponibility.name ? disponibility.name : ""}
+                    <AppointmentPicker
+                      days={[
+                        [{ id: 1, number: 1, isSelected: true, periods: 2 }],
+                      ]}
+                      initialDay={new Date("2018-05-05")}
+                    />
                     <div>
                       <button className="button is-primary my-2">
                         Reserve
