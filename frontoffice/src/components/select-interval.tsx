@@ -16,25 +16,25 @@ const SelectInterval: React.FC<SelectIntervalProps> = ({
   return (
     <>
       <div className="field my-2">
-        <label for="from" className="label">
+        <label htmlFor="from" className="label">
           From
         </label>
         <input
           id="for"
           type="datetime-local"
-          class="input"
+          className="input"
           value={selected ? selected[0].toString() : ""}
           onChange={handleChange1}
         />
       </div>
       <div className="field my-2">
-        <label for="to" className="label">
+        <label htmlFor="to" className="label">
           To
         </label>
         <input
           id="to"
           type="datetime-local"
-          class="input"
+          className="input"
           value={selected ? selected[1].toString() : ""}
           onChange={handleChange2}
         />

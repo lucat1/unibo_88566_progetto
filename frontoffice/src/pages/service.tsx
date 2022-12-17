@@ -49,8 +49,8 @@ const Service: React.FC = () => {
           {service?.disponibilities.length > 0 ? (
             <div className="menu my-4">
               {service.disponibilities?.map((disponibility, i) => (
-                <div class="card my-4">
-                  <div class="card-content">
+                <div key={i} className="card my-4">
+                  <div className="card-content">
                     {disponibility.name ? disponibility.name : ""}
                     <div>
                       <button className="button is-primary my-2">
