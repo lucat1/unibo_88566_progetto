@@ -47,7 +47,7 @@ const Services = () =>
                     { className: "image is-square" },
                     h("img", {
                       style: { "object-fit": "cover" },
-                      src: serv.photos ? prod.photos[0] : undefined,
+                      src: serv.photos ? serv.photos[0] : undefined,
                       alt: `${serv.name} main image`,
                     })
                   )

@@ -1,5 +1,7 @@
 import { h } from "../h";
 
+const sampleTimeWindow = "9:00-13:00,14:00-18:00";
+
 const Disponibilities = (disponibilities, setDisponibilities) => {
   return h(
     "div",
@@ -30,45 +32,67 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
               h(
                 "label",
                 { for: "disponibility-name" + i, className: "label" },
-                "Name"
-              ),
-              h(
-                "div",
-                { className: "control" },
-                h("input", {
-                  id: "disponibility-name-" + i,
-                  className: "input my-2",
-                  value: disponibility.name ? disponibility.name : "",
-                  onchange: (e) => {
-                    disponibility.name = e.target.value;
-                    setDisponibilities[0](disponibilities);
-                  },
-                })
+                "Name",
+                h(
+                  "div",
+                  { className: "control" },
+                  h("input", {
+                    id: "disponibility-name-" + i,
+                    className: "input",
+                    value: disponibility.name ? disponibility.name : "",
+                    onchange: (e) => {
+                      disponibility.name = e.target.value;
+                      setDisponibilities[0](disponibilities);
+                    },
+                  })
+                )
               ),
               // Slot Duration
               h(
                 "label",
                 { for: "slot-duration-" + i, className: "label" },
-                "Slot duration (minutes)"
+                "Slot duration (minutes)",
+                h(
+                  "div",
+                  { className: "control" },
+                  h("input", {
+                    id: "slot-duration-" + i,
+                    className: "input my-2",
+                    type: "number",
+                    min: "5",
+                    max: "3600",
+                    step: "5",
+                    value: disponibility.slotDuration
+                      ? disponibility.slotDuration
+                      : "60",
+                    onchange: (e) => {
+                      disponibility.slotDuration = e.target.value;
+                      setDisponibilities[0](disponibilities);
+                    },
+                  })
+                )
               ),
-              h(
-                "div",
-                { className: "control" },
-                h("input", {
-                  id: "slot-duration-" + i,
-                  className: "input my-2",
-                  type: "number",
-                  min: "5",
-                  max: "3600",
-                  step: "5",
-                  value: disponibility.slotDuration
-                    ? disponibility.slotDuration
-                    : "60",
-                  onchange: (e) => {
-                    disponibility.slotDuration = e.target.value;
-                    setDisponibilities[0](disponibilities);
-                  },
-                })
+              // Time windows
+              [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ].map((day, day_index) =>
+                h(
+                  "label",
+                  { for: "window-" + i + "-" + day_index, className: "label" },
+                  day,
+                  h("input", {
+                    id: "window-" + i + "-" + day_index,
+                    className: "input",
+                    value: sampleTimeWindow,
+                    placeholder: sampleTimeWindow,
+                  })
+                )
               ),
               h(
                 "button",
