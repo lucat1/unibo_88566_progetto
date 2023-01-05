@@ -116,7 +116,11 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                   h("input", {
                     id: "window-" + i + "-" + day_index,
                     className: "input",
-                    value: sampleTimeWindow,
+                    value: windowsToString(
+                      disponibility.intervals.filter(
+                        (interval) => interval.dayOfWeek == day_index
+                      )
+                    ),
                     placeholder: sampleTimeWindow,
                     onchange: (e) => {
                       disponibility.intervals = days.flatMap((_, day_index) =>

@@ -65,6 +65,7 @@ const Service = ({ id, data }) => {
       data.description = newDescription;
       data.price = newPrice;
       data.store = newStore;
+      data.disponibilities = disponibilities;
     } catch (err) {
       setError(err.message || "An error occourred while updating the service");
     }

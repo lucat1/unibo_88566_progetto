@@ -3,12 +3,23 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AppointmentPicker } from "react-appointment-picker";
 import fetch from "shared/fetch";
-import type { IService } from "shared/models/service";
+import type { IService, ICalendar } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 
 import useCart from "../cart";
 import Pictures from "../components/pictures";
 import Map from "../components/map";
+
+function initialDate(disponibility: ICalendar): Date {
+  console.log(disponibility);
+  const res = new Date();
+  let minutes = Math.min(
+    ...disponibility.intervals.map((interval) => interval.from)
+  );
+  if (minutes == Infinity) minutes = 0;
+  res.setHours(0, minutes / 60, minutes % 60);
+  return res;
+}
 
 // TODO: update pagination on filters update
 const Service: React.FC = () => {
@@ -32,7 +43,7 @@ const Service: React.FC = () => {
     <>
       <main className="columns">
         <section className="column is-one-third">
-          <Pictures pictures={service?.photos || []} />
+          <Pictures pictures={service?.photos || []} editable={false} />
         </section>
         <section className="column">
           <h1 className="has-text-weight-bold is-size-2 my-4">
@@ -47,17 +58,36 @@ const Service: React.FC = () => {
           <h2 className="has-text-weight-bold is-size-4 mt-4">
             Disponibilities
           </h2>
-          {service?.disponibilities.length > 0 ? (
+          {service?.disponibilities?.length ?? 0 > 0 ? (
             <div className="menu my-4">
-              {service.disponibilities?.map((disponibility, i) => (
+              {service?.disponibilities?.map((disponibility, i) => (
                 <div key={i} className="card my-4">
                   <div className="card-content">
-                    {disponibility.name ? disponibility.name : ""}
+                    {disponibility.name
+                      ? disponibility.name
+                      : "Unnamed disponibility"}
                     <AppointmentPicker
+                      initialDay={initialDate(disponibility)}
+                      alpha
+                      visible
+                      continuous
+                      local={"en-UK"}
                       days={[
-                        [{ id: 1, number: 1, isSelected: true, periods: 2 }],
+                        [
+                          null,
+                          { id: 1, number: 1, isSelected: true, periods: 2 },
+                          { id: 2, number: 2 },
+                          null,
+                          { id: 3, number: 3 },
+                        ],
+                        [
+                          null,
+                          { id: 1, number: 1, isSelected: true, periods: 2 },
+                          { id: 2, number: 2 },
+                          null,
+                        ],
                       ]}
-                      initialDay={new Date("2018-05-05")}
+                      maxReservableAppointments={1}
                     />
                     <div>
                       <button className="button is-primary my-2">
