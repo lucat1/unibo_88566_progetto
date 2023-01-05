@@ -1,6 +1,39 @@
 import { h } from "../h";
 
-const sampleTimeWindow = "9:00-13:00,14:00-18:00";
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+],
+  sampleTimeWindow = "9:00-13:00,14:00-18:00";
+
+function stringToWindows(str) {
+  let hours = [...str.matchAll(/(2[0-3]|[01]?[0-9])(:([0-5]?[0-9]))?/g)]
+    .map(
+      (match) => parseInt(match[1]) * 60 + parseInt(match[3] ? match[3] : "0")
+    )
+    .sort((a, b) => a - b),
+    res = [];
+  for (let i = 0; i < hours.length - 1; i += 2)
+    res.push([hours[i], hours[i + 1]]);
+  return res;
+}
+
+const toTwoDigits = (number) => (number < 10 ? "0" + number : number);
+
+const minutesToTime = (minutes) =>
+  `${toTwoDigits(Math.floor(minutes / 60))}:${toTwoDigits(minutes % 60)}`;
+
+const windowsToString = (windows) =>
+  windows
+    .map(
+      (window) => minutesToTime(window.from) + "-" + minutesToTime(window.to)
+    )
+    .join(",");
 
 const Disponibilities = (disponibilities, setDisponibilities) => {
   return h(
@@ -65,7 +98,7 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                     value: disponibility.slotDuration
                       ? disponibility.slotDuration
                       : "60",
-                    onchange: (e) => {
+                    onchange: (_) => {
                       disponibility.slotDuration = e.target.value;
                       setDisponibilities[0](disponibilities);
                     },
@@ -73,15 +106,7 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                 )
               ),
               // Time windows
-              [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-              ].map((day, day_index) =>
+              days.map((day, day_index) =>
                 h(
                   "label",
                   { for: "window-" + i + "-" + day_index, className: "label" },
@@ -91,6 +116,25 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                     className: "input",
                     value: sampleTimeWindow,
                     placeholder: sampleTimeWindow,
+                    onchange: (e) => {
+                      disponibility.intervals = days.flatMap((_, day_index) =>
+                        stringToWindows(
+                          document.getElementById(
+                            "window-" + i + "-" + day_index
+                          ).value
+                        ).map((interval) => ({
+                          dayOfWeek: day_index,
+                          from: interval[0],
+                          to: interval[1],
+                        }))
+                      );
+                      setDisponibilities[0](disponibilities);
+                      e.target.value = windowsToString(
+                        disponibility.intervals.filter(
+                          (interval) => interval.dayOfWeek == day_index
+                        )
+                      );
+                    },
                   })
                 )
               ),
