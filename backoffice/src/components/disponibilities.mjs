@@ -14,7 +14,9 @@ const days = [
 function stringToWindows(str) {
   let hours = [...str.matchAll(/(2[0-3]|[01]?[0-9])(:([0-5]?[0-9]))?/g)]
     .map(
-      (match) => parseInt(match[1]) * 60 + parseInt(match[3] ? match[3] : "0")
+      (match) =>
+        parseInt(match[1]) * 60 +
+        Math.floor(parseInt(match[3] ? match[3] : "0") / 30) * 30
     )
     .sort((a, b) => a - b),
     res = [];
@@ -92,13 +94,13 @@ const Disponibilities = (disponibilities, setDisponibilities) => {
                     id: "slot-duration-" + i,
                     className: "input my-2",
                     type: "number",
-                    min: "5",
-                    max: "3600",
-                    step: "5",
+                    min: "30",
+                    max: "1440",
+                    step: "30",
                     value: disponibility.slotDuration
                       ? disponibility.slotDuration
                       : "60",
-                    onchange: (_) => {
+                    onchange: (e) => {
                       disponibility.slotDuration = e.target.value;
                       setDisponibilities[0](disponibilities);
                     },
