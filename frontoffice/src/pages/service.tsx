@@ -23,6 +23,22 @@ function initialDate(disponibility: ICalendar): Date {
   return res;
 }
 
+function addAppointmentCallback(i: number) {
+  return ({ addedAppointment: { day, number, time, id }, addCb }) => {
+    (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
+      false;
+    addCb(day, number, time, id);
+  };
+}
+
+function removeAppointmentCallback(i: number) {
+  return ({ day, number, time, id }, removeCb) => {
+    (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
+      true;
+    removeCb(day, number);
+  };
+}
+
 const DAYS_IN_A_WEEK = 7,
   MINUTES_IN_A_PERIOD = 15,
   COLUMNS = 10,
@@ -48,7 +64,6 @@ const DAYS_IN_A_WEEK = 7,
       }
     }
     if (!res.length) res = [null];
-    console.log(intervals, initialTime, size, res);
     return res;
   },
   getDayAppointments = (disp: ICalendar, day: number) =>
@@ -109,6 +124,8 @@ const Service: React.FC = () => {
                       : "Unnamed disponibility"}{" "}
                     ({disponibility.slotDuration ?? 60} minutes slots)
                     <AppointmentPicker
+                      addAppointmentCallback={addAppointmentCallback(i)}
+                      removeAppointmentCallback={removeAppointmentCallback(i)}
                       initialDay={initialDate(disponibility)}
                       visible
                       continuous
@@ -119,7 +136,11 @@ const Service: React.FC = () => {
                       maxReservableAppointments={1}
                     />
                     <div>
-                      <button className="button is-primary my-2">
+                      <button
+                        id={"reserve-" + i}
+                        disabled
+                        className="button is-primary my-2"
+                      >
                         Reserve
                       </button>
                     </div>
