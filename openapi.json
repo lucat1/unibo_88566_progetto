@@ -2087,6 +2087,15 @@
             "schema": {
               "$ref": "#/components/schemas/PaginationQuery"
             }
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -2135,15 +2144,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "calendar": {
+                  "service": {
                     "type": "string",
                     "format": "uuid"
                   },
-                  "from": {
-                    "type": "string",
-                    "format": "date-time"
+                  "calendar": {
+                    "type": "string"
                   },
-                  "to": {
+                  "from": {
                     "type": "string",
                     "format": "date-time"
                   }
@@ -2796,11 +2804,11 @@
           "service": {
             "$ref": "#/components/schemas/Service"
           },
-          "calendar_name": {
+          "calendar": {
             "type": "string"
           },
-          "duration": {
-            "$ref": "#/components/schemas/Interval"
+          "minutes": {
+            "type": "number"
           }
         }
       },
