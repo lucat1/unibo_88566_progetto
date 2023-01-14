@@ -32,7 +32,7 @@ function addAppointmentCallback(i: number) {
 }
 
 function removeAppointmentCallback(i: number) {
-  return ({ day, number, time, id }, removeCb) => {
+  return ({ day, number, _, __ }, removeCb) => {
     (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
       true;
     removeCb(day, number);
