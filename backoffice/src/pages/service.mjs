@@ -25,8 +25,8 @@ const ServiceWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(Service, { id, data })
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(Service, { id, data })
   );
 };
 

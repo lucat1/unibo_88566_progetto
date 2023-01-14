@@ -1,9 +1,12 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { AppointmentPicker } from "react-appointment-picker";
+import {
+  AppointmentPicker,
+  AppointmentAttributesType,
+} from "react-appointment-picker";
 import fetch from "shared/fetch";
-import type { IService, ICalendar } from "shared/models/service";
+import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 
 import useCart from "../cart";
@@ -11,17 +14,55 @@ import Pictures from "../components/pictures";
 import Map from "../components/map";
 
 function initialDate(disponibility: ICalendar): Date {
-  console.log(disponibility);
   const res = new Date();
   let minutes = Math.min(
-    ...disponibility.intervals.map((interval) => interval.from)
+    ...disponibility.intervals.map((interval) => interval.from[0])
   );
   if (minutes == Infinity) minutes = 0;
-  res.setHours(0, minutes / 60, minutes % 60);
+  res.setHours(minutes / 60, minutes % 60, 0);
   return res;
 }
 
-// TODO: update pagination on filters update
+const DAYS_IN_A_WEEK = 7,
+  MINUTES_IN_A_PERIOD = 15,
+  COLUMNS = 10,
+  slots = (intervals: IInterval[], initialTime: number, size: number) => {
+    let res: AppointmentAttributesType[] = [],
+      number = 0;
+    for (let i = 0; i < intervals.length; ++i) {
+      let interval = intervals[i];
+      while (initialTime + MINUTES_IN_A_PERIOD <= interval.from[0]) {
+        res.push(null);
+        initialTime += MINUTES_IN_A_PERIOD;
+      }
+      let periods = Math.floor(size / MINUTES_IN_A_PERIOD),
+        appointments = Math.floor(
+          (interval.to[0] - interval.from[0]) / (periods * MINUTES_IN_A_PERIOD)
+        );
+      for (let j = 0; j < appointments; ++j) {
+        res.push({
+          number: ++number,
+          periods: periods,
+        });
+        initialTime += MINUTES_IN_A_PERIOD * periods;
+      }
+    }
+    if (!res.length) res = [null];
+    console.log(intervals, initialTime, size, res);
+    return res;
+  },
+  getDayAppointments = (disp: ICalendar, day: number) =>
+    slots(
+      disp.intervals.filter((interval) => interval.dayOfWeek == day),
+      initialDate(disp).getTime() / 60000,
+      disp.slotDuration ?? 60
+    ),
+  disponibilityToAppointmentAttributesType = (disponibility: ICalendar) =>
+    Array.from(
+      { length: COLUMNS },
+      (_, i) => (new Date().getDay() + i) % DAYS_IN_A_WEEK
+    ).map((i) => getDayAppointments(disponibility, i));
+
 const Service: React.FC = () => {
   const { id } = useParams();
   const { data: service } = useQuery(
@@ -65,28 +106,16 @@ const Service: React.FC = () => {
                   <div className="card-content">
                     {disponibility.name
                       ? disponibility.name
-                      : "Unnamed disponibility"}
+                      : "Unnamed disponibility"}{" "}
+                    ({disponibility.slotDuration ?? 60} minutes slots)
                     <AppointmentPicker
                       initialDay={initialDate(disponibility)}
-                      alpha
                       visible
                       continuous
                       local={"en-UK"}
-                      days={[
-                        [
-                          null,
-                          { id: 1, number: 1, isSelected: true, periods: 2 },
-                          { id: 2, number: 2 },
-                          null,
-                          { id: 3, number: 3 },
-                        ],
-                        [
-                          null,
-                          { id: 1, number: 1, isSelected: true, periods: 2 },
-                          { id: 2, number: 2 },
-                          null,
-                        ],
-                      ]}
+                      days={disponibilityToAppointmentAttributesType(
+                        disponibility
+                      )}
                       maxReservableAppointments={1}
                     />
                     <div>
