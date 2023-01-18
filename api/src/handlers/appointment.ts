@@ -3,7 +3,10 @@ import { z } from "zod";
 
 import json from "../res";
 import { Appointment, shadow } from "../models/appointment";
+import { User } from "../models/user";
+import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
+import { UserLevel } from "/shared/models/user";
 
 const POPULATE = ["customer", "service"];
 
@@ -15,18 +18,33 @@ export const AppointmentBody = z.object({
 export type IAppointmentBody = z.infer<typeof AppointmentBody>;
 
 export const addAppointment: RequestHandler = async (req, res) => {
+  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
   const data = req.body as IAppointmentBody;
-  const appointment = new Appointment(data);
+  const appointment = new Appointment({ ...data, customer: user._id });
   await appointment.save();
   json(res, 200, shadow(appointment));
 };
 
+export const AppointmentQuery = z.object({
+  service: z.string().uuid().optional(),
+});
+export type IAppointmentQuery = z.infer<typeof AppointmentQuery>;
+
 export const getAppointments: RequestHandler = async (req, res) => {
   const { limit, page, sort, order } =
-    req.query as unknown as IPaginationQuery & ISortingQuery;
+    req.query as unknown as IPaginationQuery &
+      ISortingQuery &
+      IAppointmentQuery;
+
+  const user = await User.findOne((req as AuthenticatedRequest).user).exec();
+  if (user == null) throw new Error("User not found");
 
   const result = await Appointment.paginate(
-    {},
+    {
+      service: req.query.service ? { _id: req.query.service } : undefined,
+      customer: user.level < UserLevel.MANAGER ? { _id: user._id } : undefined,
+    },
     {
       limit,
       page,
@@ -40,7 +58,6 @@ export const getAppointments: RequestHandler = async (req, res) => {
 
 export const AppointmentParams = z.object({
   id: z.string().uuid(),
-  service: z.string().uuid().optional(),
 });
 export type IAppointmentParams = z.infer<typeof AppointmentParams>;
 
