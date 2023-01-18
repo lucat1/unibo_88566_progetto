@@ -11,7 +11,7 @@ import { UserLevel } from "shared/models/user";
 const POPULATE = ["customer", "service"];
 
 export const AppointmentBody = z.object({
-  service: z.string().uuid(),
+  service: z.string(),
   calendar: z.string(),
   from: z.string(),
 });
@@ -27,7 +27,7 @@ export const addAppointment: RequestHandler = async (req, res) => {
 };
 
 export const AppointmentQuery = z.object({
-  service: z.string().uuid().optional(),
+  service: z.string().optional(),
 });
 export type IAppointmentQuery = z.infer<typeof AppointmentQuery>;
 
@@ -39,25 +39,21 @@ export const getAppointments: RequestHandler = async (req, res) => {
 
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
-
-  const result = await Appointment.paginate(
-    {
-      service: req.query.service ? { _id: req.query.service } : undefined,
-      customer: user.level < UserLevel.MANAGER ? { _id: user._id } : undefined,
-    },
-    {
-      limit,
-      page,
-      sort: sort ? { [sort]: order } : {},
-      populate: POPULATE,
-    }
-  );
+  const query: any = {};
+  // if (user.level < UserLevel.MANAGER) query["customer"] = { _id: user._id };
+  // if (req.query.service) query["service"] = { _id: req.query.service };
+  const result = await Appointment.paginate(query, {
+    limit,
+    page,
+    sort: sort ? { [sort]: order } : {},
+    populate: POPULATE,
+  });
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };
 
 export const AppointmentParams = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
 });
 export type IAppointmentParams = z.infer<typeof AppointmentParams>;
 
