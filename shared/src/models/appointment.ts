@@ -6,5 +6,5 @@ export interface IAppointment extends Document {
   customer: IUser;
   service: IService;
   calendar: string;
-  minutes: number;
+  minutes: Date;
 }
