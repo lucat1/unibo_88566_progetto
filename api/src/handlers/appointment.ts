@@ -6,7 +6,6 @@ import { Appointment, shadow } from "../models/appointment";
 import { User } from "../models/user";
 import type { AuthenticatedRequest } from "../auth";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
-import { UserLevel } from "shared/models/user";
 
 const POPULATE = ["customer", "service"];
 
