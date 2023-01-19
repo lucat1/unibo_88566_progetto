@@ -8,10 +8,12 @@ import {
 import fetch from "shared/fetch";
 import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
+import type { IAppointment } from "shared/models/appointment";
 
 import { useAuth } from "../auth";
 import Pictures from "../components/pictures";
 import Map from "../components/map";
+import Pagination from "../components/pagination";
 
 function initialDate(disponibility: ICalendar): Date {
   const res = new Date();
@@ -155,7 +157,36 @@ const Service: React.FC = () => {
           ) : (
             <p>No disponibilities at the moment.</p>
           )}
-          <div className="my-3 is-flex is-justify-content-end"></div>
+          <h2 className="has-text-weight-bold is-size-4 mt-4">
+            My Appointments
+          </h2>
+          {authenticated ? (
+            <Pagination
+              url={(page) =>
+                `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1`
+              }
+              resource={(page): any[] => ["services", id, "appointments", page]}
+              className="is-flex is-flex-direction-row is-flex-wrap-wrap"
+            >
+              {(appointment: IAppointment, i) => (
+                <div className="card m-4">
+                  <div className="card-content">
+                    <div className="content">
+                      {appointment.calendar},{" "}
+                      {new Date(appointment.minutes).toLocaleString("en-US")}
+                    </div>
+                  </div>
+                  <footer className="card-footer">
+                    <button className="card-footer-item button is-danger">
+                      Delete
+                    </button>
+                  </footer>
+                </div>
+              )}
+            </Pagination>
+          ) : (
+            <p>Log in to view your appointments.</p>
+          )}
         </section>
       </main>
     </>
