@@ -36,6 +36,11 @@
       "types": "./es/shared/src/fetch.d.ts",
       "node": "./cjs/shared/src/fetch.js"
     },
+    "./models/appointment": {
+      "import": "./es/shared/src/models/appointment.js",
+      "types": "./es/shared/src/models/appointment.d.ts",
+      "node": "./cjs/shared/src/models/appointment.js"
+    },
     "./models/category": {
       "import": "./es/shared/src/models/category.js",
       "types": "./es/shared/src/models/category.d.ts",

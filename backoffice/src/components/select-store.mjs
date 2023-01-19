@@ -2,13 +2,16 @@ import { h, useEffect } from "../h";
 import req from "../async";
 import fetch from "shared/fetch";
 
-const SelectCategory = ({ selected, onSelect }) => {
-  const { data, loading, err } = req("store/categories", fetch);
+const SelectStore = ({ selected, onSelect }) => {
+  const { data, loading, err } = req(
+    "store/stores/?limit=30&page=1&sort=string&order=-1",
+    fetch
+  );
   useEffect(() => {
     if (!selected || !data) return;
-    data.forEach((d, i) => {
+    data.docs.forEach((d, i) => {
       if (d._id == selected._id)
-        document.getElementById("category").selectedIndex = i + 1;
+        document.getElementById("store").selectedIndex = i + 1;
     });
   }, [data, selected]);
   return err
@@ -16,22 +19,18 @@ const SelectCategory = ({ selected, onSelect }) => {
     : h(
       "div",
       { className: "field my-2" },
-      h(
-        "label",
-        { for: "category", className: "label" },
-        "Select a category"
-      ),
+      h("label", { for: "store", className: "label" }, "Select a store"),
       h(
         "div",
         { className: "select" },
         h(
           "select",
           {
-            id: "category",
+            id: "store",
             disabled: loading,
             onChange: () => {
-              const i = document.getElementById("category").selectedIndex;
-              onSelect(i == 0 ? undefined : data[i - 1]);
+              const i = document.getElementById("store").selectedIndex;
+              onSelect(i == 0 ? undefined : data.docs[i - 1]);
             },
           },
           h(
@@ -39,16 +38,16 @@ const SelectCategory = ({ selected, onSelect }) => {
             {
               onSelect: () => onSelect("some"),
             },
-            loading ? "Loading" : "Select a category"
+            loading ? "Loading" : "Select a store"
           ),
           loading
             ? null
-            : data.map((category) =>
-              h("option", { key: category._id }, category.name)
+            : data.docs.map((store) =>
+              h("option", { key: store._id }, store.name)
             )
         )
       )
     );
 };
 
-export default SelectCategory;
+export default SelectStore;

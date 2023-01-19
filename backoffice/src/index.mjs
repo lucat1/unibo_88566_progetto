@@ -20,6 +20,9 @@ import Pet from "./pages/pet";
 import Products from "./pages/products";
 import ProductAdd from "./pages/product-add";
 import Product from "./pages/product";
+import Services from "./pages/services";
+import ServiceAdd from "./pages/service-add";
+import Service from "./pages/service";
 import Stores from "./pages/stores";
 import StoreAdd from "./pages/store-add";
 import Store from "./pages/store";
@@ -28,7 +31,6 @@ import Order from "./pages/order";
 import BoardAdd from "./pages/board-add";
 import Boards from "./pages/boards";
 import Board from "./pages/board";
-import Post from "./pages/post";
 import Users from "./pages/users";
 import User from "./pages/user";
 
@@ -100,6 +102,18 @@ render(
           element: h(Product, {}),
         }),
         h(Route, {
+          path: /^\/services$/,
+          element: h(Services, {}),
+        }),
+        h(Route, {
+          path: /^\/services\/add$/,
+          element: h(ServiceAdd, {}),
+        }),
+        h(Route, {
+          path: /^\/services\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+          element: h(Service, {}),
+        }),
+        h(Route, {
           path: /^\/stores$/,
           element: h(Stores, {}),
         }),
@@ -130,10 +144,6 @@ render(
         h(Route, {
           path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
           element: h(Board, {}),
-        }),
-        h(Route, {
-          path: /^\/boards\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\/posts\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
-          element: h(Post, {}),
         }),
         h(Route, {
           path: /^\/users$/,

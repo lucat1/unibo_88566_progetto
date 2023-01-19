@@ -43,7 +43,7 @@ const Order: React.FC = () => {
       </div>
       <table className="table">
         <thead>
-          <tr>
+          <tr role="row">
             <th>
               <abbr title="Position">Pos</abbr>
             </th>
@@ -64,7 +64,7 @@ const Order: React.FC = () => {
         </thead>
         <tbody>
           {order?.items.map((item, i) => (
-            <tr key={i}>
+            <tr key={i} role="row">
               <th>{i + 1}</th>
               <td>
                 <img

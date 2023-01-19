@@ -37,7 +37,9 @@ const Pagination = (
           subele || "div",
           { className, style },
           pre,
-          around
+          data.docs.length == 0
+            ? "(This list currently has no elements.)"
+            : around
             ? h(
                 around,
                 null,

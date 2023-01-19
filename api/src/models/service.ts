@@ -1,7 +1,19 @@
 import { Schema, PaginateModel, model } from "mongoose";
 import paginate from "mongoose-paginate";
 import { v4 } from "node-uuid";
-import type { IService } from "shared/models/service";
+import type { IInterval, ICalendar, IService } from "shared/models/service";
+
+const IntervalSchema = new Schema<IInterval>({
+  dayOfWeek: { type: Number, required: true },
+  from: [Number],
+  to: [Number],
+});
+
+const CalendarSchema = new Schema<ICalendar>({
+  name: String,
+  intervals: [IntervalSchema],
+  slotDuration: Number,
+});
 
 const ServiceSchema = new Schema<IService>({
   _id: { type: String, default: v4 },
@@ -9,7 +21,8 @@ const ServiceSchema = new Schema<IService>({
   description: String,
   price: { type: Number, required: true },
   photos: [String],
-  // TODO: disponibilities
+  store: { type: String, ref: "Store" },
+  disponibilities: [CalendarSchema],
 });
 ServiceSchema.plugin(paginate);
 
@@ -24,10 +37,14 @@ export const shadow = ({
   description,
   price,
   photos,
+  store,
+  disponibilities,
 }: IService) => ({
   _id,
   name,
   description,
   price,
   photos,
+  store,
+  disponibilities,
 });

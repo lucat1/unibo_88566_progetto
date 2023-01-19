@@ -2087,6 +2087,15 @@
             "schema": {
               "$ref": "#/components/schemas/PaginationQuery"
             }
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -2135,15 +2144,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "calendar": {
+                  "service": {
                     "type": "string",
                     "format": "uuid"
                   },
-                  "from": {
-                    "type": "string",
-                    "format": "date-time"
+                  "calendar": {
+                    "type": "string"
                   },
-                  "to": {
+                  "from": {
                     "type": "string",
                     "format": "date-time"
                   }
@@ -2796,12 +2804,11 @@
           "service": {
             "$ref": "#/components/schemas/Service"
           },
-          "store_id": {
-            "type": "string",
-            "format": "uuid"
+          "calendar": {
+            "type": "string"
           },
-          "duration": {
-            "$ref": "#/components/schemas/Interval"
+          "minutes": {
+            "type": "number"
           }
         }
       },
@@ -2823,11 +2830,10 @@
       "Calendar": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "format": "uuid"
+          "name": {
+            "type": "string"
           },
-          "openingHours": {
+          "intervals": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Interval"
@@ -2889,13 +2895,20 @@
       "Interval": {
         "type": "object",
         "properties": {
+          "dayOfWeek": {
+            "type": "number"
+          },
           "from": {
-            "type": "string",
-            "format": "date-time"
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           },
           "to": {
-            "type": "string",
-            "format": "date-time"
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           }
         }
       },
@@ -3083,11 +3096,13 @@
               "format": "binary"
             }
           },
+          "store": {
+            "$ref": "#/components/schemas/Store"
+          },
           "disponibilities": {
-            "type": "object",
-            "format": "uuid",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Store"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Calendar"
             }
           }
         }

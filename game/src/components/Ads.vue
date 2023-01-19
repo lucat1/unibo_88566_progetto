@@ -42,7 +42,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <a :href="productsLink" class="button is-primary">More</a>
+    <a :href="productsLink" class="button is-primary">More products</a>
   </div>
   <div v-if="services.length > 0" class="block">
     <h1 class="title is-3">Services for you</h1>
@@ -68,6 +68,6 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <a :href="servicesLink" class="button is-primary">More</a>
+    <a :href="servicesLink" class="button is-primary">More services</a>
   </div>
 </template>

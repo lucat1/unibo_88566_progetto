@@ -133,6 +133,14 @@ import {
   PetBody,
   setPet,
 } from "./handlers/pet";
+import {
+  AppointmentBody,
+  addAppointment,
+  AppointmentQuery,
+  getAppointments,
+  AppointmentParams,
+  deleteAppointment,
+} from "./handlers/appointment";
 
 const sites = ["game", "frontoffice", "backoffice"],
   app = polka();
@@ -418,6 +426,24 @@ const main = async () => {
     validateParams(ProductParams),
     validateBody(ServiceBody.partial()),
     catcher(setService)
+  );
+
+  app.get(
+    "/api/store/appointments",
+    authRequired,
+    validateQuery(PaginationQuery.and(SortingQuery).and(AppointmentQuery)),
+    catcher(getAppointments)
+  );
+  app.put(
+    "/api/store/appointments/",
+    authRequired,
+    validateBody(AppointmentBody),
+    catcher(addAppointment)
+  );
+  app.delete(
+    "/api/store/appointments/:id",
+    validateParams(AppointmentParams),
+    catcher(deleteAppointment)
   );
 
   app.get(
