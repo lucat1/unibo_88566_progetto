@@ -9,7 +9,7 @@ import fetch from "shared/fetch";
 import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 
-import useCart from "../cart";
+import { useAuth } from "../auth";
 import Pictures from "../components/pictures";
 import Map from "../components/map";
 
@@ -80,6 +80,7 @@ const DAYS_IN_A_WEEK = 7,
 
 const Service: React.FC = () => {
   const { id } = useParams();
+  const [{ authenticated }] = useAuth();
   const { data: service } = useQuery(
     ["service", id],
     () => fetch<IService>(`store/services/${id}`),
@@ -94,7 +95,6 @@ const Service: React.FC = () => {
       suspense: true,
     }
   );
-  const [_, addToCart] = useCart();
   return (
     <>
       <main className="columns">
@@ -135,15 +135,19 @@ const Service: React.FC = () => {
                       )}
                       maxReservableAppointments={1}
                     />
-                    <div>
-                      <button
-                        id={"reserve-" + i}
-                        disabled
-                        className="button is-primary my-2"
-                      >
-                        Reserve
-                      </button>
-                    </div>
+                    {authenticated ? (
+                      <div>
+                        <button
+                          id={"reserve-" + i}
+                          disabled
+                          className="button is-primary my-2"
+                        >
+                          Reserve
+                        </button>
+                      </div>
+                    ) : (
+                      <p>Only logged in users can make reservations.</p>
+                    )}
                   </div>
                 </div>
               ))}
