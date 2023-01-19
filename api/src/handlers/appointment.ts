@@ -1,7 +1,6 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
 import { UserLevel } from "shared/models/user";
-import { UUID } from "bson";
 import { Types } from "mongoose";
 
 import json from "../res";
@@ -63,6 +62,6 @@ export type IAppointmentParams = z.infer<typeof AppointmentParams>;
 
 export const deleteAppointment: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IAppointmentParams;
-  await Appointment.deleteOne({ _id: id }).exec();
+  await Appointment.deleteOne({ _id: new Types.ObjectId(id) }).exec();
   json(res, 200, null);
 };
