@@ -10,6 +10,7 @@ import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 import type { IAppointment } from "shared/models/appointment";
 
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
 import Pictures from "../components/pictures";
 import Map from "../components/map";
@@ -82,6 +83,7 @@ const DAYS_IN_A_WEEK = 7,
 
 const Service: React.FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [{ authenticated }] = useAuth();
   const { data: service } = useQuery(
     ["service", id],
@@ -97,6 +99,24 @@ const Service: React.FC = () => {
       suspense: true,
     }
   );
+
+  async function addAppointment(calendar: string, from: Date) {
+    await fetch("store/appointments/", {
+      method: "PUT",
+      body: JSON.stringify({
+        service: id,
+        calendar,
+        from,
+      }),
+    });
+    navigate(".");
+  }
+
+  async function deleteAppointment(appointment: any) {
+    await fetch(`store/appointments/${appointment}`, { method: "DELETE" });
+    navigate(".");
+  }
+
   return (
     <>
       <main className="columns">
@@ -169,7 +189,7 @@ const Service: React.FC = () => {
               className="is-flex is-flex-direction-row is-flex-wrap-wrap"
             >
               {(appointment: IAppointment, i) => (
-                <div className="card m-4">
+                <div className="card m-4" key={i}>
                   <div className="card-content">
                     <div className="content">
                       {appointment.calendar},{" "}
@@ -177,7 +197,11 @@ const Service: React.FC = () => {
                     </div>
                   </div>
                   <footer className="card-footer">
-                    <button className="card-footer-item button is-danger">
+                    <button
+                      className="card-footer-item button is-danger"
+                      aria-label="Remove pet"
+                      onClick={(_) => deleteAppointment(appointment._id)}
+                    >
                       Delete
                     </button>
                   </footer>
