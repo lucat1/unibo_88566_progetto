@@ -37,7 +37,7 @@ const Appointments = ({ service_id }) => {
         Pagination,
         {
           url: (page) =>
-            `store/appointments/?service=${service_id}?page=${page}&limit=20&sort=minutes&order=1`,
+            `store/appointments/?service=${service_id}&page=${page}&limit=20&sort=minutes&order=1`,
           className: "is-flex is-flex-direction-column",
           id: id,
         },

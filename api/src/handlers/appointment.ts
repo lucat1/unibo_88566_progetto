@@ -1,5 +1,8 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
+import { UserLevel } from "shared/models/user";
+import { UUID } from "bson";
+import { Types } from "mongoose";
 
 import json from "../res";
 import { Appointment, shadow } from "../models/appointment";
@@ -39,15 +42,17 @@ export const getAppointments: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const query: any = {};
-  // if (user.level < UserLevel.MANAGER) query["customer"] = { _id: user._id };
-  // if (req.query.service) query["service"] = { _id: req.query.service };
+  if (user.level < UserLevel.MANAGER) query["customer"] = { _id: user._id };
+  if (req.query.service)
+    query["service"] = {
+      _id: req.query.service,
+    };
   const result = await Appointment.paginate(query, {
     limit,
     page,
     sort: sort ? { [sort]: order } : {},
     populate: POPULATE,
   });
-
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };
 
