@@ -8,27 +8,26 @@ import {
 import fetch from "shared/fetch";
 import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
+import type { IAppointment } from "shared/models/appointment";
 
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
 import Pictures from "../components/pictures";
-import Map from "../components/map";
+import GeoMap from "../components/map";
+import Pagination from "../components/pagination";
 
-function initialDate(disponibility: ICalendar): Date {
-  const res = new Date();
+function initialMinutes(disponibility: ICalendar): number {
   let minutes = Math.min(
     ...disponibility.intervals.map((interval) => interval.from[0])
   );
   if (minutes == Infinity) minutes = 0;
-  res.setHours(minutes / 60, minutes % 60, 0);
-  return res;
+  return minutes;
 }
 
-function addAppointmentCallback(i: number) {
-  return ({ addedAppointment: { day, number, time, id }, addCb }) => {
-    (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
-      false;
-    addCb(day, number, time, id);
-  };
+function initialDate(disponibility: ICalendar): Date {
+  let res = new Date();
+  res.setHours(0, initialMinutes(disponibility), 0, 0);
+  return res;
 }
 
 function removeAppointmentCallback(i: number) {
@@ -42,44 +41,62 @@ function removeAppointmentCallback(i: number) {
 const DAYS_IN_A_WEEK = 7,
   MINUTES_IN_A_PERIOD = 15,
   COLUMNS = 10,
-  slots = (intervals: IInterval[], initialTime: number, size: number) => {
+  slots = (
+    intervals: IInterval[],
+    date: Date,
+    initialMinutes: number,
+    size: number
+  ) => {
     let res: AppointmentAttributesType[] = [],
       number = 0;
     for (let i = 0; i < intervals.length; ++i) {
       let interval = intervals[i];
-      while (initialTime + MINUTES_IN_A_PERIOD <= interval.from[0]) {
+      while (initialMinutes + MINUTES_IN_A_PERIOD <= interval.from[0]) {
         res.push(null);
-        initialTime += MINUTES_IN_A_PERIOD;
+        initialMinutes += MINUTES_IN_A_PERIOD;
       }
       let periods = Math.floor(size / MINUTES_IN_A_PERIOD),
         appointments = Math.floor(
           (interval.to[0] - interval.from[0]) / (periods * MINUTES_IN_A_PERIOD)
         );
+
       for (let j = 0; j < appointments; ++j) {
+        date.setHours(0, initialMinutes, 0, 0);
         res.push({
+          id: date.toISOString(),
           number: ++number,
           periods: periods,
         });
-        initialTime += MINUTES_IN_A_PERIOD * periods;
+        initialMinutes += MINUTES_IN_A_PERIOD * periods;
       }
     }
     if (!res.length) res = [null];
     return res;
   },
-  getDayAppointments = (disp: ICalendar, day: number) =>
+  dayOfTheWeek = (date: Date) => date.getDay() % DAYS_IN_A_WEEK,
+  getDayAppointments = (disp: ICalendar, date: Date) =>
     slots(
-      disp.intervals.filter((interval) => interval.dayOfWeek == day),
-      initialDate(disp).getTime() / 60000,
+      disp.intervals.filter(
+        (interval) => interval.dayOfWeek == dayOfTheWeek(date)
+      ),
+      date,
+      initialMinutes(disp),
       disp.slotDuration ?? 60
-    ),
+    ).map((slot) => {
+      if (disp.reservations.find((x) => x.toString() == (slot?.id as string)))
+        slot!.isReserved = true;
+      return slot;
+    }),
   disponibilityToAppointmentAttributesType = (disponibility: ICalendar) =>
-    Array.from(
-      { length: COLUMNS },
-      (_, i) => (new Date().getDay() + i) % DAYS_IN_A_WEEK
-    ).map((i) => getDayAppointments(disponibility, i));
+    Array.from({ length: COLUMNS }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      return d;
+    }).map((d) => getDayAppointments(disponibility, d));
 
 const Service: React.FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [{ authenticated }] = useAuth();
   const { data: service } = useQuery(
     ["service", id],
@@ -95,6 +112,40 @@ const Service: React.FC = () => {
       suspense: true,
     }
   );
+  const [selectedDates, setSelectedDates] = React.useState(
+    new Map<number, Date>()
+  );
+
+  function addAppointmentCallback(i: number) {
+    return ({ addedAppointment: { day, number, time, id }, addCb }) => {
+      (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
+        false;
+      const d = new Date();
+      d.setDate(day);
+      d.setTime(time);
+      selectedDates.set(i, d);
+      setSelectedDates(selectedDates);
+      addCb(day, number, time, id);
+    };
+  }
+
+  async function reserveAppointment(calendar: string, from: Date) {
+    await fetch("store/appointments/", {
+      method: "PUT",
+      body: JSON.stringify({
+        service: id,
+        calendar,
+        from,
+      }),
+    });
+    navigate("..");
+  }
+
+  async function deleteAppointment(appointment: any) {
+    await fetch(`store/appointments/${appointment}`, { method: "DELETE" });
+    navigate(".");
+  }
+
   return (
     <>
       <main className="columns">
@@ -110,11 +161,11 @@ const Service: React.FC = () => {
           {service?.price.toFixed(2)}
           <h2 className="has-text-weight-bold is-size-4 mt-4">Store</h2>
           {store?.name}
-          <Map lat={store?.location[0]} lng={store?.location[1]} />
+          <GeoMap lat={store?.location[0]} lng={store?.location[1]} />
           <h2 className="has-text-weight-bold is-size-4 mt-4">
             Disponibilities
           </h2>
-          {service?.disponibilities?.length ?? 0 > 0 ? (
+          {(service?.disponibilities?.length ?? 0) > 0 ? (
             <div className="menu my-4">
               {service?.disponibilities?.map((disponibility, i) => (
                 <div key={i} className="card my-4">
@@ -141,6 +192,13 @@ const Service: React.FC = () => {
                           id={"reserve-" + i}
                           disabled
                           className="button is-primary my-2"
+                          aria-label="Add appointment"
+                          onClick={async (_) =>
+                            await reserveAppointment(
+                              disponibility.name,
+                              selectedDates.get(i)!
+                            )
+                          }
                         >
                           Reserve
                         </button>
@@ -155,7 +213,40 @@ const Service: React.FC = () => {
           ) : (
             <p>No disponibilities at the moment.</p>
           )}
-          <div className="my-3 is-flex is-justify-content-end"></div>
+          <h2 className="has-text-weight-bold is-size-4 mt-4">
+            My Appointments
+          </h2>
+          {authenticated ? (
+            <Pagination
+              url={(page) =>
+                `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1&mine=true`
+              }
+              resource={(page): any[] => ["services", id, "appointments", page]}
+              className="is-flex is-flex-direction-row is-flex-wrap-wrap"
+            >
+              {(appointment: IAppointment, i) => (
+                <div className="card m-4" key={i}>
+                  <div className="card-content">
+                    <div className="content">
+                      {appointment.calendar},{" "}
+                      {new Date(appointment.minutes).toLocaleString("en-US")}
+                    </div>
+                  </div>
+                  <footer className="card-footer">
+                    <button
+                      className="card-footer-item button is-danger"
+                      aria-label="Remove appointment"
+                      onClick={(_) => deleteAppointment(appointment._id)}
+                    >
+                      Delete
+                    </button>
+                  </footer>
+                </div>
+              )}
+            </Pagination>
+          ) : (
+            <p>Log in to view your appointments.</p>
+          )}
         </section>
       </main>
     </>

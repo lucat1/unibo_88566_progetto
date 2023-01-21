@@ -29,6 +29,7 @@ export const addAppointment: RequestHandler = async (req, res) => {
 
 export const AppointmentQuery = z.object({
   service: z.string().optional(),
+  mine: z.string().optional(),
 });
 export type IAppointmentQuery = z.infer<typeof AppointmentQuery>;
 
@@ -41,7 +42,7 @@ export const getAppointments: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const query: any = {};
-  if (user.level < UserLevel.MANAGER) query["customer"] = { _id: user._id };
+  if (req.query.onlyMe) query["customer"] = { _id: user._id };
   if (req.query.service)
     query["service"] = {
       _id: req.query.service,
