@@ -16,13 +16,17 @@ import Pictures from "../components/pictures";
 import GeoMap from "../components/map";
 import Pagination from "../components/pagination";
 
-function initialDate(disponibility: ICalendar): Date {
-  const res = new Date();
+function initialMinutes(disponibility: ICalendar): number {
   let minutes = Math.min(
     ...disponibility.intervals.map((interval) => interval.from[0])
   );
   if (minutes == Infinity) minutes = 0;
-  res.setHours(minutes / 60, minutes % 60, 0);
+  return minutes;
+}
+
+function initialDate(disponibility: ICalendar): Date {
+  let res = new Date();
+  res.setHours(0, initialMinutes(disponibility), 0, 0);
   return res;
 }
 
@@ -37,41 +41,58 @@ function removeAppointmentCallback(i: number) {
 const DAYS_IN_A_WEEK = 7,
   MINUTES_IN_A_PERIOD = 15,
   COLUMNS = 10,
-  slots = (intervals: IInterval[], initialTime: number, size: number) => {
+  slots = (
+    intervals: IInterval[],
+    date: Date,
+    initialMinutes: number,
+    size: number
+  ) => {
     let res: AppointmentAttributesType[] = [],
       number = 0;
     for (let i = 0; i < intervals.length; ++i) {
       let interval = intervals[i];
-      while (initialTime + MINUTES_IN_A_PERIOD <= interval.from[0]) {
+      while (initialMinutes + MINUTES_IN_A_PERIOD <= interval.from[0]) {
         res.push(null);
-        initialTime += MINUTES_IN_A_PERIOD;
+        initialMinutes += MINUTES_IN_A_PERIOD;
       }
       let periods = Math.floor(size / MINUTES_IN_A_PERIOD),
         appointments = Math.floor(
           (interval.to[0] - interval.from[0]) / (periods * MINUTES_IN_A_PERIOD)
         );
+
       for (let j = 0; j < appointments; ++j) {
+        date.setHours(0, initialMinutes, 0, 0);
         res.push({
+          id: date.toISOString(),
           number: ++number,
           periods: periods,
         });
-        initialTime += MINUTES_IN_A_PERIOD * periods;
+        initialMinutes += MINUTES_IN_A_PERIOD * periods;
       }
     }
     if (!res.length) res = [null];
     return res;
   },
-  getDayAppointments = (disp: ICalendar, day: number) =>
+  dayOfTheWeek = (date: Date) => date.getDay() % DAYS_IN_A_WEEK,
+  getDayAppointments = (disp: ICalendar, date: Date) =>
     slots(
-      disp.intervals.filter((interval) => interval.dayOfWeek == day),
-      initialDate(disp).getTime() / 60000,
+      disp.intervals.filter(
+        (interval) => interval.dayOfWeek == dayOfTheWeek(date)
+      ),
+      date,
+      initialMinutes(disp),
       disp.slotDuration ?? 60
-    ),
+    ).map((slot) => {
+      if (disp.reservations.find((x) => x.toString() == (slot?.id as string)))
+        slot!.isReserved = true;
+      return slot;
+    }),
   disponibilityToAppointmentAttributesType = (disponibility: ICalendar) =>
-    Array.from(
-      { length: COLUMNS },
-      (_, i) => (new Date().getDay() + i) % DAYS_IN_A_WEEK
-    ).map((i) => getDayAppointments(disponibility, i));
+    Array.from({ length: COLUMNS }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      return d;
+    }).map((d) => getDayAppointments(disponibility, d));
 
 const Service: React.FC = () => {
   const { id } = useParams();
