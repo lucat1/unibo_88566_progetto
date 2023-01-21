@@ -2841,6 +2841,13 @@
           },
           "slotDuration": {
             "type": "integer"
+          },
+          "reservations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            }
           }
         }
       },

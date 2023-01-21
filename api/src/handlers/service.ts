@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import json from "../res";
 import { Service, shadow } from "../models/service";
+import { Appointment } from "../models/appointment";
 import type { IPaginationQuery, ISortingQuery } from "./pagination";
 
 export const ServiceBody = z.object({
@@ -61,14 +62,42 @@ export const ServiceParams = z.object({
 });
 export type IServiceParams = z.infer<typeof ServiceParams>;
 
+export const GappedServiceParams = z.object({
+  gapped: z.string().optional(),
+});
+export type IGappedServiceParams = z.infer<typeof GappedServiceParams>;
+
 export const getService: RequestHandler = async (req, res) => {
-  const { id } = req.params as unknown as IServiceParams;
+  const { id, gapped } = req.params as unknown as IServiceParams &
+    IGappedServiceParams;
   const service = await Service.findOne({ _id: id }).exec();
-  if (service == null)
+  if (service == null) {
     json(res, 404, {
       message: "Invalid service id",
     });
-  else json(res, 200, shadow(service));
+    return;
+  }
+  if (gapped) {
+    const appointments = (
+      await Appointment.paginate(
+        { service: id },
+        {
+          sort: {
+            minutes: 1,
+          },
+        }
+      )
+    ).docs;
+    for (let i = 0; i < appointments.length; ++i)
+      for (let j = 0; j < service.disponibilities.length; ++j)
+        if (appointments[i].calendar == service.disponibilities[j].name) {
+          const c = service.disponibilities[j];
+          if (!c.reservations) c.reservations = [];
+          c.reservations.push(appointments[i].minutes);
+          break;
+        }
+  }
+  json(res, 200, shadow(service));
 };
 
 export const deleteService: RequestHandler = async (req, res) => {

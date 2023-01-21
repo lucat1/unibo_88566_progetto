@@ -13,7 +13,7 @@ import type { IAppointment } from "shared/models/appointment";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
 import Pictures from "../components/pictures";
-import Map from "../components/map";
+import GeoMap from "../components/map";
 import Pagination from "../components/pagination";
 
 function initialDate(disponibility: ICalendar): Date {
@@ -24,14 +24,6 @@ function initialDate(disponibility: ICalendar): Date {
   if (minutes == Infinity) minutes = 0;
   res.setHours(minutes / 60, minutes % 60, 0);
   return res;
-}
-
-function addAppointmentCallback(i: number) {
-  return ({ addedAppointment: { day, number, time, id }, addCb }) => {
-    (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
-      false;
-    addCb(day, number, time, id);
-  };
 }
 
 function removeAppointmentCallback(i: number) {
@@ -87,7 +79,7 @@ const Service: React.FC = () => {
   const [{ authenticated }] = useAuth();
   const { data: service } = useQuery(
     ["service", id],
-    () => fetch<IService>(`store/services/${id}`),
+    () => fetch<IService>(`store/services/${id}?gapped=true`),
     {
       suspense: true,
     }
@@ -99,8 +91,24 @@ const Service: React.FC = () => {
       suspense: true,
     }
   );
+  const [selectedDates, setSelectedDates] = React.useState(
+    new Map<number, Date>()
+  );
 
-  async function addAppointment(calendar: string, from: Date) {
+  function addAppointmentCallback(i: number) {
+    return ({ addedAppointment: { day, number, time, id }, addCb }) => {
+      (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
+        false;
+      const d = new Date();
+      d.setDate(day);
+      d.setTime(time);
+      selectedDates.set(i, d);
+      setSelectedDates(selectedDates);
+      addCb(day, number, time, id);
+    };
+  }
+
+  async function reserveAppointment(calendar: string, from: Date) {
     await fetch("store/appointments/", {
       method: "PUT",
       body: JSON.stringify({
@@ -109,7 +117,7 @@ const Service: React.FC = () => {
         from,
       }),
     });
-    navigate(".");
+    navigate("..");
   }
 
   async function deleteAppointment(appointment: any) {
@@ -132,11 +140,11 @@ const Service: React.FC = () => {
           {service?.price.toFixed(2)}
           <h2 className="has-text-weight-bold is-size-4 mt-4">Store</h2>
           {store?.name}
-          <Map lat={store?.location[0]} lng={store?.location[1]} />
+          <GeoMap lat={store?.location[0]} lng={store?.location[1]} />
           <h2 className="has-text-weight-bold is-size-4 mt-4">
             Disponibilities
           </h2>
-          {service?.disponibilities?.length ?? 0 > 0 ? (
+          {(service?.disponibilities?.length ?? 0) > 0 ? (
             <div className="menu my-4">
               {service?.disponibilities?.map((disponibility, i) => (
                 <div key={i} className="card my-4">
@@ -163,6 +171,13 @@ const Service: React.FC = () => {
                           id={"reserve-" + i}
                           disabled
                           className="button is-primary my-2"
+                          aria-label="Add appointment"
+                          onClick={async (_) =>
+                            await reserveAppointment(
+                              disponibility.name,
+                              selectedDates.get(i)!
+                            )
+                          }
                         >
                           Reserve
                         </button>
@@ -183,7 +198,7 @@ const Service: React.FC = () => {
           {authenticated ? (
             <Pagination
               url={(page) =>
-                `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1`
+                `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1&mine=true`
               }
               resource={(page): any[] => ["services", id, "appointments", page]}
               className="is-flex is-flex-direction-row is-flex-wrap-wrap"
@@ -199,7 +214,7 @@ const Service: React.FC = () => {
                   <footer className="card-footer">
                     <button
                       className="card-footer-item button is-danger"
-                      aria-label="Remove pet"
+                      aria-label="Remove appointment"
                       onClick={(_) => deleteAppointment(appointment._id)}
                     >
                       Delete
