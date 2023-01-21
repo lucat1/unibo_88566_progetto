@@ -79,7 +79,7 @@ const Service: React.FC = () => {
   const [{ authenticated }] = useAuth();
   const { data: service } = useQuery(
     ["service", id],
-    () => fetch<IService>(`store/services/${id}?gapped=true`),
+    () => fetch<IService>(`store/services/${id}`),
     {
       suspense: true,
     }

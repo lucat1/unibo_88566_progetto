@@ -11,6 +11,7 @@ export interface ICalendar extends Document {
   name: string;
   intervals: IInterval[];
   slotDuration: number;
+  reservations: Date[];
 }
 
 export interface IService extends Document {

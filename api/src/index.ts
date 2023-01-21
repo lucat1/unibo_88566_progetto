@@ -100,7 +100,6 @@ import {
 import {
   ServiceBody,
   ServiceParams,
-  GappedServiceParams,
   ServiceRandomParams,
   addService,
   getServices,
@@ -412,7 +411,7 @@ const main = async () => {
   );
   app.get(
     "/api/store/services/:id",
-    validateParams(ServiceParams.and(GappedServiceParams)),
+    validateParams(ServiceParams),
     catcher(getService)
   );
   app.delete(

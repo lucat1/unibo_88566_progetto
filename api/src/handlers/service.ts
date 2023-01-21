@@ -62,14 +62,8 @@ export const ServiceParams = z.object({
 });
 export type IServiceParams = z.infer<typeof ServiceParams>;
 
-export const GappedServiceParams = z.object({
-  gapped: z.string().optional(),
-});
-export type IGappedServiceParams = z.infer<typeof GappedServiceParams>;
-
 export const getService: RequestHandler = async (req, res) => {
-  const { id, gapped } = req.params as unknown as IServiceParams &
-    IGappedServiceParams;
+  const { id } = req.params as unknown as IServiceParams;
   const service = await Service.findOne({ _id: id }).exec();
   if (service == null) {
     json(res, 404, {
@@ -77,26 +71,24 @@ export const getService: RequestHandler = async (req, res) => {
     });
     return;
   }
-  if (gapped) {
-    const appointments = (
-      await Appointment.paginate(
-        { service: id },
-        {
-          sort: {
-            minutes: 1,
-          },
-        }
-      )
-    ).docs;
-    for (let i = 0; i < appointments.length; ++i)
-      for (let j = 0; j < service.disponibilities.length; ++j)
-        if (appointments[i].calendar == service.disponibilities[j].name) {
-          const c = service.disponibilities[j];
-          if (!c.reservations) c.reservations = [];
-          c.reservations.push(appointments[i].minutes);
-          break;
-        }
-  }
+  const appointments = (
+    await Appointment.paginate(
+      { service: id },
+      {
+        sort: {
+          minutes: 1,
+        },
+      }
+    )
+  ).docs;
+  for (let i = 0; i < appointments.length; ++i)
+    for (let j = 0; j < service.disponibilities.length; ++j)
+      if (appointments[i].calendar == service.disponibilities[j].name) {
+        const c = service.disponibilities[j];
+        if (!c.reservations) c.reservations = [];
+        c.reservations.push(appointments[i].minutes);
+        break;
+      }
   json(res, 200, shadow(service));
 };
 
