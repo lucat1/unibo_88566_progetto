@@ -85,7 +85,7 @@ export default defineComponent({
           <h4 class="title is-4">
             Question {{ current + 1 }} / {{ questions.length }}
           </h4>
-          <p>
+          <p id="question">
             {{ questions[current].question }}
           </p>
         </div>
@@ -95,9 +95,13 @@ export default defineComponent({
           v-bind:max="questions.length"
         ></progress>
       </div>
-      <footer class="card-footer">
-        <a href="#" @click="answer(true)" class="card-footer-item">True</a>
-        <a href="#" @click="answer(false)" class="card-footer-item">False</a>
+      <footer class="card-footer" role="radiogroup" aria-labelledby="question">
+        <a href="#" role="radio" @click="answer(true)" class="card-footer-item"
+          >True</a
+        >
+        <a href="#" role="radio" @click="answer(false)" class="card-footer-item"
+          >False</a
+        >
       </footer>
     </div>
   </div>
