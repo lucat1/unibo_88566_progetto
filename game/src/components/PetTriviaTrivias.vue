@@ -160,14 +160,14 @@ export default defineComponent({
         class="card-footer-item"
         :class="{ disabled: selected <= 0 }"
       >
-        Previous
+        Previous animal
       </a>
       <a
         @click="next()"
         class="card-footer-item"
         :class="{ disabled: selected >= trivias.length - 1 }"
       >
-        Next
+        Next animal
       </a>
     </footer>
   </div>

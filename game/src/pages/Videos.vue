@@ -40,10 +40,18 @@ export default defineComponent({
           loop
           class="column is-full"
           style="max-height: 60vh"
+          title="A cute video of a dog"
         >
-          <source :src="this.url" alt="A cute video of a dog." />
-          Unsupported video tag.
+          <source :src="this.url" />
+          <p>
+            Your browser doesn't support HTML video. Here is a
+            <a :href="this.url">link to the video</a> instead.
+          </p>
         </video>
+        <p role="region" class="is-sr-only" aria-live="polite">
+          A video is being played from <code>{{ this.url }}</code
+          >.
+        </p>
       </div>
     </div>
     <footer class="card-footer">
