@@ -1,5 +1,6 @@
-import { h, useState } from "../h";
+import { h, useState, useEffect } from "../h";
 import fetch, { withOptions } from "shared/fetch";
+import { isAuthenticated } from "shared/auth";
 
 const CategoryAdd = () => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,11 @@ const CategoryAdd = () => {
     } catch (err) {
       setError(err.message || "An error occourred while adding a new board");
     }
+    useEffect(() => {
+      if (!isAuthenticated()) {
+        navigate("/login");
+      }
+    });
     setLoading(false);
   };
   return h(
