@@ -40,7 +40,7 @@ export default defineComponent({
 </style>
 
 <template>
-  <h1 class="title is-1">Trivias about pets similar to mine</h1>
+  <h1 class="title is-1">Animals whose names are similar to my pets'</h1>
   <div>
     <div v-if="pets.length == 0" class="column my-6" style="text-align: center">
       You haven't yet provided any owned pets. <br />
@@ -50,26 +50,20 @@ export default defineComponent({
         >your pets page</router-link
       >
     </div>
-    <div class="is-flex is-flex-direction-row" style="overflow-x: auto">
-      <div
-        v-for="(pet, i) in pets"
-        :key="i"
-        class="card mx-4 my-3"
-        :class="{ selected: selected == i }"
-        style="max-width: 24rem; cursor: pointer"
-        @click="selected = i"
-      >
-        <div class="card-content">
-          <div class="content">
-            {{ pet.name }}
-          </div>
-        </div>
-        <div class="card-content">
-          <div class="content">
-            {{ pet.type }}
-          </div>
-        </div>
+    <div v-else class="column my-6">
+      <div class="block">
+        <label html-for="petSelect">Select one of your pets: </label>
       </div>
+      <select id="petSelect" class="button is-active">
+        <option
+          v-for="(pet, i) in pets"
+          :key="i"
+          class="dropdown-item"
+          @click="selected = i"
+        >
+          {{ pet.name }} ({{ pet.type }})
+        </option>
+      </select>
     </div>
   </div>
 

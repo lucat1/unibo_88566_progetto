@@ -33,7 +33,7 @@ export default defineComponent({
   <h1 class="title is-1">Smart Cat Trivias</h1>
   <div class="card">
     <div class="card-content">
-      <div class="content">
+      <div class="content" role="region" aria-live="polite">
         <div class="block" v-for="trivia in trivias">
           {{ trivia }}
         </div>
