@@ -49,7 +49,6 @@ const Products: React.FC = () => {
                 {prod.category && (
                   <Link
                     className="card-footer-item"
-                    to={`/categories/${prod.category._id}`}
                   >
                     {prod.category.name}
                   </Link>
@@ -57,7 +56,6 @@ const Products: React.FC = () => {
                 {prod.subcategory && (
                   <Link
                     className="card-footer-item"
-                    to={`/subcategories/${prod.subcategory._id}`}
                   >
                     {prod.subcategory.name}
                   </Link>
