@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { IOrder } from "shared/models/order";
 import Pagination from "../components/pagination";
 
-const Ordes: React.FC = () => {
+const Orders: React.FC = () => {
   return (
     <>
       <main class="menu">
@@ -58,4 +58,4 @@ const Ordes: React.FC = () => {
   );
 };
 
-export default Ordes;
+export default Orders;
