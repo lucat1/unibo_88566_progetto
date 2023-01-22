@@ -17,7 +17,7 @@ const Services = () =>
       h(
         Link,
         { to: "/services/add" },
-        h("button", { className: "button is-primary" }, "Add")
+        h("span", { className: "button is-primary" }, "Add")
       )
     ),
     h(
@@ -40,18 +40,18 @@ const Services = () =>
             { className: "card" },
             serv.photos?.length > 0
               ? h(
-                "div",
-                { className: "card-image" },
-                h(
-                  "figure",
-                  { className: "image is-square" },
-                  h("img", {
-                    style: { "object-fit": "cover" },
-                    src: serv.photos ? serv.photos[0] : undefined,
-                    alt: `${serv.name} main image`,
-                  })
+                  "div",
+                  { className: "card-image" },
+                  h(
+                    "figure",
+                    { className: "image is-square" },
+                    h("img", {
+                      style: { "object-fit": "cover" },
+                      src: serv.photos ? serv.photos[0] : undefined,
+                      alt: `${serv.name} main image`,
+                    })
+                  )
                 )
-              )
               : null,
             h(
               "div",

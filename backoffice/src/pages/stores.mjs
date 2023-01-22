@@ -17,7 +17,7 @@ const Stores = () =>
       h(
         Link,
         { to: "/stores/add" },
-        h("button", { className: "button is-primary" }, "Add")
+        h("span", { className: "button is-primary" }, "Add")
       )
     ),
     h(

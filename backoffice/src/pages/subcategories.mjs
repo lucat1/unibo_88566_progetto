@@ -14,8 +14,8 @@ const Subcategories = ({ category }) => {
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-        ? h("div", { className: "notification is-danger" }, "Error: ", err)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", err)
+      : h(
           "div",
           { className: "menu my-4" },
           h(
@@ -28,7 +28,7 @@ const Subcategories = ({ category }) => {
             h(
               Link,
               { to: `/categories/${category}/add` },
-              h("button", { className: "button is-primary" }, "Add")
+              h("a", { className: "button is-primary" }, "Add")
             )
           ),
           h(

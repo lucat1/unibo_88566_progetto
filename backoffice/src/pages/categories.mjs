@@ -11,8 +11,8 @@ const Categories = () => {
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-        ? h("div", { className: "notification is-danger" }, "Error: ", err)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", err)
+      : h(
           "div",
           { className: "menu" },
           h(
@@ -25,7 +25,7 @@ const Categories = () => {
             h(
               Link,
               { to: "/categories/add" },
-              h("button", { className: "button is-primary" }, "Add")
+              h("span", { className: "button is-primary" }, "Add")
             )
           ),
           h(
