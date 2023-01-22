@@ -65,9 +65,11 @@ const Nav: React.FC = () => {
 
         <div className="navbar-end">
           <Link to="/cart" className="navbar-item">
-            <span className="file-icon">
-              <i className="fa-solid fa-cart-shopping"></i>
-              <span style={{ marginLeft: ".5rem" }}>{productsInCart}</span>
+            <span className="icon-text">
+              <span className="file-icon">
+                <i className="fa-solid fa-cart-shopping"></i>
+              </span>
+              <span>Chart ({productsInCart})</span>
             </span>
           </Link>
           {auth.authenticated ? (
