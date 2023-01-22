@@ -45,7 +45,7 @@ const Nav = () => {
           role: "button",
           className: `navbar-burger ${open ? "is-active" : ""}`,
           onClick: (_) => setOpen(!open),
-          "aria-label": "menu",
+          "aria-label": "expand menu",
           "aria-expand": open ? "true" : "false",
           "data-target": "nav",
         },
@@ -56,7 +56,12 @@ const Nav = () => {
     ),
     h(
       "div",
-      { className: `navbar-menu ${open ? "is-active" : ""}` },
+      {
+        id: "nav",
+        "aria-label": "menu",
+        "aria-expanded": open,
+        className: `navbar-menu ${open ? "is-active" : ""}`,
+      },
       h(
         "div",
         { className: "navbar-start" },

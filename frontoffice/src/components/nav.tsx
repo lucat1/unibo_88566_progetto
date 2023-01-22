@@ -39,7 +39,7 @@ const Nav: React.FC = () => {
           role="button"
           className={`navbar-burger ${opened ? "is-active" : ""}`}
           onClick={() => setOpened(!opened)}
-          aria-label="menu"
+          aria-label="expand menu"
           aria-expanded={opened ? "true" : "false"}
           data-target="nav"
         >
@@ -49,7 +49,12 @@ const Nav: React.FC = () => {
         </a>
       </div>
 
-      <div id="nav" className={`navbar-menu ${opened ? "is-active" : ""}`}>
+      <div
+        id="nav"
+        aria-label="menu"
+        aria-expanded={opened ? "true" : "false"}
+        className={`navbar-menu ${opened ? "is-active" : ""}`}
+      >
         <div className="navbar-start">
           {pages.map((page, i) => (
             <Link key={i} to={page.url} className="navbar-item">

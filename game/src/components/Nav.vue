@@ -47,7 +47,7 @@ export default defineComponent({
         class="navbar-burger"
         v-bind:class="{ 'is-active': opened }"
         v-on:click="opened = !opened"
-        aria-label="menu"
+        aria-label="expand menu"
         v-bind:aria-expanded="opened"
         data-target="nav"
       >
@@ -57,9 +57,14 @@ export default defineComponent({
       </a>
     </div>
 
-    <div id="nav" class="navbar-menu" v-bind:class="{ 'is-active': opened }">
+    <div
+      id="nav"
+      aria-label="menu"
+      v-bind:aria-expanded="opened"
+      class="navbar-menu"
+      v-bind:class="{ 'is-active': opened }"
+    >
       <div class="navbar-start">
-        <!-- TODO: are these links accessible? not working with <space> -->
         <router-link
           v-for="route in routes"
           v-bind:to="route.path"
