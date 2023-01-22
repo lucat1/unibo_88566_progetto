@@ -70,7 +70,12 @@ export default defineComponent({
 
 <template>
   <div class="is-flex is-align-items-center is-justify-content-center">
-    <div v-if="current < questions.length" class="card">
+    <div
+      v-if="current < questions.length"
+      class="card"
+      role="region"
+      aria-live="polite"
+    >
       <div class="card-image">
         <figure class="image" style="max-height: 60vh">
           <img
