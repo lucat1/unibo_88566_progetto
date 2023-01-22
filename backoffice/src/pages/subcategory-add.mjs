@@ -37,7 +37,7 @@ const SubcategoryAdd = () => {
       h(
         "h1",
         { className: "title" },
-        "Addding a subcategory for category #",
+        "Adding a subcategory for category #",
         id
       ),
 

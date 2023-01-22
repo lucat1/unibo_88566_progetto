@@ -47,18 +47,18 @@ const Products: React.FC = () => {
             {(prod.category || prod.subcategory) && (
               <footer className="card-footer">
                 {prod.category && (
-                  <Link
+                  <div
                     className="card-footer-item"
                   >
                     {prod.category.name}
-                  </Link>
+                  </div>
                 )}
                 {prod.subcategory && (
-                  <Link
+                  <div
                     className="card-footer-item"
                   >
                     {prod.subcategory.name}
-                  </Link>
+                  </div>
                 )}
               </footer>
             )}

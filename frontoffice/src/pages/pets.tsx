@@ -47,12 +47,10 @@ const Pets: React.FC = () => {
             {(pet.category || pet.subcategory) && (
               <footer className="card-footer">
                 {pet.category && (
-                  <Link className="card-footer-item">{pet.category.name}</Link>
+                  <div className="card-footer-item">{pet.category.name}</div>
                 )}
                 {pet.subcategory && (
-                  <Link className="card-footer-item">
-                    {pet.subcategory.name}
-                  </Link>
+                  <div className="card-footer-item">{pet.subcategory.name}</div>
                 )}
               </footer>
             )}

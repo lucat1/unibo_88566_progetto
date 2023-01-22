@@ -33,8 +33,8 @@ const PetAdd = () => {
       navigate(`/pets/${_id}`);
     } catch (err) {
       setError(
-        err.message + " (A category is required)" ||
-          "An error occourred while adding a new pet"
+        err.message + " (all fields are required)" ||
+        "An error occourred while adding a new pet"
       );
     }
     setLoading(false);

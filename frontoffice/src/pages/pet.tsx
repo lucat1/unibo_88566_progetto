@@ -26,24 +26,22 @@ const Pet: React.FC = () => {
         <section className="column">
           <h1 className="has-text-weight-bold is-size-2 my-4">{pet?.name}</h1>
           <span className="is-size-5">{pet?.description}</span>
-          <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
+          <p className="has-text-weight-bold is-size-4 mt-4">Price</p>$
           {pet?.price ? pet.price.toFixed(2) : "No price"}
-          <h2 className="has-text-weight-bold is-size-4 mt-4">In store</h2>
+          <p className="has-text-weight-bold is-size-4 mt-4">In store</p>
           {(pet?.stock || 0) > 0 ? pet?.stock : "Out of stock"}
           <div className="is-flex">
             {pet?.category && (
               <div className="mr-6">
-                <h2 className="has-text-weight-bold is-size-4 mt-4">
-                  Category
-                </h2>
+                <p className="has-text-weight-bold is-size-4 mt-4">Category</p>
                 {pet.category.name}
               </div>
             )}
             {pet?.subcategory && (
               <div>
-                <h2 className="has-text-weight-bold is-size-4 mt-4">
+                <p className="has-text-weight-bold is-size-4 mt-4">
                   Subcategory
-                </h2>
+                </p>
                 {pet.subcategory.name}
               </div>
             )}
