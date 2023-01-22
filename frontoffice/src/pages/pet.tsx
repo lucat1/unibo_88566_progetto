@@ -56,7 +56,7 @@ const Pet: React.FC = () => {
             </button>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

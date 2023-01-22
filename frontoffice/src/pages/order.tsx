@@ -91,7 +91,7 @@ const Order: React.FC = () => {
           .reduce((prev, i) => prev + (i.product || i.pet)!.price * i.amount, 0)
           .toFixed(2)}
       </h2>
-    </main>
+    </div>
   );
 };
 

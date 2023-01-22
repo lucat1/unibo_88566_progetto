@@ -248,7 +248,7 @@ const Service: React.FC = () => {
             <p>Log in to view your appointments.</p>
           )}
         </section>
-      </main>
+      </div>
     </>
   );
 };

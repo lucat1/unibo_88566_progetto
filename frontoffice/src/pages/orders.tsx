@@ -53,7 +53,7 @@ const Orders: React.FC = () => {
             </tr>
           )}
         </Pagination>
-      </main>
+      </div>
     </>
   );
 };

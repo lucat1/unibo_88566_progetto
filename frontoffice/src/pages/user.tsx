@@ -178,7 +178,7 @@ const User: React.FC = () => {
         <Password id={data!._id} />
         <Delete id={data!._id} />
       </section>
-    </main>
+    </div>
   );
 };
 

@@ -57,7 +57,7 @@ const Product: React.FC = () => {
             </button>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };
