@@ -34,7 +34,7 @@ const PetAdd = () => {
     } catch (err) {
       setError(
         err.message + " (all fields are required)" ||
-        "An error occourred while adding a new pet"
+          "An error occourred while adding a new pet"
       );
     }
     setLoading(false);

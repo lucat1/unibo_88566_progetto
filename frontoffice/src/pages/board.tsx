@@ -193,7 +193,7 @@ const BoardAdd: React.FC = () => {
               <PicturesList
                 pictures={photos}
                 editable={true}
-                select={(_) => { }}
+                select={(_) => {}}
                 remove={(i) => setPhotos(photos.filter((_, j) => i != j))}
                 add={(url) => setPhotos((pics) => [...pics, url])}
               />
