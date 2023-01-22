@@ -9,13 +9,13 @@ const Subcategories = ({ category }) => {
     fetch
   );
   return h(
-    "main",
+    "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-      ? h("div", { className: "notification is-danger" }, "Error: ", err)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", err)
+        : h(
           "div",
           { className: "menu my-4" },
           h(

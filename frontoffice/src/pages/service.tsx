@@ -148,7 +148,7 @@ const Service: React.FC = () => {
 
   return (
     <>
-      <main className="columns">
+      <div className="columns">
         <section className="column is-one-third">
           <Pictures pictures={service?.photos || []} editable={false} />
         </section>

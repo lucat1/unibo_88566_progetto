@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Pets = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",

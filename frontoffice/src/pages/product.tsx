@@ -19,7 +19,7 @@ const Product: React.FC = () => {
   const [_, addToCart] = useCart();
   return (
     <>
-      <main className="columns">
+      <div className="columns">
         <section className="column is-one-third">
           <Pictures pictures={product?.photos || []} />
         </section>

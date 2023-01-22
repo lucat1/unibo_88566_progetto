@@ -24,7 +24,7 @@ const CategoryAdd = () => {
     setLoading(false);
   };
   return h(
-    "main",
+    "div",
     {},
     h(
       "form",

@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Services = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",
@@ -40,18 +40,18 @@ const Services = () =>
             { className: "card" },
             serv.photos?.length > 0
               ? h(
-                  "div",
-                  { className: "card-image" },
-                  h(
-                    "figure",
-                    { className: "image is-square" },
-                    h("img", {
-                      style: { "object-fit": "cover" },
-                      src: serv.photos ? serv.photos[0] : undefined,
-                      alt: `${serv.name} main image`,
-                    })
-                  )
+                "div",
+                { className: "card-image" },
+                h(
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: serv.photos ? serv.photos[0] : undefined,
+                    alt: `${serv.name} main image`,
+                  })
                 )
+              )
               : null,
             h(
               "div",

@@ -19,7 +19,7 @@ const Pet: React.FC = () => {
   const [cart, addToCart] = useCart();
   return (
     <>
-      <main className="columns">
+      <div className="columns">
         <section className="column is-one-third">
           <Pictures pictures={pet?.photos || []} />
         </section>

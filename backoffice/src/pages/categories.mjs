@@ -6,13 +6,13 @@ import fetch from "shared/fetch";
 const Categories = () => {
   const { data, loading, err } = req("store/categories", fetch);
   return h(
-    "main",
+    "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
       : err
-      ? h("div", { className: "notification is-danger" }, "Error: ", err)
-      : h(
+        ? h("div", { className: "notification is-danger" }, "Error: ", err)
+        : h(
           "div",
           { className: "menu" },
           h(

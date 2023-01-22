@@ -56,7 +56,7 @@ const Cart: React.FC = () => {
       <h3 className="has-text-weight-bold is-size-6 my-2">Order ID: {order}</h3>
     </div>
   ) : (
-    <main className="is-flex is-flex-direction-column">
+    <div className="is-flex is-flex-direction-column">
       <table className="table">
         <thead>
           <tr role="row">

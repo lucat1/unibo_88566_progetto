@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Boards = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h("p", { className: "menu-label" }, "Boards"),
     // h(
@@ -32,18 +32,18 @@ const Boards = () =>
             { className: "card" },
             prod.photos?.length > 0
               ? h(
-                  "div",
-                  { className: "card-image" },
-                  h(
-                    "figure",
-                    { className: "image is-square" },
-                    h("img", {
-                      style: { "object-fit": "cover" },
-                      src: prod.photos ? prod.photos[0] : undefined,
-                      alt: `${prod.name} main image`,
-                    })
-                  )
+                "div",
+                { className: "card-image" },
+                h(
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: prod.photos ? prod.photos[0] : undefined,
+                    alt: `${prod.name} main image`,
+                  })
                 )
+              )
               : null,
             h(
               "div",

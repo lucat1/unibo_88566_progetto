@@ -6,7 +6,7 @@ import Pagination from "../components/pagination";
 const Orders: React.FC = () => {
   return (
     <>
-      <main class="menu">
+      <div class="menu">
         <div class="is-flex is-flex-direction-row is-justify-content-space-between py-2">
           <h1 className="menu-label">Orders</h1>
         </div>

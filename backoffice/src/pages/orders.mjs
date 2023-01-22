@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Orders = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",
