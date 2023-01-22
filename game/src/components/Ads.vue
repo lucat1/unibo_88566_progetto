@@ -19,7 +19,7 @@ export default defineComponent({
 
 <template>
   <div v-if="products.length > 0" class="block">
-    <h1 class="title is-3">Products for you</h1>
+    <h2 class="title is-2">Products for you</h2>
     <div class="columns">
       <div
         v-for="(product, i) in products"
@@ -39,13 +39,21 @@ export default defineComponent({
           <div class="card-content">
             <div class="content">{{ product.name }}</div>
           </div>
+          <footer class="card-footer">
+            <a
+              :href="productsLink + '/' + product._id"
+              target="_blank"
+              class="card-footer-item"
+              >Apri</a
+            >
+          </footer>
         </div>
       </div>
     </div>
     <a :href="productsLink" class="button is-primary">More products</a>
   </div>
   <div v-if="services.length > 0" class="block">
-    <h1 class="title is-3">Services for you</h1>
+    <h2 class="title is-2">Services for you</h2>
     <div class="columns">
       <div
         v-for="(service, i) in services"
@@ -65,6 +73,14 @@ export default defineComponent({
           <div class="card-content">
             <div class="content">{{ service.name }}</div>
           </div>
+          <footer class="card-footer">
+            <a
+              :href="servicesLink + '/' + service._id"
+              target="_blank"
+              class="card-footer-item"
+              >Apri</a
+            >
+          </footer>
         </div>
       </div>
     </div>
