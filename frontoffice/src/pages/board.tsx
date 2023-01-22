@@ -176,6 +176,7 @@ const BoardAdd: React.FC = () => {
                 </label>
                 <div className="control">
                   <textarea
+                    id="message"
                     className="input"
                     type="text"
                     disabled={postMutation.isLoading}
