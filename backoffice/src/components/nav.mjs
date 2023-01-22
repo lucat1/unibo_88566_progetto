@@ -93,7 +93,13 @@ const Nav = () => {
                 "span",
                 {},
                 "Signed in as ",
-                user.username,
+                h(
+                  "a",
+                  {
+                    onClick: () => navigate(`/users/${user._id}`),
+                  },
+                  user.username
+                ),
                 ", ",
                 h(
                   "a",
