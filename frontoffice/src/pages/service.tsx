@@ -189,6 +189,7 @@ const Service: React.FC = () => {
                         <button
                           id={"reserve-" + i}
                           className="button is-info my-2"
+                          hidden={!selectedDates.get(i)}
                           aria-label="Add appointment"
                           onClick={async (_) =>
                             await reserveAppointment(
