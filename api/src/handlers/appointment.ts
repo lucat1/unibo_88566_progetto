@@ -22,7 +22,12 @@ export const addAppointment: RequestHandler = async (req, res) => {
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");
   const data = req.body as IAppointmentBody;
-  const appointment = new Appointment({ ...data, customer: user._id });
+  const appointment = new Appointment({
+    customer: user._id,
+    service: data.service,
+    calendar: data.calendar,
+    minutes: data.from,
+  });
   await appointment.save();
   json(res, 200, shadow(appointment));
 };
@@ -36,8 +41,8 @@ export type IAppointmentQuery = z.infer<typeof AppointmentQuery>;
 export const getAppointments: RequestHandler = async (req, res) => {
   const { limit, page, sort, order } =
     req.query as unknown as IPaginationQuery &
-      ISortingQuery &
-      IAppointmentQuery;
+    ISortingQuery &
+    IAppointmentQuery;
 
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");

@@ -5,7 +5,7 @@ import {
   AppointmentPicker,
   AppointmentAttributesType,
 } from "react-appointment-picker";
-import fetch from "shared/fetch";
+import fetch, { withOptions } from "shared/fetch";
 import type { IService, ICalendar, IInterval } from "shared/models/service";
 import type { IStore } from "shared/models/store";
 import type { IAppointment } from "shared/models/appointment";
@@ -121,23 +121,21 @@ const Service: React.FC = () => {
       (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
         false;
       const d = new Date();
-      d.setDate(day);
-      d.setTime(time);
-      selectedDates.set(i, d);
+      selectedDates.set(i, new Date(id));
       setSelectedDates(selectedDates);
       addCb(day, number, time, id);
     };
   }
 
   async function reserveAppointment(calendar: string, from: Date) {
-    await fetch("store/appointments/", {
-      method: "PUT",
-      body: JSON.stringify({
+    await fetch(
+      "store/appointments/",
+      withOptions("PUT", {
         service: id,
         calendar,
         from,
-      }),
-    });
+      })
+    );
     navigate("..");
   }
 
@@ -190,7 +188,6 @@ const Service: React.FC = () => {
                       <div>
                         <button
                           id={"reserve-" + i}
-                          disabled
                           className="button is-info my-2"
                           aria-label="Add appointment"
                           onClick={async (_) =>
