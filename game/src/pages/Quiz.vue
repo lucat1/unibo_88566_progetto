@@ -13,12 +13,12 @@ const N_OF_QUESTIONS = 5;
 export default defineComponent({
   async setup() {
     const res = await fetch(
-      `https://opentdb.com/api.php?amount=${N_OF_QUESTIONS}&category=27&type=boolean`
+      `https://opentdb.com/api.php?amount=${N_OF_QUESTIONS}&category=27&type=boolean&encode=url3986`
     );
     const data = await res.json();
     return {
       questions: data.results.map((result) => ({
-        question: result.question,
+        question: decodeURI(result.question),
         answer: result.correct_answer == "True",
       })),
       current: 0,

@@ -1,4 +1,11 @@
 <template>
+  <div
+    class="block w-full flex justify-center items-center z-0 text-2xl text-gray font-bold"
+    role="status"
+    aria-live="polite"
+  >
+    Turn: {{ turn }}
+  </div>
   <div v-for="(row, i) in rows" :key="i" class="columns">
     <Card
       v-for="(card, i) in row"
@@ -11,11 +18,6 @@
         (secondPick && secondPick.row == card.row && secondPick.col == card.col)
       "
     />
-  </div>
-  <div
-    class="w-full flex justify-center items-center z-0 text-2xl text-gray font-bold"
-  >
-    Turn: {{ turn }}
   </div>
 </template>
 
@@ -50,12 +52,12 @@ export default defineComponent({
   },
   async setup() {
     const req = await fetch(
-      `http://zoo-animal-api.herokuapp.com/animals/rand/${NUMBER_OF_PAIRS}`
+      `http://shibe.online/api/shibes?count=${NUMBER_OF_PAIRS}`
     );
     const animals = await req.json();
     const images = animals.map((a: any) => ({
-      img: a.image_link,
-      name: a.name,
+      img: a,
+      name: a,
     }));
     const rows = [...images, ...images]
       .map((image) => ({
