@@ -41,8 +41,8 @@ export type IAppointmentQuery = z.infer<typeof AppointmentQuery>;
 export const getAppointments: RequestHandler = async (req, res) => {
   const { limit, page, sort, order } =
     req.query as unknown as IPaginationQuery &
-    ISortingQuery &
-    IAppointmentQuery;
+      ISortingQuery &
+      IAppointmentQuery;
 
   const user = await User.findOne((req as AuthenticatedRequest).user).exec();
   if (user == null) throw new Error("User not found");

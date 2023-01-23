@@ -87,46 +87,46 @@ const Nav = () => {
           { className: "navbar-item" },
           !user
             ? h(
-              "div",
-              { className: "buttons mr-4" },
-              h(
-                Link,
-                { to: "/login", className: "button is-light", tabindex: "0" },
-                "Login"
+                "div",
+                { className: "buttons mr-4" },
+                h(
+                  Link,
+                  { to: "/login", className: "button is-light", tabindex: "0" },
+                  "Login"
+                )
               )
-            )
             : h(
-              "span",
-              {},
-              "Signed in as ",
-              h(
-                "a",
-                {
-                  onClick: () => navigate(`/users/${user._id}`),
-                  onkeypress: () => navigate(`/users/${user._id}`),
-                  tabindex: "0",
-                },
-                user.username
-              ),
-              ", ",
-              h(
-                "a",
-                {
-                  onClick: () => {
-                    removeAuthToken();
-                    setUser(null);
-                    navigate("/login");
+                "span",
+                {},
+                "Signed in as ",
+                h(
+                  "a",
+                  {
+                    onClick: () => navigate(`/users/${user._id}`),
+                    onkeypress: () => navigate(`/users/${user._id}`),
+                    tabindex: "0",
                   },
-                  onkeypress: () => {
-                    removeAuthToken();
-                    setUser(null);
-                    navigate("/login");
+                  user.username
+                ),
+                ", ",
+                h(
+                  "a",
+                  {
+                    onClick: () => {
+                      removeAuthToken();
+                      setUser(null);
+                      navigate("/login");
+                    },
+                    onkeypress: () => {
+                      removeAuthToken();
+                      setUser(null);
+                      navigate("/login");
+                    },
+                    tabindex: "0",
                   },
-                  tabindex: "0",
-                },
-                "Sign out"
+                  "Sign out"
+                )
               )
-            )
         )
       )
     )

@@ -54,18 +54,18 @@ const Posts = ({ board }) => {
             { className: "card" },
             post.photos?.length > 0
               ? h(
-                "div",
-                { className: "card-image" },
-                h(
-                  "figure",
-                  { className: "image is-square" },
-                  h("img", {
-                    style: { "object-fit": "cover" },
-                    src: post.photos ? post.photos[0] : undefined,
-                    alt: `${post.name} main image`,
-                  })
+                  "div",
+                  { className: "card-image" },
+                  h(
+                    "figure",
+                    { className: "image is-square" },
+                    h("img", {
+                      style: { "object-fit": "cover" },
+                      src: post.photos ? post.photos[0] : undefined,
+                      alt: `${post.name} main image`,
+                    })
+                  )
                 )
-              )
               : null,
             h(
               "div",

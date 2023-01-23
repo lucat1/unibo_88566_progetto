@@ -54,8 +54,8 @@ const Board = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-        : h(
+      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+      : h(
           "div",
           {},
           h(

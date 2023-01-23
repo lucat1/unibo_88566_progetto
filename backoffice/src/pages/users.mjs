@@ -27,16 +27,16 @@ const Users = () =>
             { className: "card is-flex is-flex-direction-row" },
             user.avatar
               ? h("img", {
-                className: "is-square",
-                style: {
-                  "object-fit": "cover",
-                  "max-height": "5rem",
-                  "border-top-left-radius": "5%",
-                  "border-bottom-left-radius": "5%",
-                },
-                src: user.avatar,
-                alt: `${user.username} main image`,
-              })
+                  className: "is-square",
+                  style: {
+                    "object-fit": "cover",
+                    "max-height": "5rem",
+                    "border-top-left-radius": "5%",
+                    "border-bottom-left-radius": "5%",
+                  },
+                  src: user.avatar,
+                  alt: `${user.username} main image`,
+                })
               : null,
             h(
               "div",

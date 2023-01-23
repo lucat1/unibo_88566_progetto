@@ -34,8 +34,10 @@ const Services: React.FC = () => {
       </div>
       <Pagination
         url={(page) =>
-          `store/services?page=${page}&location=${store ? store._id : ""
-          }&from=${dateTimeRange[0] ? dateTimeRange[0] : ""}&to=${dateTimeRange[1] ? dateTimeRange[1] : ""
+          `store/services?page=${page}&location=${
+            store ? store._id : ""
+          }&from=${dateTimeRange[0] ? dateTimeRange[0] : ""}&to=${
+            dateTimeRange[1] ? dateTimeRange[1] : ""
           }`
         }
         resource={(page) => ["services", page]}
