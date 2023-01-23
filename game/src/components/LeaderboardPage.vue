@@ -47,9 +47,10 @@ export default defineComponent({
     <tbody>
       <tr v-for="(entry, i) in docs" role="row">
         <td>{{ limit * (page - 1) + i + 1 }}</td>
-        <td>
-          <a :href="entry.profileUrl">{{ entry.username || "anonymous" }}</a>
+        <td v-if="entry.username">
+          <a :href="entry.profileUrl">{{ entry.username }}</a>
         </td>
+        <td v-else>anonymous</td>
         <td>{{ entry.score }}</td>
       </tr>
     </tbody>
