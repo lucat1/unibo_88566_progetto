@@ -35,7 +35,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-link" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <img alt="Animal House Logo" :src="logo" class="mr-4" />
@@ -81,16 +81,17 @@ export default defineComponent({
         </a>
         <div v-if="auth.authenticated" class="navbar-item">
           <div class="buttons">
-            <button @click="logout" class="button is-light">Log out</button>
+            <button @click="logout" class="button is-light-link">
+              Log out
+            </button>
           </div>
         </div>
         <div v-else class="navbar-item">
           <div class="buttons">
-            <!-- TODO: are these links accessible? not working with <space> -->
-            <router-link to="/register" tabindex="0" class="button is-primary">
+            <router-link to="/register" tabindex="0" class="button is-link">
               <strong>Sign up</strong>
             </router-link>
-            <router-link to="/login" tabindex="0" class="button is-light"
+            <router-link to="/login" tabindex="0" class="button is-light-link"
               >Log in</router-link
             >
           </div>

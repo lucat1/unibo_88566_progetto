@@ -73,7 +73,7 @@ export default defineComponent({
       :keyword="pets[selected].type"
     />
     <template #fallback>
-      <progress class="progress is-primary" />
+      <progress class="progress is-link" />
     </template>
   </Suspense>
 </template>

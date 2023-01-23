@@ -28,7 +28,7 @@ export default defineComponent({
 
 <template>
   <h1 class="title">Leaderboard</h1>
-  <div v-if="score" class="notification is-primary">Result: {{ score }}</div>
+  <div v-if="score" class="notification is-link">Result: {{ score }}</div>
   <div class="tabs">
     <ul>
       <li v-for="page in pages" :class="page == current && 'is-active'">
@@ -42,7 +42,7 @@ export default defineComponent({
   <router-link
     v-if="score != undefined"
     :to="'/' + current"
-    class="button is-primary"
+    class="button is-link"
     >Retry</router-link
   >
 </template>

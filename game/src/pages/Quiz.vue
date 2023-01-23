@@ -95,7 +95,7 @@ export default defineComponent({
           </p>
         </div>
         <progress
-          class="progress is-primary"
+          class="progress is-link"
           v-bind:value="current"
           v-bind:max="questions.length"
         ></progress>
