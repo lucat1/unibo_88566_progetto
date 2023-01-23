@@ -39,9 +39,11 @@ const Nav: React.FC = () => {
           role="button"
           className={`navbar-burger ${opened ? "is-active" : ""}`}
           onClick={() => setOpened(!opened)}
+          onKeyPress={() => setOpened(!opened)}
           aria-label="expand menu"
           aria-expanded={opened ? "true" : "false"}
           data-target="nav"
+          tabIndex="0"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
