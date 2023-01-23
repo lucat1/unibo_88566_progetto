@@ -47,9 +47,11 @@ export default defineComponent({
         class="navbar-burger"
         v-bind:class="{ 'is-active': opened }"
         v-on:click="opened = !opened"
+        v-on:keypress="opened = !opened"
         aria-label="expand menu"
         v-bind:aria-expanded="opened"
         data-target="nav"
+        tabindex="0"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -85,10 +87,10 @@ export default defineComponent({
         <div v-else class="navbar-item">
           <div class="buttons">
             <!-- TODO: are these links accessible? not working with <space> -->
-            <router-link to="/register" class="button is-primary">
+            <router-link to="/register" tabindex="0" class="button is-primary">
               <strong>Sign up</strong>
             </router-link>
-            <router-link to="/login" class="button is-light"
+            <router-link to="/login" tabindex="0" class="button is-light"
               >Log in</router-link
             >
           </div>
