@@ -6,9 +6,12 @@ import Leaderboard from "../components/Leaderboard.vue";
 
 export default defineComponent({
   data() {
+    const pages = Object.values(GameType);
+    let current = this.$route.params.game;
+    if (!pages.find((x) => x === current)) current = pages[0];
     return {
-      pages: Object.values(GameType),
-      current: this.$route.params.game,
+      pages,
+      current,
       score: this.$route.query.score,
     };
   },

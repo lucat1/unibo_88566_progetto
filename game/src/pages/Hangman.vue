@@ -130,6 +130,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import { setScore } from "../util";
+import { animalTypes } from "shared/pets";
 
 const LETTERS = [
     "A",
@@ -168,13 +169,9 @@ enum GameState {
 }
 
 export default defineComponent({
-  async setup() {
-    const req = await fetch(
-      "https://zoo-animal-api.herokuapp.com/animals/rand"
-    );
-    const { name } = await req.json(),
-      word = name.toUpperCase(),
-      wordLetters = word.split("");
+  setup() {
+    const word =
+      animalTypes[Math.floor(Math.random() * animalTypes.length)].toUpperCase();
 
     return reactive({
       strikes: 0,

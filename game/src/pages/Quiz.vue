@@ -6,7 +6,6 @@ import { setScore } from "../util";
 interface TrueOrFalse {
   question: string;
   answer: boolean;
-  image: string;
 }
 
 const N_OF_QUESTIONS = 5;
@@ -14,45 +13,14 @@ const N_OF_QUESTIONS = 5;
 export default defineComponent({
   async setup() {
     const res = await fetch(
-      `https://zoo-animal-api.herokuapp.com/animals/rand/${2 * N_OF_QUESTIONS}`
+      `https://opentdb.com/api.php?amount=${N_OF_QUESTIONS}&category=27&type=boolean&encode=url3986`
     );
-    const animals = await res.json();
-    let n = animals.length / 2,
-      questions = new Array<TrueOrFalse>(n);
-    for (let i = 0; i < n; ++i) {
-      const attributesToQuestions = [
-        ["latin_name", "latin name is"],
-        ["animal_type", "class is"],
-        ["active_time", "activity behavior is"],
-        ["length_min", "minimum length in feet is"],
-        ["length_max", "maximum length in feet is"],
-        ["weight_min", "minimum weight in pounds is"],
-        ["weight_max", "maximum weight in pounds is"],
-        ["lifespan", "average lifespan in years is"],
-        ["habitat", "habitat is/are the"],
-        ["diet", "diet is"],
-        ["geo_range", "can be found in"],
-      ];
-      let randomBoolean = Math.random() >= 0.5,
-        randomAttribute =
-          attributesToQuestions[
-            Math.floor(Math.random() * attributesToQuestions.length)
-          ],
-        subject = animals[2 * i],
-        distractor = animals[2 * i + 1];
-      questions[i] = {
-        question: `The ${subject.name}'s ${randomAttribute[1]} ${
-          (randomBoolean ? subject : distractor)[randomAttribute[0]]
-        }.`,
-        answer:
-          randomBoolean ||
-          subject[randomAttribute[0]] === distractor[randomAttribute[0]],
-        image: subject.image_link,
-      };
-    }
-
+    const data = await res.json();
     return {
-      questions,
+      questions: data.results.map((result) => ({
+        question: decodeURI(result.question),
+        answer: result.correct_answer == "True",
+      })),
       current: 0,
       result: 0,
     };
@@ -76,15 +44,15 @@ export default defineComponent({
       role="region"
       aria-live="polite"
     >
-      <div class="card-image">
-        <figure class="image" style="max-height: 60vh">
-          <img
-            v-bind:src="questions[current].image"
-            alt="Subject of the question"
-            style="aspect-ratio: 1 / 1; object-fit: cover; max-height: 60vh"
-          />
-        </figure>
-      </div>
+      <!-- <div class="card-image"> -->
+      <!--   <figure class="image" style="max-height: 60vh"> -->
+      <!--     <img -->
+      <!--       v-bind:src="questions[current].image" -->
+      <!--       alt="Subject of the question" -->
+      <!--       style="aspect-ratio: 1 / 1; object-fit: cover; max-height: 60vh" -->
+      <!--     /> -->
+      <!--   </figure> -->
+      <!-- </div> -->
       <div class="card-content">
         <div class="content">
           <h4 class="title is-4">

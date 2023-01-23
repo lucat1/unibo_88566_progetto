@@ -42,7 +42,7 @@ export default defineComponent({
     <template #fallback> Loading... </template>
   </Suspense>
   <div>
-    <span class="subtitle">Pages:</span>
+    <span class="subtitle">Pages: </span>
     <button
       class="button"
       :class="{ 'is-active': index == page }"
