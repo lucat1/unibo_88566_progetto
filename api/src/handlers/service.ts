@@ -25,11 +25,13 @@ export const addService: RequestHandler = async (req, res) => {
 
 export const ServiceQuery = z.object({
   location: z.string().optional(),
+  from: z.date().optional(),
+  to: z.date().optional(),
 });
 export type IServiceQuery = z.infer<typeof ServiceQuery>;
 
 export const getServices: RequestHandler = async (req, res) => {
-  const { limit, page, sort, order, location } =
+  const { limit, page, sort, order, location, from, to } =
     req.query as unknown as IPaginationQuery & ISortingQuery & IServiceQuery;
 
   const result = await Service.paginate(location ? { store: location } : {}, {
