@@ -9,7 +9,7 @@ import SelectInterval from "../components/select-interval";
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
   const [store, setStore] = React.useState<IStore | undefined>(undefined);
-  const [dateTimeRange, setDateTimeRange] = React.useState([
+  const [dateTimeRange, setDateTimeRange] = React.useState<Date[] | undefined>([
     new Date(),
     new Date(),
   ]);
@@ -24,11 +24,19 @@ const Services: React.FC = () => {
             setId(id + 1);
           }}
         />
-        <SelectInterval selected={dateTimeRange} onSelect={setDateTimeRange} />
+        <SelectInterval
+          selected={dateTimeRange}
+          onSelect={(dtr) => {
+            setDateTimeRange(dtr);
+            setId(id + 1);
+          }}
+        />
       </div>
       <Pagination
         url={(page) =>
-          `store/services?page=${page}&location=${store ? store._id : ""}`
+          `store/services?page=${page}&location=${store ? store._id : ""
+          }&from=${dateTimeRange[0] ? dateTimeRange[0] : ""}&to=${dateTimeRange[1] ? dateTimeRange[1] : ""
+          }`
         }
         resource={(page) => ["services", page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
