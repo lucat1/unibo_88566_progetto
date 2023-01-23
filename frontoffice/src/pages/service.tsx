@@ -148,7 +148,7 @@ const Service: React.FC = () => {
 
   return (
     <>
-      <main className="columns">
+      <div className="columns">
         <section className="column is-one-third">
           <Pictures pictures={service?.photos || []} editable={false} />
         </section>
@@ -157,9 +157,9 @@ const Service: React.FC = () => {
             {service?.name}
           </h1>
           <span className="is-size-5">{service?.description}</span>
-          <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
+          <p className="has-text-weight-bold is-size-4 mt-4">Price</p>$
           {service?.price.toFixed(2)}
-          <h2 className="has-text-weight-bold is-size-4 mt-4">Store</h2>
+          <p className="has-text-weight-bold is-size-4 mt-4">Store</p>
           {store?.name}
           <GeoMap lat={store?.location[0]} lng={store?.location[1]} />
           <h2 className="has-text-weight-bold is-size-4 mt-4">
@@ -191,7 +191,7 @@ const Service: React.FC = () => {
                         <button
                           id={"reserve-" + i}
                           disabled
-                          className="button is-primary my-2"
+                          className="button is-info my-2"
                           aria-label="Add appointment"
                           onClick={async (_) =>
                             await reserveAppointment(
@@ -248,7 +248,7 @@ const Service: React.FC = () => {
             <p>Log in to view your appointments.</p>
           )}
         </section>
-      </main>
+      </div>
     </>
   );
 };

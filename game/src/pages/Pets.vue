@@ -53,7 +53,7 @@ export default defineComponent({
       :key="i"
       class="is-flex is-flex-direction-row is-justify-content-space-between"
     >
-      <h4 className="subtitle is-6">{{ pet.name }}</h4>
+      <h2 className="subtitle is-6">{{ pet.name }}</h2>
       <span className="subtitle is-6">{{ pet.type }}</span>
       <span className="subtitle is-6">
         {{ pet.sex }} - {{ pet.age }} years old

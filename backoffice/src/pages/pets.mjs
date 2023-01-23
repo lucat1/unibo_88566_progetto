@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Pets = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",
@@ -17,7 +17,7 @@ const Pets = () =>
       h(
         Link,
         { to: "/pets/add" },
-        h("button", { className: "button is-primary" }, "Add")
+        h("span", { className: "button is-primary" }, "Add")
       )
     ),
     h(
@@ -40,18 +40,18 @@ const Pets = () =>
             { className: "card" },
             pet.photos?.length > 0
               ? h(
-                  "div",
-                  { className: "card-image" },
-                  h(
-                    "figure",
-                    { className: "image is-square" },
-                    h("img", {
-                      style: { "object-fit": "cover" },
-                      src: pet.photos ? pet.photos[0] : undefined,
-                      alt: `${pet.name} main image`,
-                    })
-                  )
+                "div",
+                { className: "card-image" },
+                h(
+                  "figure",
+                  { className: "image is-square" },
+                  h("img", {
+                    style: { "object-fit": "cover" },
+                    src: pet.photos ? pet.photos[0] : undefined,
+                    alt: `${pet.name} main image`,
+                  })
                 )
+              )
               : null,
             h(
               "div",
@@ -72,28 +72,28 @@ const Pets = () =>
               )
             ),
             (pet.category || pet.subcategory) &&
+            h(
+              "footer",
+              { className: "card-footer" },
+              pet.category &&
               h(
-                "footer",
-                { className: "card-footer" },
-                pet.category &&
-                  h(
-                    Link,
-                    {
-                      to: `/categories/${pet.category._id}`,
-                      className: "card-footer-item",
-                    },
-                    pet.category.name
-                  ),
-                pet.subcategory &&
-                  h(
-                    Link,
-                    {
-                      to: `/subcategories/${pet.subcategory._id}`,
-                      className: "card-footer-item",
-                    },
-                    pet.subcategory.name
-                  )
+                Link,
+                {
+                  to: `/categories/${pet.category._id}`,
+                  className: "card-footer-item",
+                },
+                pet.category.name
+              ),
+              pet.subcategory &&
+              h(
+                Link,
+                {
+                  to: `/subcategories/${pet.subcategory._id}`,
+                  className: "card-footer-item",
+                },
+                pet.subcategory.name
               )
+            )
           )
         )
     )

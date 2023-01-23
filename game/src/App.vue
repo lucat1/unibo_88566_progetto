@@ -21,7 +21,7 @@ export default defineComponent({
       <Suspense>
         <component :is="Component" />
         <template #fallback>
-          <progress class="progress is-primary" />
+          <progress class="progress is-link" />
         </template>
       </Suspense>
     </router-view>

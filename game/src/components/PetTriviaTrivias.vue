@@ -122,12 +122,12 @@ export default defineComponent({
   </div>
   <div v-if="trivias.length > 0" class="card my-6">
     <div class="card-content">
-      <div class="content">
-        <h3 class="title is-3">{{ trivias[selected].name }}</h3>
-        <h4 class="subtitle is-5">
+      <div class="content" role="region" aria-live="polite">
+        <h2 class="title is-2">{{ trivias[selected].name }}</h2>
+        <h3 class="subtitle is-3">
           {{ trivias[selected].locations.join(" ") }}
-        </h4>
-        <h5 class="subtitle is-6">Taxonomy</h5>
+        </h3>
+        <p>Taxonomy</p>
         <ul>
           <li v-if="trivias[selected].taxonomy.kingdom">
             Kingdom: {{ trivias[selected].taxonomy.kingdom }}
@@ -151,8 +151,7 @@ export default defineComponent({
             Scientific Name: {{ trivias[selected].taxonomy.scientific_name }}
           </li>
         </ul>
-        <!-- TODO: more data inside trivias[selected].characteristics -->
-        <!-- {{trivias[selected]}} -->
+        {{ Object.values(trivias[selected].characteristics).join(". ") }}
       </div>
     </div>
     <footer class="card-footer">
@@ -161,14 +160,14 @@ export default defineComponent({
         class="card-footer-item"
         :class="{ disabled: selected <= 0 }"
       >
-        Previous
+        Previous animal
       </a>
       <a
         @click="next()"
         class="card-footer-item"
         :class="{ disabled: selected >= trivias.length - 1 }"
       >
-        Next
+        Next animal
       </a>
     </footer>
   </div>

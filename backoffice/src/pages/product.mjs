@@ -1,4 +1,4 @@
-import { h, useState, useEffect } from "../h";
+import { h, useState } from "../h";
 
 import { navigate } from "../router";
 import fetch, { withOptions } from "shared/fetch";
@@ -19,13 +19,13 @@ const ProductWrapper = () => {
     err: fetchErr,
   } = req(`store/products/${id}`, fetch);
   return h(
-    "main",
+    "div",
     {},
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Product, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Product, { id, data })
   );
 };
 
@@ -90,7 +90,7 @@ const Product = ({ id, data }) => {
   };
 
   return h(
-    "main",
+    "div",
     { className: "columns" },
     h(
       "section",
@@ -184,10 +184,10 @@ const Product = ({ id, data }) => {
         }),
         category != undefined
           ? h(SelectSubcategory, {
-              selected: subcategory,
-              category,
-              onSelect: (c) => setSubcategory(c),
-            })
+            selected: subcategory,
+            category,
+            onSelect: (c) => setSubcategory(c),
+          })
           : null,
         h(
           "div",

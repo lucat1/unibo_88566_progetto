@@ -20,13 +20,13 @@ const ServiceWrapper = () => {
     err: fetchErr,
   } = req(`store/services/${id}`, fetch);
   return h(
-    "main",
+    "div",
     {},
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Service, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Service, { id, data })
   );
 };
 
@@ -85,7 +85,7 @@ const Service = ({ id, data }) => {
   };
 
   return h(
-    "main",
+    "div",
     { className: "columns" },
     h(
       "section",

@@ -103,7 +103,7 @@
         class="letter"
         v-for="letter in wordDisplayLetters"
         :class="{
-          'has-text-primary': letter.special || letter.letter != '',
+          'has-text-link': letter.special || letter.letter != '',
           'has-text-danger': letter.letter == '' && state != 'p',
         }"
       >
@@ -121,7 +121,7 @@
         {{ letters[start + i - 1] }}
       </button>
     </div>
-    <button v-if="state == 'l'" class="button is-primary mt-4" @click="reset">
+    <button v-if="state == 'l'" class="button is-link mt-4" @click="reset">
       Retry
     </button>
   </div>

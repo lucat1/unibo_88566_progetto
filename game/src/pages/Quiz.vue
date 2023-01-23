@@ -70,7 +70,12 @@ export default defineComponent({
 
 <template>
   <div class="is-flex is-align-items-center is-justify-content-center">
-    <div v-if="current < questions.length" class="card">
+    <div
+      v-if="current < questions.length"
+      class="card"
+      role="region"
+      aria-live="polite"
+    >
       <div class="card-image">
         <figure class="image" style="max-height: 60vh">
           <img
@@ -85,19 +90,23 @@ export default defineComponent({
           <h4 class="title is-4">
             Question {{ current + 1 }} / {{ questions.length }}
           </h4>
-          <p>
+          <p id="question">
             {{ questions[current].question }}
           </p>
         </div>
         <progress
-          class="progress is-primary"
+          class="progress is-link"
           v-bind:value="current"
           v-bind:max="questions.length"
         ></progress>
       </div>
-      <footer class="card-footer">
-        <a href="#" @click="answer(true)" class="card-footer-item">True</a>
-        <a href="#" @click="answer(false)" class="card-footer-item">False</a>
+      <footer class="card-footer" role="radiogroup" aria-labelledby="question">
+        <a href="#" role="radio" @click="answer(true)" class="card-footer-item"
+          >True</a
+        >
+        <a href="#" role="radio" @click="answer(false)" class="card-footer-item"
+          >False</a
+        >
       </footer>
     </div>
   </div>

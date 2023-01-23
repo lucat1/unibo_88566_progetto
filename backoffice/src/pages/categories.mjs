@@ -6,7 +6,7 @@ import fetch from "shared/fetch";
 const Categories = () => {
   const { data, loading, err } = req("store/categories", fetch);
   return h(
-    "main",
+    "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
@@ -25,7 +25,7 @@ const Categories = () => {
             h(
               Link,
               { to: "/categories/add" },
-              h("button", { className: "button is-primary" }, "Add")
+              h("span", { className: "button is-primary" }, "Add")
             )
           ),
           h(

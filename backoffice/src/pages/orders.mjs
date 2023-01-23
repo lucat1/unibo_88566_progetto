@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Orders = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",
@@ -13,7 +13,7 @@ const Orders = () =>
         className:
           "is-flex is-flex-direction-row is-justify-content-space-between py-2",
       },
-      h("p", { className: "menu-label" }, "Orders")
+      h("h1", { className: "menu-label" }, "Orders")
     ),
     h(
       Pagination,
@@ -52,9 +52,8 @@ const Orders = () =>
                 h(
                   Link,
                   {
-                    to: `/${i.pet ? "pets" : "products"}/${
-                      (i.product || i.pet)._id
-                    }`,
+                    to: `/${i.pet ? "pets" : "products"}/${(i.product || i.pet)._id
+                      }`,
                   },
                   (i.product || i.pet).name
                 ),

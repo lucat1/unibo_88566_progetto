@@ -33,7 +33,7 @@ const PetAdd = () => {
       navigate(`/pets/${_id}`);
     } catch (err) {
       setError(
-        err.message + " (A category is required)" ||
+        err.message + " (all fields are required)" ||
           "An error occourred while adding a new pet"
       );
     }

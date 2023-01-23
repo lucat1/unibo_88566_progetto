@@ -19,7 +19,7 @@ const PetWrapper = () => {
     err: fetchErr,
   } = req(`store/pets/${id}`, fetch);
   return h(
-    "main",
+    "div",
     {},
     fetching
       ? h("progress", { className: "progress is-primary" })
@@ -90,7 +90,7 @@ const Pet = ({ id, data }) => {
   };
 
   return h(
-    "main",
+    "div",
     { className: "columns" },
     h(
       "section",

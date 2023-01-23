@@ -94,6 +94,11 @@ export const Link = ({ to, as, ...props }, children) => {
         e.stopPropagation();
         navigate(to);
       },
+      onkeypress: (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigate(to);
+      },
     },
     children
   );

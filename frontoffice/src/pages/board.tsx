@@ -51,7 +51,11 @@ const BoardAdd: React.FC = () => {
 
   return (
     <>
-      <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center mb-4">
+      <div
+        role="log"
+        aria-label="posts sequence"
+        className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center mb-4"
+      >
         <h1 className="title m-0">
           <Link className="is-hidden-touch" to="/boards">
             Boards
@@ -172,6 +176,7 @@ const BoardAdd: React.FC = () => {
                 </label>
                 <div className="control">
                   <textarea
+                    id="message"
                     className="input"
                     type="text"
                     disabled={postMutation.isLoading}

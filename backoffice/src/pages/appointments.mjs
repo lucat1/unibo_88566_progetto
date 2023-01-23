@@ -27,7 +27,7 @@ const Appointments = ({ service_id }) => {
     };
 
   return h(
-    "main",
+    "div",
     {},
     h(
       "div",

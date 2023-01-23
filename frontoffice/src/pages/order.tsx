@@ -34,7 +34,7 @@ const Order: React.FC = () => {
   };
 
   return (
-    <main className="is-flex is-flex-direction-column">
+    <div className="is-flex is-flex-direction-column">
       <div className="is-flex is-justify-content-space-between my-4">
         <h1 className="title mb-0">Order #{order?._id}</h1>
         <button className="button is-danger" disabled={loading} onClick={del}>
@@ -91,7 +91,7 @@ const Order: React.FC = () => {
           .reduce((prev, i) => prev + (i.product || i.pet)!.price * i.amount, 0)
           .toFixed(2)}
       </h2>
-    </main>
+    </div>
   );
 };
 

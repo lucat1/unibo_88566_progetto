@@ -9,7 +9,7 @@ const Subcategories = ({ category }) => {
     fetch
   );
   return h(
-    "main",
+    "div",
     {},
     loading
       ? h("progress", { className: "progress is-primary" })
@@ -28,7 +28,7 @@ const Subcategories = ({ category }) => {
             h(
               Link,
               { to: `/categories/${category}/add` },
-              h("button", { className: "button is-primary" }, "Add")
+              h("a", { className: "button is-primary" }, "Add")
             )
           ),
           h(

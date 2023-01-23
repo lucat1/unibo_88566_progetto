@@ -45,9 +45,11 @@ const Nav = () => {
           role: "button",
           className: `navbar-burger ${open ? "is-active" : ""}`,
           onClick: (_) => setOpen(!open),
-          "aria-label": "menu",
+          onkeypress: (_) => setOpen(!open),
+          "aria-label": "expand menu",
           "aria-expand": open ? "true" : "false",
           "data-target": "nav",
+          tabindex: "0",
         },
         h("span", { "aria-hidden": "true" }),
         h("span", { "aria-hidden": "true" }),
@@ -56,7 +58,12 @@ const Nav = () => {
     ),
     h(
       "div",
-      { className: `navbar-menu ${open ? "is-active" : ""}` },
+      {
+        id: "nav",
+        "aria-label": "menu",
+        "aria-expanded": open,
+        className: `navbar-menu ${open ? "is-active" : ""}`,
+      },
       h(
         "div",
         { className: "navbar-start" },
@@ -82,13 +89,25 @@ const Nav = () => {
             ? h(
               "div",
               { className: "buttons mr-4" },
-              h(Link, { to: "/login", className: "button is-light" }, "Login")
+              h(
+                Link,
+                { to: "/login", className: "button is-light", tabindex: "0" },
+                "Login"
+              )
             )
             : h(
               "span",
               {},
               "Signed in as ",
-              user.username,
+              h(
+                "a",
+                {
+                  onClick: () => navigate(`/users/${user._id}`),
+                  onkeypress: () => navigate(`/users/${user._id}`),
+                  tabindex: "0",
+                },
+                user.username
+              ),
               ", ",
               h(
                 "a",
@@ -98,6 +117,12 @@ const Nav = () => {
                     setUser(null);
                     navigate("/login");
                   },
+                  onkeypress: () => {
+                    removeAuthToken();
+                    setUser(null);
+                    navigate("/login");
+                  },
+                  tabindex: "0",
                 },
                 "Sign out"
               )

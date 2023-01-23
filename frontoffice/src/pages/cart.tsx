@@ -56,7 +56,7 @@ const Cart: React.FC = () => {
       <h3 className="has-text-weight-bold is-size-6 my-2">Order ID: {order}</h3>
     </div>
   ) : (
-    <main className="is-flex is-flex-direction-column">
+    <div className="is-flex is-flex-direction-column">
       <table className="table">
         <thead>
           <tr role="row">
@@ -88,9 +88,8 @@ const Cart: React.FC = () => {
               <td>
                 <img
                   style={{ width: "1.5rem", height: "1.5rem" }}
-                  alt={`${(item.pet || item.product)!.name}'s ${
-                    item.pet ? "pet" : "product"
-                  } image`}
+                  alt={`${(item.pet || item.product)!.name}'s ${item.pet ? "pet" : "product"
+                    } image`}
                   src={(item.product || item.pet)!.photos[0]}
                 />
               </td>
@@ -226,7 +225,7 @@ const Cart: React.FC = () => {
           </form>
         </>
       )}
-    </main>
+    </div>
   );
 };
 

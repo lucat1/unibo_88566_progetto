@@ -13,7 +13,7 @@ const Boards: React.FC = () => {
       <div className="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center my-2">
         <h1 className="title m-0">Boards</h1>
         {auth.authenticated && (
-          <Link className="button is-primary" role="button" to="/boards/add">
+          <Link className="button is-info" role="button" to="/boards/add">
             New Post
           </Link>
         )}

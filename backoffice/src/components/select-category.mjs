@@ -14,41 +14,41 @@ const SelectCategory = ({ selected, onSelect }) => {
   return err
     ? h("div", { className: "notification is-danger" }, "Error: ", err)
     : h(
-      "div",
-      { className: "field my-2" },
-      h(
-        "label",
-        { for: "category", className: "label" },
-        "Select a category"
-      ),
-      h(
         "div",
-        { className: "select" },
+        { className: "field my-2" },
         h(
-          "select",
-          {
-            id: "category",
-            disabled: loading,
-            onChange: () => {
-              const i = document.getElementById("category").selectedIndex;
-              onSelect(i == 0 ? undefined : data[i - 1]);
-            },
-          },
+          "label",
+          { for: "category", className: "label" },
+          "Select a category"
+        ),
+        h(
+          "div",
+          { className: "select" },
           h(
-            "option",
+            "select",
             {
-              onSelect: () => onSelect("some"),
+              id: "category",
+              disabled: loading,
+              onChange: () => {
+                const i = document.getElementById("category").selectedIndex;
+                onSelect(i == 0 ? undefined : data[i - 1]);
+              },
             },
-            loading ? "Loading" : "Select a category"
-          ),
-          loading
-            ? null
-            : data.map((category) =>
-              h("option", { key: category._id }, category.name)
-            )
+            h(
+              "option",
+              {
+                onSelect: () => onSelect("some"),
+              },
+              loading ? "Loading" : "Select a category"
+            ),
+            loading
+              ? null
+              : data.map((category) =>
+                  h("option", { key: category._id }, category.name)
+                )
+          )
         )
-      )
-    );
+      );
 };
 
 export default SelectCategory;

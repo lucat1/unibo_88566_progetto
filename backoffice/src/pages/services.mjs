@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 
 const Services = () =>
   h(
-    "main",
+    "div",
     { className: "menu" },
     h(
       "div",
@@ -17,7 +17,7 @@ const Services = () =>
       h(
         Link,
         { to: "/services/add" },
-        h("button", { className: "button is-primary" }, "Add")
+        h("span", { className: "button is-primary" }, "Add")
       )
     ),
     h(

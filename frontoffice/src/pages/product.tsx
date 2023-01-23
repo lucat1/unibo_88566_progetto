@@ -19,7 +19,7 @@ const Product: React.FC = () => {
   const [_, addToCart] = useCart();
   return (
     <>
-      <main className="columns">
+      <div className="columns">
         <section className="column is-one-third">
           <Pictures pictures={product?.photos || []} />
         </section>
@@ -28,38 +28,36 @@ const Product: React.FC = () => {
             {product?.name}
           </h1>
           <span className="is-size-5">{product?.description}</span>
-          <h2 className="has-text-weight-bold is-size-4 mt-4">Price</h2>$
+          <p className="has-text-weight-bold is-size-4 mt-4">Price</p>$
           {product?.price.toFixed(2)}
-          <h2 className="has-text-weight-bold is-size-4 mt-4">In store</h2>
+          <p className="has-text-weight-bold is-size-4 mt-4">In store</p>
           {(product?.stock || 0) > 0 ? product?.stock : "Out of stock"}
           <div className="is-flex">
             {product?.category && (
               <div className="mr-6">
-                <h2 className="has-text-weight-bold is-size-4 mt-4">
-                  Category
-                </h2>
+                <p className="has-text-weight-bold is-size-4 mt-4">Category</p>
                 {product.category.name}
               </div>
             )}
             {product?.subcategory && (
               <div>
-                <h2 className="has-text-weight-bold is-size-4 mt-4">
+                <p className="has-text-weight-bold is-size-4 mt-4">
                   Subcategory
-                </h2>
+                </p>
                 {product.subcategory.name}
               </div>
             )}
           </div>
           <div className="my-3 is-flex is-justify-content-end">
             <button
-              className="button is-primary"
+              className="button is-info"
               onClick={(_) => addToCart("product", product!, 1)}
             >
               Add to cart
             </button>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

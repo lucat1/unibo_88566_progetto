@@ -47,7 +47,7 @@ const User: React.FC = () => {
   };
 
   return (
-    <main className="columns">
+    <div className="columns">
       <section className="column is-one-third">
         <div className="is-flex is-flex-direction-column container is-max-desktop">
           <div className="card">
@@ -178,7 +178,7 @@ const User: React.FC = () => {
         <Password id={data!._id} />
         <Delete id={data!._id} />
       </section>
-    </main>
+    </div>
   );
 };
 
