@@ -31,7 +31,7 @@ const Pagination: React.FC<
     <>
       <Ele className={className} style={style as any}>
         {isLoading ? (
-          <progress className="progress is-primary" />
+          <progress className="progress is-info" />
         ) : isError ? (
           <div className="notification is-danger">
             <>Error: {error}</>

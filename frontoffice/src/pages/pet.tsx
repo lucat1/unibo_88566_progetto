@@ -49,7 +49,7 @@ const Pet: React.FC = () => {
           <div className="my-3 is-flex is-justify-content-end">
             <button
               disabled={!pet?.price}
-              className="button is-primary"
+              className="button is-info"
               onClick={(_) => addToCart("pet", pet!, 1)}
             >
               Add to cart

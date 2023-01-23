@@ -191,7 +191,7 @@ const Service: React.FC = () => {
                         <button
                           id={"reserve-" + i}
                           disabled
-                          className="button is-primary my-2"
+                          className="button is-info my-2"
                           aria-label="Add appointment"
                           onClick={async (_) =>
                             await reserveAppointment(

@@ -14,7 +14,7 @@ const App: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     <>
       <Nav />
       <main style={{ flex: 1 }} className="m-5">
-        <React.Suspense fallback={<progress className="progress is-primary" />}>
+        <React.Suspense fallback={<progress className="progress is-info" />}>
           {children}
         </React.Suspense>
       </main>

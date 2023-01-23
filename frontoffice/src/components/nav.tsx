@@ -21,7 +21,7 @@ const Nav: React.FC = () => {
   }, [removeAuthToken, setAuth]);
   return (
     <nav
-      className="navbar is-primary"
+      className="navbar is-info"
       role="navigation"
       aria-label="main navigation"
     >
@@ -43,7 +43,7 @@ const Nav: React.FC = () => {
           aria-label="expand menu"
           aria-expanded={opened ? "true" : "false"}
           data-target="nav"
-          tabIndex="0"
+          tabIndex={0}
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -81,7 +81,7 @@ const Nav: React.FC = () => {
               </Link>
               <div className="navbar-item">
                 <div className="buttons">
-                  <button onClick={logout} className="button is-light">
+                  <button onClick={logout} className="button is-light-info">
                     Log out
                   </button>
                 </div>
@@ -90,10 +90,10 @@ const Nav: React.FC = () => {
           ) : (
             <div className="navbar-item">
               <div className="buttons">
-                <Link to="/register" className="button is-primary">
+                <Link to="/register" className="button is-info">
                   <strong>Sign up</strong>
                 </Link>
-                <Link to="/login" className="button is-light">
+                <Link to="/login" className="button is-light-info">
                   Log in
                 </Link>
               </div>
