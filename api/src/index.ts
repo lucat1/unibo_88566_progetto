@@ -99,6 +99,7 @@ import {
 } from "./handlers/product";
 import {
   ServiceBody,
+  ServiceQuery,
   ServiceParams,
   ServiceRandomParams,
   addService,
@@ -394,7 +395,7 @@ const main = async () => {
 
   app.get(
     "/api/store/services",
-    validateQuery(PaginationQuery.and(SortingQuery)),
+    validateQuery(PaginationQuery.and(SortingQuery).and(ServiceQuery)),
     catcher(getServices)
   );
   app.get(

@@ -32,7 +32,7 @@ const Services: React.FC = () => {
         }
         resource={(page) => ["services", page]}
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
-        id={id}
+        id={id.toString()}
       >
         {(serv: IService, i) => (
           <div

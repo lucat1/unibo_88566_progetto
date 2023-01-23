@@ -23,18 +23,20 @@ export const addService: RequestHandler = async (req, res) => {
   json(res, 200, shadow(service));
 };
 
-export const getServices: RequestHandler = async (req, res) => {
-  const { limit, page, sort, order } =
-    req.query as unknown as IPaginationQuery & ISortingQuery;
+export const ServiceQuery = z.object({
+  location: z.string().optional(),
+});
+export type IServiceQuery = z.infer<typeof ServiceQuery>;
 
-  const result = await Service.paginate(
-    {},
-    {
-      limit,
-      page,
-      sort: sort ? { [sort]: order } : {},
-    }
-  );
+export const getServices: RequestHandler = async (req, res) => {
+  const { limit, page, sort, order, location } =
+    req.query as unknown as IPaginationQuery & ISortingQuery & IServiceQuery;
+
+  const result = await Service.paginate(location ? { store: location } : {}, {
+    limit,
+    page,
+    sort: sort ? { [sort]: order } : {},
+  });
 
   json(res, 200, { ...result, docs: result.docs.map(shadow) });
 };
