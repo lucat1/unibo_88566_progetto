@@ -120,7 +120,6 @@ const Service: React.FC = () => {
     return ({ addedAppointment: { day, number, time, id }, addCb }) => {
       (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
         false;
-      const d = new Date();
       selectedDates.set(i, new Date(id));
       setSelectedDates(selectedDates);
       addCb(day, number, time, id);
@@ -147,7 +146,7 @@ const Service: React.FC = () => {
   return (
     <>
       <div className="columns">
-        <section className="column is-one-third">
+        <section className="column is-one-quarter">
           <Pictures pictures={service?.photos || []} editable={false} />
         </section>
         <section className="column">
@@ -157,8 +156,9 @@ const Service: React.FC = () => {
           <span className="is-size-5">{service?.description}</span>
           <p className="has-text-weight-bold is-size-4 mt-4">Price</p>$
           {service?.price.toFixed(2)}
-          <p className="has-text-weight-bold is-size-4 mt-4">Store</p>
-          {store?.name}
+          <p className="has-text-weight-bold is-size-4 mt-4">
+            Store: {store?.name}
+          </p>
           <GeoMap lat={store?.location[0]} lng={store?.location[1]} />
           <h2 className="has-text-weight-bold is-size-4 mt-4">
             Disponibilities

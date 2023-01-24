@@ -6,7 +6,7 @@ const Map: React.FC<{ lat: number | undefined; lng: number | undefined }> = ({
   lng,
 }) => {
   return (
-    <div>
+    <>
       <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -25,7 +25,7 @@ const Map: React.FC<{ lat: number | undefined; lng: number | undefined }> = ({
         />
         <Marker position={[lat, lng]}></Marker>
       </MapContainer>
-    </div>
+    </>
   );
 };
 

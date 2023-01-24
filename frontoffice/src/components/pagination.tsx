@@ -34,7 +34,7 @@ const Pagination: React.FC<
           <progress className="progress is-info" />
         ) : isError ? (
           <div className="notification is-danger">
-            <>Error: {error}</>
+            <>Error: {error.message}</>
           </div>
         ) : (
           <>

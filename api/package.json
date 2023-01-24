@@ -40,9 +40,9 @@
     "mongoose-plugin-autoinc-fix": "^1.2.1",
     "node-uuid": "^1.4.8",
     "polka": "^0.5.2",
+    "shared": "*",
     "sharp": "^0.30.7",
     "sirv": "^2.0.2",
-    "shared": "*",
-    "zod": "^3.14.4"
+    "zod": "3.20"
   }
 }

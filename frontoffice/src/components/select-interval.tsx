@@ -1,8 +1,8 @@
 import React, { FormEvent } from "react";
 
 export interface SelectIntervalProps {
-  selected?: Date[];
-  onSelect: (n: Date[] | undefined) => void;
+  selected: string[];
+  onSelect: (n: string[]) => void;
 }
 
 const SelectInterval: React.FC<SelectIntervalProps> = ({
@@ -10,12 +10,18 @@ const SelectInterval: React.FC<SelectIntervalProps> = ({
   onSelect,
 }) => {
   const handleChange1 = (event: FormEvent<HTMLFormElement>) =>
-    onSelect([event.target.value, selected[1]]);
+    onSelect([
+      (event.target as unknown as HTMLInputElement).value,
+      selected[1],
+    ]);
   const handleChange2 = (event: FormEvent<HTMLFormElement>) =>
-    onSelect([selected[0], event.target.value]);
+    onSelect([
+      selected[0],
+      (event.target as unknown as HTMLInputElement).value,
+    ]);
   return (
-    <>
-      <div className="field my-2">
+    <div className="columns">
+      <div className="column field my-2">
         <label htmlFor="from" className="label">
           From
         </label>
@@ -27,7 +33,7 @@ const SelectInterval: React.FC<SelectIntervalProps> = ({
           onChange={handleChange1}
         />
       </div>
-      <div className="field my-2">
+      <div className="column field my-2">
         <label htmlFor="to" className="label">
           To
         </label>
@@ -39,7 +45,7 @@ const SelectInterval: React.FC<SelectIntervalProps> = ({
           onChange={handleChange2}
         />
       </div>
-    </>
+    </div>
   );
 };
 

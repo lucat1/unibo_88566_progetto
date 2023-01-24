@@ -68,6 +68,6 @@ export type IAppointmentParams = z.infer<typeof AppointmentParams>;
 
 export const deleteAppointment: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as IAppointmentParams;
-  await Appointment.deleteOne({ _id: new Types.ObjectId(id) }).exec();
+  await Appointment.deleteOne({ _id: id }).exec();
   json(res, 200, null);
 };
