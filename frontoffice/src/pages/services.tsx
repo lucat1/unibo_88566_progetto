@@ -44,15 +44,15 @@ const Services: React.FC = () => {
       ) : (
         <Pagination
           url={(page) =>
-            `store/services?page=${page}&location=${
-              store ? store._id : ""
+            `store/services?page=${page}&location=${store ? store._id : ""
             }&from=${dateTimeRange[0] || ""}&to=${dateTimeRange[1] || ""}`
           }
           resource={(page) => [
             "services",
-            page,
+            store ? store._id : "",
             dateTimeRange[0],
             dateTimeRange[1],
+            page,
           ]}
           className="is-flex is-flex-direction-row is-flex-wrap-wrap"
           id={id.toString()}
