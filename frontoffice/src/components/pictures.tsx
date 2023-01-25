@@ -24,7 +24,11 @@ export const PicturesList: React.FC<PicturesProps & PicturesListProps> = ({
 }) => (
   <div className="is-flex is-flex-direction-row is-align-items-center is-justify-content-center p-4">
     {pictures.map((picture, i) => (
-      <div key={i} className="card mx-4">
+      <div
+        key={i}
+        className="card mx-4"
+        style={{ width: "6rem", height: "6rem" }}
+      >
         <div
           className="card-image"
           onClick={(_) => select(i)}
@@ -69,8 +73,8 @@ const Pictures: React.FC<PicturesProps> = ({ pictures, picturesAlt }) => {
         select={setSelected}
         picturesAlt={picturesAlt}
         editable={false}
-        remove={(_) => {}}
-        add={(_) => {}}
+        remove={(_) => { }}
+        add={(_) => { }}
       />
     </div>
   );
