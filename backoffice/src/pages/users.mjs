@@ -12,7 +12,7 @@ const Users = () =>
       Pagination,
       {
         url: (page) => `users?page=${page}&limit=20`,
-        className: "is-flex is-flex-direction-column",
+        className: "is-flex is-flex-direction-row is-flex-wrap-wrap",
       },
       (user, i) =>
         h(
