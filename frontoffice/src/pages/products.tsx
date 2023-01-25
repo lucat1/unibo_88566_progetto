@@ -13,12 +13,13 @@ const Products: React.FC = () => {
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(prod: IProduct, i) => (
-          <div
-            key={i}
-            className="card m-4"
+          <Link
+            to={`/products/${prod._id}`}
             style={{ display: "block", width: "100%", maxWidth: "24rem" }}
+            className="m-4"
+            key={i}
           >
-            <Link to={`/products/${prod._id}`}>
+            <div class="card">
               {prod.photos.length > 0 && (
                 <div className="card-image">
                   <figure className="image is-square">
@@ -43,20 +44,20 @@ const Products: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </Link>
-            {(prod.category || prod.subcategory) && (
-              <footer className="card-footer">
-                {prod.category && (
-                  <div className="card-footer-item">{prod.category.name}</div>
-                )}
-                {prod.subcategory && (
-                  <div className="card-footer-item">
-                    {prod.subcategory.name}
-                  </div>
-                )}
-              </footer>
-            )}
-          </div>
+              {(prod.category || prod.subcategory) && (
+                <footer className="card-footer">
+                  {prod.category && (
+                    <div className="card-footer-item">{prod.category.name}</div>
+                  )}
+                  {prod.subcategory && (
+                    <div className="card-footer-item">
+                      {prod.subcategory.name}
+                    </div>
+                  )}
+                </footer>
+              )}
+            </div>
+          </Link>
         )}
       </Pagination>
     </>

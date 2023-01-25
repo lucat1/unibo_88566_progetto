@@ -13,12 +13,13 @@ const Pets: React.FC = () => {
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(pet: IPet, i) => (
-          <div
-            key={i}
-            className="card m-4"
+          <Link
+            to={`/pets/${pet._id}`}
             style={{ display: "block", width: "100%", maxWidth: "24rem" }}
+            className="m-4"
+            key={i}
           >
-            <Link to={`/pets/${pet._id}`}>
+            <div className="card">
               {pet.photos.length > 0 && (
                 <div className="card-image">
                   <figure className="image is-square">
@@ -43,18 +44,20 @@ const Pets: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </Link>
-            {(pet.category || pet.subcategory) && (
-              <footer className="card-footer">
-                {pet.category && (
-                  <div className="card-footer-item">{pet.category.name}</div>
-                )}
-                {pet.subcategory && (
-                  <div className="card-footer-item">{pet.subcategory.name}</div>
-                )}
-              </footer>
-            )}
-          </div>
+              {(pet.category || pet.subcategory) && (
+                <footer className="card-footer">
+                  {pet.category && (
+                    <div className="card-footer-item">{pet.category.name}</div>
+                  )}
+                  {pet.subcategory && (
+                    <div className="card-footer-item">
+                      {pet.subcategory.name}
+                    </div>
+                  )}
+                </footer>
+              )}
+            </div>
+          </Link>
         )}
       </Pagination>
     </>

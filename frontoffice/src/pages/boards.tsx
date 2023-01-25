@@ -30,13 +30,13 @@ const Boards: React.FC = () => {
         className="is-flex is-flex-direction-row is-flex-wrap-wrap"
       >
         {(board: IBoard, i) => (
-          <div
-            key={i}
+          <Link
+            to={`/boards/${board._id}`}
             className="box m-2 is-flex is-justify-content-space-between"
             style={{ width: "100%" }}
           >
-            <Link to={`/boards/${board._id}`}>{board.name}</Link>
-          </div>
+            <div key={i}>{board.name}</div>
+          </Link>
         )}
       </Pagination>
     </>
