@@ -6,7 +6,7 @@ import Pagination from "../components/pagination";
 import SelectStore from "../components/select-store";
 import SelectInterval from "../components/select-interval";
 
-const APPOINTMENTS_FORESIGHT = 15;
+export const APPOINTMENTS_FORESIGHT = 15;
 
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
@@ -44,8 +44,7 @@ const Services: React.FC = () => {
       ) : (
         <Pagination
           url={(page) =>
-            `store/services?page=${page}&location=${
-              store ? store._id : ""
+            `store/services?page=${page}&location=${store ? store._id : ""
             }&date=${date || ""}`
           }
           resource={(page) => [

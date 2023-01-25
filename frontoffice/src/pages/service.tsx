@@ -16,6 +16,8 @@ import Pictures from "../components/pictures";
 import GeoMap from "../components/map";
 import Pagination from "../components/pagination";
 
+import { APPOINTMENTS_FORESIGHT } from "./services";
+
 function initialMinutes(disponibility: ICalendar): number {
   let minutes = Math.min(
     ...disponibility.intervals.map((interval) => interval.from[0])
@@ -40,7 +42,6 @@ function removeAppointmentCallback(i: number) {
 
 const DAYS_IN_A_WEEK = 7,
   MINUTES_IN_A_PERIOD = 15,
-  COLUMNS = 10,
   slots = (
     intervals: IInterval[],
     date: Date,
@@ -88,7 +89,7 @@ const DAYS_IN_A_WEEK = 7,
       return slot;
     }),
   disponibilityToAppointmentAttributesType = (disponibility: ICalendar) =>
-    Array.from({ length: COLUMNS }, (_, i) => {
+    Array.from({ length: 1 + APPOINTMENTS_FORESIGHT }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() + i);
       return d;
@@ -149,7 +150,7 @@ const Service: React.FC = () => {
         <section className="column is-one-quarter">
           <Pictures pictures={service?.photos || []} editable={false} />
         </section>
-        <section className="column">
+        <section className="column is-three-quarters">
           <h1 className="has-text-weight-bold is-size-2 my-4">
             {service?.name}
           </h1>
@@ -167,23 +168,29 @@ const Service: React.FC = () => {
             <div className="menu my-4">
               {service?.disponibilities?.map((disponibility, i) => (
                 <div key={i} className="card my-4">
-                  <div className="card-content">
-                    {disponibility.name
-                      ? disponibility.name
-                      : "Unnamed disponibility"}{" "}
-                    ({disponibility.slotDuration ?? 60} minutes slots)
-                    <AppointmentPicker
-                      addAppointmentCallback={addAppointmentCallback(i)}
-                      removeAppointmentCallback={removeAppointmentCallback(i)}
-                      initialDay={initialDate(disponibility)}
-                      visible
-                      continuous
-                      local={"en-UK"}
-                      days={disponibilityToAppointmentAttributesType(
-                        disponibility
-                      )}
-                      maxReservableAppointments={1}
-                    />
+                  <header className="card-header">
+                    <p className="card-header-title">
+                      {disponibility.name
+                        ? disponibility.name
+                        : "Unnamed disponibility"}{" "}
+                      ({disponibility.slotDuration ?? 60} minutes slots)
+                    </p>
+                  </header>
+                  <div className="card-content" style={{ overflow: "scroll" }}>
+                    <div style={{ width: "fit-content" }}>
+                      <AppointmentPicker
+                        addAppointmentCallback={addAppointmentCallback(i)}
+                        removeAppointmentCallback={removeAppointmentCallback(i)}
+                        initialDay={initialDate(disponibility)}
+                        visible
+                        continuous
+                        local={"en-UK"}
+                        days={disponibilityToAppointmentAttributesType(
+                          disponibility
+                        )}
+                        maxReservableAppointments={1}
+                      />
+                    </div>
                     {authenticated ? (
                       <div>
                         <button
