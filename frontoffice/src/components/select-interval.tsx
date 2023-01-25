@@ -32,7 +32,6 @@ const SelectInterval: React.FC<SelectIntervalProps> = ({
         id="date"
         type="date"
         className="input"
-        value={toString(selected)}
         min={toString(selected)}
         max={toString(maxDate)}
         onChange={handleChange}

@@ -1,7 +1,5 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
-import { UserLevel } from "shared/models/user";
-import { Types } from "mongoose";
 
 import json from "../res";
 import { Appointment, shadow } from "../models/appointment";

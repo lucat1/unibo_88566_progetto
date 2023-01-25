@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
+import "mongoose";
 
 import json from "../res";
 import { Service, shadow } from "../models/service";
@@ -25,16 +26,28 @@ export const addService: RequestHandler = async (req, res) => {
 
 export const ServiceQuery = z.object({
   location: z.string().optional(),
-  from: z.coerce.date().optional(),
-  to: z.coerce.date().optional(),
+  date: z.coerce.date().optional(),
 });
 export type IServiceQuery = z.infer<typeof ServiceQuery>;
 
 export const getServices: RequestHandler = async (req, res) => {
-  const { limit, page, sort, order, location } =
-    req.query as unknown as IPaginationQuery & ISortingQuery & IServiceQuery;
-
-  const result = await Service.paginate(location ? { store: location } : {}, {
+  const { limit, page, sort, order, location, date } =
+      req.query as unknown as IPaginationQuery & ISortingQuery & IServiceQuery,
+    query: any = {};
+  // location
+  if (location) query.store = location;
+  // date
+  if (date) {
+    const dow = date.getDay();
+    query.disponibilities = {
+      $elemMatch: {
+        intervals: {
+          $elemMatch: { dayOfWeek: dow },
+        },
+      },
+    };
+  }
+  const result = await Service.paginate(query, {
     limit,
     page,
     sort: sort ? { [sort]: order } : {},

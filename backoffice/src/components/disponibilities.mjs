@@ -1,13 +1,13 @@
 import { h } from "../h";
 
 const days = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ],
   sampleTimeWindow = "9:00-13:00,14:00-18:00";
 

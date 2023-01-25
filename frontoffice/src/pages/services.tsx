@@ -11,7 +11,7 @@ export const APPOINTMENTS_FORESIGHT = 15;
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
   const [store, setStore] = React.useState<IStore | undefined>(undefined);
-  const [date, setDate] = React.useState<string>(new Date().toISOString());
+  const [date, setDate] = React.useState<string>("");
 
   return (
     <>
@@ -28,7 +28,6 @@ const Services: React.FC = () => {
         </div>
         <div className="column">
           <SelectInterval
-            selected={new Date(date)}
             onSelect={(e) => {
               setDate(e.target.value);
               setId(id + 1);
@@ -37,15 +36,12 @@ const Services: React.FC = () => {
           />
         </div>
       </div>
-      {!store ? (
-        <div className="is-flex is-flex-direction-row is-justify-content-center is-align-items-center my-6">
-          Please, select a store where the service will be held first.
-        </div>
-      ) : (
+      {
         <Pagination
           url={(page) =>
-            `store/services?page=${page}&location=${store ? store._id : ""
-            }&date=${date || ""}`
+            `store/services?page=${page}&location=${store ? store._id : ""}${
+              date ? "&date=" + date : ""
+            }`
           }
           resource={(page) => [
             "services",
@@ -92,7 +88,7 @@ const Services: React.FC = () => {
             </div>
           )}
         </Pagination>
-      )}
+      }
     </>
   );
 };
