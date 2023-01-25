@@ -71,7 +71,7 @@ const Nav: React.FC = () => {
               <span className="file-icon">
                 <i className="fa-solid fa-cart-shopping"></i>
               </span>
-              <span>Chart ({productsInCart})</span>
+              <span>Cart ({productsInCart})</span>
             </span>
           </Link>
           {auth.authenticated ? (
