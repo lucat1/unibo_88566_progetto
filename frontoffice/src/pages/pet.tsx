@@ -21,7 +21,12 @@ const Pet: React.FC = () => {
     <>
       <div className="columns">
         <section className="column is-one-third">
-          <Pictures pictures={pet?.photos || []} />
+          <Pictures
+            pictures={pet?.photos || []}
+            picturesAlt={
+              pet?.photos.map((_, i) => `Picture of ${pet?.name} #${i}`) || []
+            }
+          />
         </section>
         <section className="column">
           <h1 className="has-text-weight-bold is-size-2 my-4">{pet?.name}</h1>

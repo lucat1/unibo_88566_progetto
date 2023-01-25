@@ -21,7 +21,14 @@ const Product: React.FC = () => {
     <>
       <div className="columns">
         <section className="column is-one-third">
-          <Pictures pictures={product?.photos || []} />
+          <Pictures
+            pictures={product?.photos || []}
+            picturesAlt={
+              product?.photos.map(
+                (_, i) => `Picture of ${product?.name} #${i}`
+              ) || []
+            }
+          />
         </section>
         <section className="column">
           <h1 className="has-text-weight-bold is-size-2 my-4">

@@ -32,14 +32,6 @@ function initialDate(disponibility: ICalendar): Date {
   return res;
 }
 
-function removeAppointmentCallback(i: number) {
-  return ({ day, number, _, __ }, removeCb) => {
-    (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
-      true;
-    removeCb(day, number);
-  };
-}
-
 const DAYS_IN_A_WEEK = 7,
   MINUTES_IN_A_PERIOD = 15,
   slots = (
@@ -116,14 +108,23 @@ const Service: React.FC = () => {
   const [selectedDates, setSelectedDates] = React.useState(
     new Map<number, Date>()
   );
+  const addAppointmentCallback = React.useCallback(
+    (i: number) =>
+      ({ addedAppointment: { day, number, time, id }, addCb }) => {
+        setSelectedDates((selectedDates) => {
+          selectedDates.set(i, new Date(id));
+          return selectedDates;
+        });
+        addCb(day, number, time, id);
+      },
+    [setSelectedDates]
+  );
 
-  function addAppointmentCallback(i: number) {
-    return ({ addedAppointment: { day, number, time, id }, addCb }) => {
-      (document.getElementById("reserve-" + i) as HTMLButtonElement).disabled =
-        false;
-      selectedDates.set(i, new Date(id));
+  function removeAppointmentCallback(i: number) {
+    return ({ day, number, _, __ }, removeCb) => {
+      selectedDates.delete(i);
       setSelectedDates(selectedDates);
-      addCb(day, number, time, id);
+      removeCb(day, number);
     };
   }
 
@@ -148,7 +149,14 @@ const Service: React.FC = () => {
     <>
       <div className="columns">
         <section className="column is-one-quarter">
-          <Pictures pictures={service?.photos || []} editable={false} />
+          <Pictures
+            pictures={service?.photos || []}
+            picturesAlt={
+              service?.photos.map(
+                (_, i) => `Picture of ${service?.name} #${i}`
+              ) || []
+            }
+          />
         </section>
         <section className="column is-three-quarters">
           <h1 className="has-text-weight-bold is-size-2 my-4">
@@ -196,7 +204,7 @@ const Service: React.FC = () => {
                         <button
                           id={"reserve-" + i}
                           className="button is-info my-2"
-                          hidden={!selectedDates.get(i)}
+                          disabled={!selectedDates.get(i)}
                           aria-label="Add appointment"
                           onClick={async (_) =>
                             await reserveAppointment(

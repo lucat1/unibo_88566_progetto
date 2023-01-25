@@ -83,9 +83,14 @@ const BoardAdd: React.FC = () => {
             <div className="column is-one-quarter is-flex is-flex-direction-row is-align-items-center is-size-5 has-text-weight-medium">
               <figure className="image is-64x64 mr-2">
                 <img
+                  className="is-size-6"
                   style={{ objectFit: "cover", height: "100%", width: "100%" }}
-                  src={post.author.avatar}
-                  alt={`${post.author.username}'s profile picture`}
+                  src={post.author.avatar ?? "/user.png"}
+                  alt={
+                    post.author.avatar
+                      ? `${post.author.username}'s profile picture`
+                      : "No profile picture"
+                  }
                 />
               </figure>
               <Link to={`/users/${post.author._id}`} className="mr-2">
@@ -157,8 +162,12 @@ const BoardAdd: React.FC = () => {
             <figure className="image is-64x64 mr-2">
               <img
                 style={{ objectFit: "cover", height: "100%", width: "100%" }}
-                src={auth.user.avatar}
-                alt={`${auth.user.username}'s profile picture`}
+                src={auth.user.avatar ?? "/user.png"}
+                alt={
+                  auth.user.avatar
+                    ? `${auth.user.username}'s profile picture`
+                    : "No profile picture"
+                }
               />
             </figure>
           </div>
@@ -192,6 +201,9 @@ const BoardAdd: React.FC = () => {
               </div>
               <PicturesList
                 pictures={photos}
+                picturesAlt={photos.map(
+                  (_, i) => `User-uploaded picture #${i}`
+                )}
                 editable={true}
                 select={(_) => {}}
                 remove={(i) => setPhotos(photos.filter((_, j) => i != j))}

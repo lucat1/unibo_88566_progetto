@@ -4,10 +4,11 @@ import File from "./file";
 
 interface PicturesProps {
   pictures: string[];
-  editable: boolean;
+  picturesAlt: string[];
 }
 
 export interface PicturesListProps {
+  editable: boolean;
   select: (i: number) => void;
   remove: (i: number) => void;
   add: (url: string) => void;
@@ -16,6 +17,7 @@ export interface PicturesListProps {
 export const PicturesList: React.FC<PicturesProps & PicturesListProps> = ({
   pictures,
   editable,
+  picturesAlt,
   select,
   remove,
   add,
@@ -31,6 +33,7 @@ export const PicturesList: React.FC<PicturesProps & PicturesListProps> = ({
           <img
             style={{ objectFit: "cover", width: "6rem", height: "6rem" }}
             src={picture}
+            alt={picturesAlt[i]}
           />
         </div>
         {editable && (
@@ -46,22 +49,28 @@ export const PicturesList: React.FC<PicturesProps & PicturesListProps> = ({
   </div>
 );
 
-const Pictures: React.FC<PicturesProps> = ({ pictures, editable }) => {
+const Pictures: React.FC<PicturesProps> = ({ pictures, picturesAlt }) => {
   const [selected, setSelected] = React.useState(0);
   return (
     <div className="is-flex is-flex-direction-column container is-max-desktop">
       <div className="card">
         <div className="card-image">
           <figure className="image is-square">
-            <img style={{ objectFit: "cover" }} src={pictures[selected]} />
+            <img
+              style={{ objectFit: "cover" }}
+              src={pictures[selected]}
+              alt={picturesAlt[selected]}
+            />
           </figure>
         </div>
       </div>
       <PicturesList
         pictures={pictures}
-        editable={editable}
         select={setSelected}
+        picturesAlt={picturesAlt}
+        editable={false}
         remove={(_) => {}}
+        add={(_) => {}}
       />
     </div>
   );
