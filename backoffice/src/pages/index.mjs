@@ -23,7 +23,7 @@ const Index = () =>
         className: "menu",
       },
       h(
-        "p",
+        "h1",
         {
           className: "menu-label",
         },
