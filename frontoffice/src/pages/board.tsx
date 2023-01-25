@@ -221,7 +221,7 @@ const BoardAdd: React.FC = () => {
               </div>
               {postMutation.error && (
                 <span className="help is-danger">
-                  Unexpected error while posting: {postMutation.error}
+                  Unexpected error while posting
                 </span>
               )}
             </form>

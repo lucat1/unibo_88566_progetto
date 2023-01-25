@@ -43,7 +43,11 @@ const SelectStore = ({ selected, onSelect }) => {
             loading
               ? null
               : data.docs.map((store) =>
-                  h("option", { key: store._id }, store.name)
+                  h(
+                    "option",
+                    { key: store._id, selected: store._id == selected },
+                    store.name
+                  )
                 )
           )
         )

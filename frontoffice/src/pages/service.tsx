@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AppointmentPicker,
   AppointmentAttributesType,
@@ -91,6 +91,7 @@ const Service: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [{ authenticated }] = useAuth();
+  const queryClient = useQueryClient();
   const { data: service } = useQuery(
     ["service", id],
     () => fetch<IService>(`store/services/${id}`),
@@ -105,41 +106,13 @@ const Service: React.FC = () => {
       suspense: true,
     }
   );
-  const [selectedDates, setSelectedDates] = React.useState(
-    new Map<number, Date>()
-  );
-  const addAppointmentCallback = React.useCallback(
-    (i: number) =>
-      ({ addedAppointment: { day, number, time, id }, addCb }) => {
-        setSelectedDates((selectedDates) => {
-          selectedDates.set(i, new Date(id));
-          return selectedDates;
-        });
-        addCb(day, number, time, id);
-      },
-    [setSelectedDates]
-  );
-
-  function removeAppointmentCallback(i: number) {
-    return ({ day, number, _, __ }, removeCb) => {
-      selectedDates.delete(i);
-      setSelectedDates(selectedDates);
-      removeCb(day, number);
-    };
-  }
-
-  async function reserveAppointment(calendar: string, from: Date) {
-    await fetch(
-      "store/appointments/",
-      withOptions("PUT", {
-        service: id,
-        calendar,
-        from,
-      })
-    );
-    navigate("..");
-  }
-
+  const bookMutation = useMutation({
+    mutationFn: (booking) => {
+      fetch("store/appointments/", withOptions("PUT", booking));
+    },
+    onSettled: (_) => queryClient.invalidateQueries(["service", id]),
+  });
+  const [toBeBooked, setToBeBooked] = React.useState<string | null>(null);
   async function deleteAppointment(appointment: any) {
     await fetch(`store/appointments/${appointment}`, { method: "DELETE" });
     navigate(".");
@@ -174,54 +147,81 @@ const Service: React.FC = () => {
           </h2>
           {(service?.disponibilities?.length ?? 0) > 0 ? (
             <div className="menu my-4">
-              {service?.disponibilities?.map((disponibility, i) => (
-                <div key={i} className="card my-4">
-                  <header className="card-header">
-                    <p className="card-header-title">
-                      {disponibility.name
-                        ? disponibility.name
-                        : "Unnamed disponibility"}{" "}
-                      ({disponibility.slotDuration ?? 60} minutes slots)
-                    </p>
-                  </header>
-                  <div className="card-content" style={{ overflow: "scroll" }}>
-                    <div style={{ width: "fit-content" }}>
-                      <AppointmentPicker
-                        addAppointmentCallback={addAppointmentCallback(i)}
-                        removeAppointmentCallback={removeAppointmentCallback(i)}
-                        initialDay={initialDate(disponibility)}
-                        visible
-                        continuous
-                        local={"en-UK"}
-                        days={disponibilityToAppointmentAttributesType(
-                          disponibility
-                        )}
-                        maxReservableAppointments={1}
-                      />
-                    </div>
-                    {authenticated ? (
-                      <div>
-                        <button
-                          id={"reserve-" + i}
-                          className="button is-info my-2"
-                          disabled={!selectedDates.get(i)}
-                          aria-label="Add appointment"
-                          onClick={async (_) =>
-                            await reserveAppointment(
-                              disponibility.name,
-                              selectedDates.get(i)!
-                            )
-                          }
-                        >
-                          Reserve
-                        </button>
+              {service?.disponibilities?.map((disponibility, i) => {
+                console.log(
+                  disponibilityToAppointmentAttributesType(disponibility)
+                );
+                return (
+                  <div key={i} className="card my-4">
+                    <header className="card-header">
+                      <p className="card-header-title">
+                        {disponibility.name
+                          ? disponibility.name
+                          : "Unnamed disponibility"}{" "}
+                        ({disponibility.slotDuration ?? 60} minutes slots)
+                      </p>
+                    </header>
+                    <div
+                      className="card-content"
+                      style={{ overflow: "scroll" }}
+                    >
+                      <div style={{ width: "fit-content" }}>
+                        <AppointmentPicker
+                          addAppointmentCallback={({
+                            addedAppointment: { day, number, time, id },
+                            addCb,
+                          }) => {
+                            setToBeBooked(id);
+                            addCb(day, number, time, id);
+                          }}
+                          removeAppointmentCallback={(
+                            { day, number, _, __ },
+                            removeCb
+                          ) => {
+                            setToBeBooked(null);
+                            removeCb(day, number);
+                          }}
+                          initialDay={initialDate(disponibility)}
+                          visible
+                          continuous
+                          local={"en-UK"}
+                          days={disponibilityToAppointmentAttributesType(
+                            disponibility
+                          )}
+                          maxReservableAppointments={1}
+                        />
                       </div>
-                    ) : (
-                      <p>Only logged in users can make reservations.</p>
-                    )}
+                      {authenticated ? (
+                        <div>
+                          <button
+                            className="button is-info my-2"
+                            disabled={!toBeBooked}
+                            aria-label="Add appointment"
+                            onClick={async (e) => {
+                              e.preventDefault();
+                              bookMutation.mutate({
+                                service: service?._id,
+                                calendar: disponibility.name,
+                                from: toBeBooked,
+                              });
+                              setToBeBooked(null);
+                            }}
+                          >
+                            Reserve
+                          </button>
+                        </div>
+                      ) : (
+                        <p>Only logged in users can make reservations.</p>
+                      )}
+                      {bookMutation.error && (
+                        <span className="help is-danger">
+                          Unexpected error while booking
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <p>No disponibilities at the moment.</p>
