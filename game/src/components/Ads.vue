@@ -26,7 +26,7 @@ export default defineComponent({
         :key="i"
         class="column is-one-fifth"
       >
-        <a :href="servicesLink + '/' + product._id" target="_blank">
+        <a :href="productsLink + '/' + product._id" target="_blank">
           <div class="card">
             <div class="card-image">
               <figure class="image is-4by3">
