@@ -163,6 +163,14 @@ const main = async () => {
         );
     }
   }
+
+  const homepage = await readFile(join(__dirname, "..", "..", "homepage.html"));
+  app.get("/", (_, res) => {
+    send(res, 200, homepage, {
+      "Content-Type": "text/html",
+    });
+  });
+
   console.info(`Connecting to mongo as ${MONGO_URL}`);
   await connect(MONGO_URL);
 
