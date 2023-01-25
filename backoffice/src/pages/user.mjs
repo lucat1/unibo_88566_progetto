@@ -79,10 +79,19 @@ const User = ({ id, data }) => {
     h(
       "section",
       { className: "column is-one-third" },
-      h(Pictures, {
-        pictures: [data.avatar],
-        name: "@" + data.username,
-      })
+      data.avatar
+        ? h(Pictures, {
+            pictures: [data.avatar],
+            name: "@" + data.username,
+          })
+        : h(
+            "div",
+            {
+              className:
+                "has-ratio is-flex is-flex-direction-column is-align-items-center is-justify-content-center",
+            },
+            "No profile picture"
+          )
     ),
     h(
       "section",
