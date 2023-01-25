@@ -19,10 +19,6 @@ export const pages = [
     url: "/boards",
   },
   {
-    name: "Cart",
-    url: "/cart",
-  },
-  {
     name: "Orders",
     url: "/orders",
   },

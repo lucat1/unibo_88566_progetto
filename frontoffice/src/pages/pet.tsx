@@ -16,7 +16,7 @@ const Pet: React.FC = () => {
       suspense: true,
     }
   );
-  const [cart, addToCart] = useCart();
+  const [_, addToCart] = useCart();
   return (
     <>
       <div className="columns">
@@ -24,7 +24,7 @@ const Pet: React.FC = () => {
           <Pictures
             pictures={pet?.photos || []}
             picturesAlt={
-              pet?.photos.map((_, i) => `Picture of ${pet?.name} #${i}`) || []
+              pet?.photos?.map((_, i) => `Picture of ${pet?.name} #${i}`) || []
             }
           />
         </section>

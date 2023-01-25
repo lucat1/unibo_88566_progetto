@@ -32,25 +32,36 @@ const Pets: React.FC<PetsProps> = ({ pets, id, update, isLoading }) => {
         </h2>
       )}
       {pets.length > 0 && (
-        <>
-          {pets.map((pet, i) => (
-            <div
-              key={i}
-              className="is-flex is-flex-direction-row is-justify-content-space-between"
-            >
-              <h4 className="subtitle is-6">{pet.name}</h4>
-              <span className="subtitle is-6">{pet.type}</span>
-              <span className="subtitle is-6">
-                {pet.sex} - {pet.age} years old
-              </span>
-              <button
-                className="delete"
-                aria-label="Remove pet"
-                onClick={(_) => update(pets.filter((_, j) => j != i))}
-              ></button>
-            </div>
-          ))}
-        </>
+        <table class="table">
+          <thead>
+            <tr role="row">
+              <th>Name</th>
+              <th>Type</th>
+              <th>Sex</th>
+              <th>Age</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pets.map((pet, i) => (
+              <tr key={i} role="row">
+                <th>{pet.name}</th>
+                <td>{pet.type}</td>
+                <td>{pet.sex}</td>
+                <td>
+                  {pet.age} year{pet.age == 1 ? "" : "s"} old
+                </td>
+                <td>
+                  <button
+                    className="delete"
+                    aria-label="Remove pet"
+                    onClick={(_) => update(pets.filter((_, j) => j != i))}
+                  ></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
       {authenticated && user!._id == id && (
         <>
