@@ -68,8 +68,8 @@ const Nav: React.FC = () => {
         <div className="navbar-end">
           <Link to="/cart" className="navbar-item">
             <span className="icon-text">
-              <span className="file-icon">
-                <i className="fa-solid fa-cart-shopping"></i>
+              <span className="icon">
+                <i className="fas fa-cart-shopping"></i>
               </span>
               <span>Cart ({productsInCart})</span>
             </span>
