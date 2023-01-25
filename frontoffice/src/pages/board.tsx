@@ -205,7 +205,7 @@ const BoardAdd: React.FC = () => {
                   (_, i) => `User-uploaded picture #${i}`
                 )}
                 editable={true}
-                select={(_) => {}}
+                select={(_) => {  }}
                 remove={(i) => setPhotos(photos.filter((_, j) => i != j))}
                 add={(url) => setPhotos((pics) => [...pics, url])}
               />

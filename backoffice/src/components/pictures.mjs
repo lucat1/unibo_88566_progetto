@@ -1,11 +1,14 @@
 import { h, useState } from "../h";
 
-const Pictures = ({ pictures, extra, extraIcon }) => {
+const Pictures = ({ pictures, name, extra, extraIcon }) => {
   const [selected, setSelected] = useState(0);
   const select = (index) => (e) => {
     e.preventDefault();
     setSelected(index);
   };
+  const picturesAlt = pictures?.map((_, i) => `${name}'s picture #${i}`) ?? [
+    `Missing picture of ${name}`,
+  ];
 
   return h(
     "div",
@@ -23,6 +26,7 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
             ? h("img", {
                 style: { "object-fit": "cover" },
                 src: pictures[selected],
+                alt: picturesAlt[selected],
               })
             : h(
                 "div",
@@ -57,6 +61,7 @@ const Pictures = ({ pictures, extra, extraIcon }) => {
               h("img", {
                 style: { "object-fit": "cover", width: "6rem", height: "6rem" },
                 src: picture,
+                alt: picturesAlt[i],
               })
             )
           )

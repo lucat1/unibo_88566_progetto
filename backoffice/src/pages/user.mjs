@@ -81,6 +81,7 @@ const User = ({ id, data }) => {
       { className: "column is-one-third" },
       h(Pictures, {
         pictures: [data.avatar],
+        name: "@" + data.username,
       })
     ),
     h(

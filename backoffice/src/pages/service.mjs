@@ -92,6 +92,7 @@ const Service = ({ id, data }) => {
       { className: "column is-one-third" },
       h(Pictures, {
         pictures: photos,
+        name: data.name,
         extra: h(File, { onUpload: (url) => setPhotos(photos.concat(url)) }),
         extraIcon: h("i", { className: "fas fa-upload" }),
       })

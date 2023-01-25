@@ -24,8 +24,8 @@ const ProductWrapper = () => {
     fetching
       ? h("progress", { className: "progress is-primary" })
       : fetchErr
-      ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
-      : h(Product, { id, data })
+        ? h("div", { className: "notification is-danger" }, "Error: ", fetchErr)
+        : h(Product, { id, data })
   );
 };
 
@@ -97,6 +97,7 @@ const Product = ({ id, data }) => {
       { className: "column is-one-third" },
       h(Pictures, {
         pictures: photos,
+        picturesAlt: data.name,
         extra: h(File, { onUpload: (url) => setPhotos(photos.concat(url)) }),
         extraIcon: h("i", { className: "fas fa-upload" }),
       })
@@ -184,10 +185,10 @@ const Product = ({ id, data }) => {
         }),
         category != undefined
           ? h(SelectSubcategory, {
-              selected: subcategory,
-              category,
-              onSelect: (c) => setSubcategory(c),
-            })
+            selected: subcategory,
+            category,
+            onSelect: (c) => setSubcategory(c),
+          })
           : null,
         h(
           "div",
