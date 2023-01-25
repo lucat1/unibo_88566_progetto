@@ -6,13 +6,12 @@ import Pagination from "../components/pagination";
 import SelectStore from "../components/select-store";
 import SelectInterval from "../components/select-interval";
 
+const APPOINTMENTS_FORESIGHT = 15;
+
 const Services: React.FC = () => {
   const [id, setId] = React.useState(0);
   const [store, setStore] = React.useState<IStore | undefined>(undefined);
-  const [dateTimeRange, setDateTimeRange] = React.useState<string[]>([
-    new Date().toISOString(),
-    new Date().toISOString(),
-  ]);
+  const [date, setDate] = React.useState<string>(new Date().toISOString());
 
   return (
     <>
@@ -29,11 +28,12 @@ const Services: React.FC = () => {
         </div>
         <div className="column">
           <SelectInterval
-            selected={dateTimeRange!}
-            onSelect={(dtr) => {
-              setDateTimeRange(dtr);
+            selected={new Date(date)}
+            onSelect={(e) => {
+              setDate(e.target.value);
               setId(id + 1);
             }}
+            foresight={APPOINTMENTS_FORESIGHT}
           />
         </div>
       </div>
@@ -44,14 +44,15 @@ const Services: React.FC = () => {
       ) : (
         <Pagination
           url={(page) =>
-            `store/services?page=${page}&location=${store ? store._id : ""
-            }&from=${dateTimeRange[0] || ""}&to=${dateTimeRange[1] || ""}`
+            `store/services?page=${page}&location=${
+              store ? store._id : ""
+            }&date=${date || ""}`
           }
           resource={(page) => [
             "services",
             store ? store._id : "",
-            dateTimeRange[0],
-            dateTimeRange[1],
+            date[0],
+            date[1],
             page,
           ]}
           className="is-flex is-flex-direction-row is-flex-wrap-wrap"

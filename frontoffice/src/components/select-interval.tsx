@@ -1,50 +1,42 @@
-import React, { FormEvent } from "react";
+import React, { ChangeEventHandler } from "react";
 
 export interface SelectIntervalProps {
-  selected: string[];
-  onSelect: (n: string[]) => void;
+  selected: Date;
+  onSelect: ChangeEventHandler<HTMLInputElement>;
+  foresight: number;
+}
+
+function toString(d: Date): string {
+  return d.toISOString().slice(0, 10);
 }
 
 const SelectInterval: React.FC<SelectIntervalProps> = ({
   selected,
   onSelect,
+  foresight,
 }) => {
-  const handleChange1 = (event: FormEvent<HTMLFormElement>) =>
-    onSelect([
-      (event.target as unknown as HTMLInputElement).value,
-      selected[1],
-    ]);
-  const handleChange2 = (event: FormEvent<HTMLFormElement>) =>
-    onSelect([
-      selected[0],
-      (event.target as unknown as HTMLInputElement).value,
-    ]);
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    selected = new Date(event.target.value);
+    onSelect(event);
+  };
+  selected = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + foresight);
   return (
-    <div className="columns">
-      <div className="column field my-2">
-        <label htmlFor="from" className="label">
-          From
-        </label>
-        <input
-          id="for"
-          type="datetime-local"
-          className="input"
-          value={selected ? selected[0].toString() : ""}
-          onChange={handleChange1}
-        />
-      </div>
-      <div className="column field my-2">
-        <label htmlFor="to" className="label">
-          To
-        </label>
-        <input
-          id="to"
-          type="datetime-local"
-          className="input"
-          value={selected ? selected[1].toString() : ""}
-          onChange={handleChange2}
-        />
-      </div>
+    <div className="field my-2">
+      <label htmlFor="date" className="label">
+        Date (reservations can be made at most{" "}
+        <span className="has-text-link">{foresight} days</span> in advance)
+      </label>
+      <input
+        id="date"
+        type="date"
+        className="input"
+        value={toString(selected)}
+        min={toString(selected)}
+        max={toString(maxDate)}
+        onChange={handleChange}
+      />
     </div>
   );
 };
