@@ -103,7 +103,7 @@
         class="letter"
         v-for="letter in wordDisplayLetters"
         :class="{
-          'has-text-link': letter.special || letter.letter != '',
+          'has-text-primary': letter.special || letter.letter != '',
           'has-text-danger': letter.letter == '' && state != 'p',
         }"
       >
@@ -168,10 +168,15 @@ enum GameState {
   WIN = "w",
 }
 
+function pickAnimal() {
+  return animalTypes[
+    Math.floor(Math.random() * animalTypes.length)
+  ].toUpperCase();
+}
+
 export default defineComponent({
   setup() {
-    const word =
-      animalTypes[Math.floor(Math.random() * animalTypes.length)].toUpperCase();
+    const word = pickAnimal();
 
     return reactive({
       strikes: 0,
@@ -232,8 +237,7 @@ export default defineComponent({
       const req = await fetch(
         "https://zoo-animal-api.herokuapp.com/animals/rand"
       );
-      const { name } = await req.json();
-      this.word = name.toUpperCase();
+      this.word = pickAnimal();
       this.usedLetters = [];
       this.state = GameState.PLAYING;
       this.strikes = 0;
