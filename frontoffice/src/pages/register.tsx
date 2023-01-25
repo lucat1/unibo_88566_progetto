@@ -62,7 +62,7 @@ const Register: React.FC = () => {
   return (
     <div className="center h-full">
       <form onSubmit={handleSubmit(login)} className="box">
-        <h1 className="title">Login</h1>
+        <h1 className="title">Sign up</h1>
         <div className="field">
           <label htmlFor="username" className="label">
             Username
@@ -161,7 +161,7 @@ const Register: React.FC = () => {
         <div className="field">
           <div className="control">
             <button className="button is-link" disabled={loading}>
-              Login
+              Sign up
             </button>
           </div>
         </div>

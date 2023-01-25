@@ -69,8 +69,8 @@ const Pictures: React.FC<PicturesProps> = ({ pictures, picturesAlt }) => {
         select={setSelected}
         picturesAlt={picturesAlt}
         editable={false}
-        remove={(_) => {}}
-        add={(_) => {}}
+        remove={(_) => { }}
+        add={(_) => { }}
       />
     </div>
   );

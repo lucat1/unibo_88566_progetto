@@ -65,7 +65,7 @@ export default defineComponent({
       :errors="[error]"
       :disabled="loading"
     >
-      <h1 class="title">Register</h1>
+      <h1 class="title">Sign up</h1>
       <FormKit
         type="text"
         name="username"
@@ -132,7 +132,7 @@ export default defineComponent({
       />
       <div class="field">
         <div class="control">
-          <button class="button is-link" :disabeld="loading">Register</button>
+          <button class="button is-link" :disabeld="loading">Sign up</button>
         </div>
       </div>
     </FormKit>
