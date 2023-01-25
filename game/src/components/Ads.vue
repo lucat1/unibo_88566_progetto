@@ -26,28 +26,22 @@ export default defineComponent({
         :key="i"
         class="column is-one-fifth"
       >
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img
-                v-if="product.photos.length > 0"
-                :src="product.photos[0]"
-                :alt="product.name"
-              />
-            </figure>
+        <a :href="servicesLink + '/' + product._id" target="_blank">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img
+                  v-if="product.photos.length > 0"
+                  :src="product.photos[0]"
+                  :alt="product.name"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">{{ product.name }}</div>
+            </div>
           </div>
-          <div class="card-content">
-            <div class="content">{{ product.name }}</div>
-          </div>
-          <footer class="card-footer">
-            <a
-              :href="productsLink + '/' + product._id"
-              target="_blank"
-              class="card-footer-item"
-              >Apri</a
-            >
-          </footer>
-        </div>
+        </a>
       </div>
     </div>
     <a :href="productsLink" class="button is-link">More products</a>
@@ -60,28 +54,22 @@ export default defineComponent({
         :key="i"
         class="column is-one-fifth"
       >
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img
-                v-if="service.photos.length > 0"
-                :src="service.photos[0]"
-                :alt="service.name"
-              />
-            </figure>
+        <a :href="servicesLink + '/' + service._id" target="_blank">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img
+                  v-if="service.photos.length > 0"
+                  :src="service.photos[0]"
+                  :alt="service.name"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">{{ service.name }}</div>
+            </div>
           </div>
-          <div class="card-content">
-            <div class="content">{{ service.name }}</div>
-          </div>
-          <footer class="card-footer">
-            <a
-              :href="servicesLink + '/' + service._id"
-              target="_blank"
-              class="card-footer-item"
-              >Apri</a
-            >
-          </footer>
-        </div>
+        </a>
       </div>
     </div>
     <a :href="servicesLink" class="button is-link">More services</a>
