@@ -51,7 +51,7 @@ const Pagination = (
       "div",
       {
         className:
-          "mt-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center",
+          "my-4 is-flex is-flex-direction-row is-align-items-center is-justify-content-center",
       },
       pages.map((index) =>
         h(
