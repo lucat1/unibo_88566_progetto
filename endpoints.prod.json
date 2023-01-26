@@ -4,7 +4,5 @@
   "BACKOFFICE_ENDPOINT": "https://site212206.tw.cs.unibo.it/backoffice/",
   "API_ENDPOINT": "https://site212206.tw.cs.unibo.it/api/",
   "API_PORT": 8000,
-  "MONGO_URL": "mongodb://site212206:shei8Mi4@mongo_site212206:27017/",
-  "PASSWORD_SALT_ROUNDS": 5,
-  "JWT_SECRET": "pYYHI2Piycwb4eJrZShdScor5AFD87HxoPiDvcONVbGWE0ehWH4SFzXjubQ2hwk6"
+  "PASSWORD_SALT_ROUNDS": 5
 }
