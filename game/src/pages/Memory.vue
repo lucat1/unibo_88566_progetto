@@ -73,7 +73,7 @@ export default defineComponent({
   },
   async setup() {
     const req = await fetch(
-      `http://shibe.online/api/shibes?count=${NUMBER_OF_PAIRS}`
+      `https://shibe.online/api/shibes?count=${NUMBER_OF_PAIRS}`
     );
     const animals = await req.json();
     const images = animals.map((a: any) => ({

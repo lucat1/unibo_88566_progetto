@@ -363,7 +363,7 @@ const main = async () => {
     catcher(getPet)
   );
   app.delete(
-    "/api/store/pet/:id",
+    "/api/store/pets/:id",
     validateParams(ProductParams),
     catcher(deletePet)
   );
