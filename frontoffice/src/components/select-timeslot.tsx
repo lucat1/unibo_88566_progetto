@@ -72,8 +72,9 @@ const DAYS_IN_A_WEEK = 7,
       initialMinutes(disp),
       disp.slotDuration ?? 60
     ).map((slot) => {
-      if (disp.reservations.find((x) => x.toString() == (slot?.id as string)))
+      if (disp.reservations.find((x) => x.toString() == (slot?.id as string))) {
         slot!.isReserved = true;
+      }
       return slot;
     }),
   disponibilityToAppointmentAttributesType = (disponibility: ICalendar) =>

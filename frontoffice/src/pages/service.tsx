@@ -19,7 +19,7 @@ const Service: React.FC = () => {
   const [{ authenticated }] = useAuth();
   const queryClient = useQueryClient();
   const { data: service } = useQuery(
-    ["service", id],
+    ["services", id],
     () => fetch<IService>(`store/services/${id}`),
     {
       suspense: true,
@@ -33,16 +33,15 @@ const Service: React.FC = () => {
     }
   );
   const bookMutation = useMutation({
-    mutationFn: (booking) => {
-      fetch("store/appointments/", withOptions("PUT", booking));
-    },
-    onSettled: (_) => queryClient.invalidateQueries(["service", id]),
+    mutationFn: (booking: any) =>
+      fetch("store/appointments/", withOptions("PUT", booking)),
+    onSettled: (_) => queryClient.invalidateQueries(["services", id]),
   });
-  const [toBeBooked, setToBeBooked] = React.useState<string | null>(null);
-  async function deleteAppointment(appointment: any) {
-    await fetch(`store/appointments/${appointment}`, { method: "DELETE" });
-    navigate(".");
-  }
+  const unbookMutation = useMutation({
+    mutationFn: (id: string) =>
+      fetch(`store/appointments/${id}`, withOptions("DELETE")),
+    onSettled: (_) => queryClient.invalidateQueries(["services", id]),
+  });
 
   return (
     <>
@@ -90,33 +89,43 @@ const Service: React.FC = () => {
             My Appointments
           </h2>
           {authenticated ? (
-            <Pagination
-              url={(page) =>
-                `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1&mine=true`
-              }
-              resource={(page): any[] => ["services", id, "appointments", page]}
-              className="is-flex is-flex-direction-row is-flex-wrap-wrap"
-            >
-              {(appointment: IAppointment, i) => (
-                <div className="card m-4" key={i}>
-                  <div className="card-content">
-                    <div className="content">
-                      {appointment.calendar},{" "}
-                      {new Date(appointment.minutes).toLocaleString("en-US")}
+            <>
+              <Pagination
+                url={(page) =>
+                  `store/appointments/?service=${id}&page=${page}&sort=minutes&order=1&mine=true`
+                }
+                resource={(page) => ["services", id, "appointments", page]}
+                className="is-flex is-flex-direction-row is-flex-wrap-wrap"
+              >
+                {(appointment: IAppointment, i) => (
+                  <div className="card m-4" key={i}>
+                    <div className="card-content">
+                      <div className="content">
+                        {appointment.calendar},{" "}
+                        {new Date(appointment.minutes).toLocaleString("en-US")}
+                      </div>
                     </div>
+                    <footer className="card-footer">
+                      <button
+                        className="card-footer-item button is-danger"
+                        aria-label="Remove appointment"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          unbookMutation.mutate(appointment._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </footer>
                   </div>
-                  <footer className="card-footer">
-                    <button
-                      className="card-footer-item button is-danger"
-                      aria-label="Remove appointment"
-                      onClick={(_) => deleteAppointment(appointment._id)}
-                    >
-                      Delete
-                    </button>
-                  </footer>
-                </div>
+                )}
+              </Pagination>
+              {bookMutation.error && (
+                <span className="help is-danger">
+                  Unexpected error while trying to unbook your appointment
+                </span>
               )}
-            </Pagination>
+            </>
           ) : (
             <p>Log in to view your appointments.</p>
           )}

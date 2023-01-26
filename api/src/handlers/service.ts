@@ -88,16 +88,7 @@ export const getService: RequestHandler = async (req, res) => {
     });
     return;
   }
-  const appointments = (
-    await Appointment.paginate(
-      { service: id },
-      {
-        sort: {
-          minutes: 1,
-        },
-      }
-    )
-  ).docs;
+  const appointments = await Appointment.find({ service: id }).exec();
   for (let i = 0; i < appointments.length; ++i)
     for (let j = 0; j < service.disponibilities.length; ++j)
       if (appointments[i].calendar == service.disponibilities[j].name) {
